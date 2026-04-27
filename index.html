@@ -339,20 +339,32 @@ function renderSongs(){
 (function(){
   const svg=document.getElementById('radar');
   let dragging=-1;
-  function getVal(e,i){
-    const r=svg.getBoundingClientRect(),scale=200/r.width;
-    const mx=((e.clientX||e.touches[0].clientX)-r.left)*scale-cx;
-    const my=((e.clientY||e.touches[0].clientY)-r.top)*scale-cy;
-    return Math.min(1,Math.max(0,(mx*Math.cos(angles[i])+my*Math.sin(angles[i]))/maxR));
+
+  function clientToSVG(clientX, clientY){
+    const pt=svg.createSVGPoint();
+    pt.x=clientX; pt.y=clientY;
+    return pt.matrixTransform(svg.getScreenCTM().inverse());
   }
+
+  function getVal(clientX, clientY, i){
+    const p=clientToSVG(clientX, clientY);
+    const mx=p.x-cx, my=p.y-cy;
+    const proj=mx*Math.cos(angles[i])+my*Math.sin(angles[i]);
+    return Math.min(1,Math.max(0,proj/maxR));
+  }
+
   function onMove(e){
-    if(dragging<0)return;e.preventDefault();
-    vals[dragging]=getVal(e,dragging);
+    if(dragging<0)return;
+    e.preventDefault();
+    const clientX=e.clientX||e.touches[0].clientX;
+    const clientY=e.clientY||e.touches[0].clientY;
+    vals[dragging]=getVal(clientX,clientY,dragging);
     document.getElementById('sl'+dragging).value=Math.round(vals[dragging]*100);
     document.getElementById('sv'+dragging).textContent=vals[dragging].toFixed(2);
     draw();renderSongs();
     document.querySelectorAll('.preset-chip,.mood-nav-item').forEach(b=>b.classList.remove('active'));
   }
+
   [0,1,2,3,4,5].forEach(i=>{
     const d=document.getElementById('d'+i);
     d.addEventListener('mousedown',e=>{dragging=i;e.preventDefault();});
