@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Mesh — Living Brief</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a; --surface: #111; --surface2: #1a1a1a;
+    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.14);
+    --text: #e8e4dc; --muted: #6a6660; --accent: #c8b89a;
+    --accent2: #7c9e8a; --danger: #c87a6a; --info: #6a8ac8;
+    --warn: #c8a86a; --purple: #9a7ac8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Instrument Sans', sans-serif; font-size: 15px; line-height: 1.7; }
+  .page { max-width: 920px; margin: 0 auto; padding: 4rem 2rem 8rem; }
+
+  /* Hero */
+  .hero { padding-bottom: 3rem; margin-bottom: 3rem; border-bottom: 1px solid var(--border); }
+  .eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.5rem; }
+  .title { font-family: 'DM Serif Display', serif; font-size: clamp(3.5rem, 9vw, 6rem); line-height: 0.95; color: var(--text); }
+  .title em { font-style: italic; color: var(--accent); }
+  .tagline-block { margin-top: 2rem; padding: 1.25rem 1.5rem; border-left: 2px solid var(--accent); background: rgba(200,184,154,0.04); }
+  .tagline-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .tagline-text { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--text); }
+  .tagline-sub { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  .meta { display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .meta-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .meta-val { font-size: 13px; color: var(--accent); }
+
+  /* Sections */
+  .section { margin-bottom: 4rem; }
+  .sh { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+  .sn { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+  .st { font-family: 'DM Serif Display', serif; font-size: 1.5rem; }
+  p { color: var(--muted); margin-bottom: 1rem; line-height: 1.7; }
+  p strong { color: var(--text); font-weight: 500; }
+  p em { color: var(--accent); font-style: normal; }
+
+  /* Callout */
+  .callout { border-left: 2px solid var(--accent2); padding: 1rem 1.25rem; background: rgba(124,158,138,0.04); border-radius: 0 4px 4px 0; margin: 1.5rem 0; }
+  .callout p { margin: 0; color: var(--text); font-size: 13px; }
+  .cl { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+
+  /* Axis table */
+  .atw { overflow-x: auto; margin: 1.5rem 0; }
+  .at { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .at th { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left; font-weight: 400; }
+  .at td { padding: 12px 12px; border-bottom: 1px solid var(--border); color: var(--muted); vertical-align: top; line-height: 1.5; }
+  .at tr:last-child td { border-bottom: none; }
+  .at tr:hover td { background: rgba(255,255,255,0.015); }
+  .an { font-weight: 500; color: var(--text); font-size: 13px; }
+  .badge { font-family: 'DM Mono', monospace; font-size: 10px; padding: 2px 6px; border-radius: 3px; display: inline-block; margin-top: 4px; white-space: nowrap; }
+  .bl { background: rgba(124,158,138,0.12); color: var(--accent2); border: 1px solid rgba(124,158,138,0.25); }
+  .bn { background: rgba(154,122,200,0.12); color: var(--purple); border: 1px solid rgba(154,122,200,0.25); }
+  .bt { background: rgba(200,168,106,0.12); color: var(--warn); border: 1px solid rgba(200,168,106,0.25); }
+  .rp { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+  .pill { font-size: 11px; padding: 2px 7px; background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; color: var(--text); white-space: nowrap; }
+  .pill-m { background: rgba(200,184,154,0.06); border-color: rgba(200,184,154,0.18); }
+  .pa { color: var(--muted); font-size: 10px; }
+
+  /* Radar skin A */
+  .skin-a { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; margin: 1.5rem 0; }
+  .skin-title { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1.25rem; }
+  .skin-inner { display: flex; gap: 2rem; align-items: flex-start; flex-wrap: wrap; }
+  .slider-row { display: flex; flex-direction: column; gap: 3px; }
+  .slider-top { display: flex; justify-content: space-between; }
+  .slider-name { font-size: 12px; color: var(--text); font-weight: 500; }
+  .slider-val { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent); }
+  .slider-ends { display: flex; justify-content: space-between; }
+  .slider-end { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .presets { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+  .pb { font-family: 'DM Mono', monospace; font-size: 10px; padding: 4px 10px; background: transparent; border: 1px solid var(--border); border-radius: 3px; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .pb:hover, .pb.active { border-color: var(--accent); color: var(--accent); background: rgba(200,184,154,0.07); }
+
+  /* Discover */
+  .disc { background: var(--surface2); border: 1px solid rgba(154,122,200,0.2); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.25rem; }
+  .disc-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .disc-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .disc-val { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--purple); }
+  .disc-desc { font-size: 12px; color: var(--muted); margin-bottom: 8px; line-height: 1.5; }
+  .disc-fx { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--purple); min-height: 16px; margin-top: 6px; }
+  input.disc-range { accent-color: var(--purple); }
+
+  /* Mood grid */
+  .mgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 1.5rem 0; }
+  .mc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; cursor: pointer; transition: border-color 0.15s; }
+  .mc:hover { border-color: var(--border2); }
+  .mc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .mc-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .mc-dim { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); }
+  .mc-desc { font-size: 11px; color: var(--muted); line-height: 1.5; margin-bottom: 6px; }
+  .mc-ex { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(200,184,154,0.4); }
+  .mbars { border-top: 1px solid var(--border); padding-top: 8px; margin-top: 8px; display: flex; flex-direction: column; gap: 3px; }
+  .mr { display: flex; align-items: center; gap: 6px; }
+  .ml { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); width: 46px; flex-shrink: 0; }
+  .mt { flex: 1; height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+  .mf { height: 100%; border-radius: 2px; background: var(--accent); }
+
+  /* Science table */
+  .sci { width: 100%; border-collapse: collapse; font-size: 12px; margin: 1.5rem 0; }
+  .sci th { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; font-weight: 400; }
+  .sci td { padding: 10px 10px; border-bottom: 1px solid var(--border); color: var(--muted); vertical-align: top; line-height: 1.5; }
+  .sci tr:last-child td { border-bottom: none; }
+  .sci tr:hover td { background: rgba(255,255,255,0.015); }
+  .sv { font-size: 10px; padding: 2px 6px; border-radius: 3px; display: inline-block; font-family: 'DM Mono', monospace; white-space: nowrap; }
+  .sv-p { background: rgba(124,158,138,0.12); color: var(--accent2); }
+  .sv-d { background: rgba(200,106,106,0.12); color: var(--danger); }
+  .sv-n { background: rgba(154,122,200,0.12); color: var(--purple); }
+
+  /* Arch */
+  .arch { display: flex; align-items: stretch; gap: 0; margin: 1.5rem 0; flex-wrap: wrap; }
+  .ab { flex: 1; min-width: 130px; padding: 1rem; background: var(--surface); border: 1px solid var(--border); }
+  .ab:not(:last-child) { border-right: none; }
+  .ab.ours { border-color: rgba(200,184,154,0.25); }
+  .ab-label { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 5px; }
+  .ab-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 5px; }
+  .ab-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .aarrow { display: flex; align-items: center; padding: 0 2px; color: var(--muted); font-size: 16px; }
+
+  /* Log */
+  .log { font-family: 'DM Mono', monospace; font-size: 12px; }
+  .lr { display: flex; gap: 1rem; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .lr:last-child { border-bottom: none; }
+  .ld { color: var(--muted); flex-shrink: 0; font-size: 11px; }
+  .lt { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="eyebrow">Living brief · Session 2 · 2026-04-27</div>
+    <div class="title">Vibe<br><em>Mesh</em></div>
+    <div class="tagline-block">
+      <div class="tagline-label">The tagline</div>
+      <div class="tagline-text">Vibes is just science felt.</div>
+      <div class="tagline-sub">Not a slogan. The design philosophy. Every axis in this system has a scientific basis. The feeling is the interface. The math is underneath.</div>
+    </div>
+    <div class="meta">
+      <div class="meta-item"><span class="meta-label">Phase</span><span class="meta-val">Pre-code · Design complete</span></div>
+      <div class="meta-item"><span class="meta-label">Stack</span><span class="meta-val">Go · CLAP · Spotify</span></div>
+      <div class="meta-item"><span class="meta-label">Scope</span><span class="meta-val">English MVP</span></div>
+      <div class="meta-item"><span class="meta-label">Author</span><span class="meta-val">rupajsoni</span></div>
+    </div>
+  </div>
+
+  <!-- The Gap -->
+  <div class="section">
+    <div class="sh"><span class="sn">01</span><span class="st">The gap</span></div>
+    <p>Every time you look for music, you start with a feeling. And then you spend the next few minutes trying to translate that feeling into something the app understands — a title, a genre, a playlist someone else made for a moment that isn't quite yours. The translation is always lossy. Most of the time you settle.</p>
+    <p>The way music discovery works today is built around what you can search for, not what you actually feel. That's not a criticism — it's just a gap nobody has filled yet. The feeling itself has never been the input.</p>
+    <p>Vibe Mesh fills that gap. You describe how you want music to feel. The system finds the music that lives there.</p>
+    <div class="callout">
+      <div class="cl">What this is</div>
+      <p>A pure backend REST API. Not a player. Not a playlist manager. A middleware layer that any frontend can sit on top of. The API is the product.</p>
+    </div>
+  </div>
+
+  <!-- The 6 Axes -->
+  <div class="section">
+    <div class="sh"><span class="sn">02</span><span class="st">The six axes</span></div>
+    <p>Users input a position on six axes, normalized 0.0–1.0. The backend converts that to a CLAP embedding query. Results ranked by cosine similarity against a pre-vectorized library. <strong>Click any mood preset below to load it into the radar.</strong></p>
+
+    <div class="atw">
+      <table class="at">
+        <thead><tr><th>Axis</th><th>What it captures</th><th>Range</th><th>Science</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="an">Energy</div></td>
+            <td>Raw physical and emotional intensity. How hard is the music pushing.</td>
+            <td><div class="rp"><span class="pill">Weightless</span><span class="pa">→</span><span class="pill pill-m">Drive</span><span class="pa">→</span><span class="pill pill-m">Hype</span><span class="pa">→</span><span class="pill">Full rage</span></div></td>
+            <td>Arousal — most replicated dimension in all music psychology research</td>
+            <td><span class="badge bl">locked</span></td>
+          </tr>
+          <tr>
+            <td><div class="an">Groove</div></td>
+            <td>Rhythmic body pull. Not speed — danceability. Slayer does not groove. Confirmed orthogonal to Energy by the Slayer test.</td>
+            <td><div class="rp"><span class="pill">Static</span><span class="pa">→</span><span class="pill pill-m">Sway</span><span class="pa">→</span><span class="pill pill-m">Nod</span><span class="pa">→</span><span class="pill">Can't sit still</span></div></td>
+            <td>Contemporary/rhythmic factor (MUSIC model, Rentfrow et al.)</td>
+            <td><span class="badge bl">locked</span></td>
+          </tr>
+          <tr>
+            <td><div class="an">Fidelity</div><span class="badge bt" style="display:block;margin-top:4px;"></span></td>
+            <td>Grain and texture of sound. How processed vs raw. NIN vs Michael Bublé. Science bundles this in genre proxies — we decompose it cleanly.</td>
+            <td><div class="rp"><span class="pill">Hyper polished</span><span class="pa">→</span><span class="pill pill-m">Warm</span><span class="pa">→</span><span class="pill pill-m">Lo-fi</span><span class="pa">→</span><span class="pill">Lo-fi / abrasive</span></div></td>
+            <td>Justified divergence from science — science uses genre as proxy, we isolate the sonic dimension</td>
+            <td><span class="badge bl">concept locked</span></td>
+          </tr>
+          <tr>
+            <td><div class="an">Vocals</div></td>
+            <td>Presence AND character merged. Absent → textural (Fred Again) → treated melodic → raw exposed front and center. Science flagged this confound, never resolved it.</td>
+            <td><div class="rp"><span class="pill">Instrumental</span><span class="pa">→</span><span class="pill pill-m">Texture</span><span class="pa">→</span><span class="pill pill-m">Melodic</span><span class="pa">→</span><span class="pill">Raw exposed</span></div></td>
+            <td>Justified divergence — we resolve a confound science identified in the Sophisticated factor</td>
+            <td><span class="badge bl">locked</span></td>
+          </tr>
+          <tr>
+            <td><div class="an">Emotion</div></td>
+            <td>Emotional color / valence. Independent of energy. Phoebe Bridgers and death metal are both low energy. They are not the same here. Nearly dropped mid-session. Never drop it.</td>
+            <td><div class="rp"><span class="pill">Dark / anguished</span><span class="pa">→</span><span class="pill pill-m">Bittersweet</span><span class="pa">→</span><span class="pill pill-m">Hopeful</span><span class="pa">→</span><span class="pill">Euphoric</span></div></td>
+            <td>Valence — Russell circumplex model, 40+ years, cross-culturally consistent (PNAS 13-dim study)</td>
+            <td><span class="badge bl">locked</span></td>
+          </tr>
+          <tr>
+            <td><div class="an">Social</div><span class="badge bn" style="display:block;margin-top:4px;">novel · our IP</span></td>
+            <td>What the music is built for — not the listener preference. Artists encode social context intentionally. Aphex Twin ambient and Karol G Tusa both do exactly what they were designed to do.</td>
+            <td><div class="rp"><span class="pill">3am headphones</span><span class="pa">→</span><span class="pill pill-m">Background</span><span class="pa">→</span><span class="pill pill-m">Shared</span><span class="pa">→</span><span class="pill">Room full of people</span></div></td>
+            <td>Science studies listener context, never encodes it as a property of the music itself — we do</td>
+            <td><span class="badge bl">locked</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Interactive Skin A -->
+  <div class="section">
+    <div class="sh"><span class="sn">03</span><span class="st">UI concept · Skin A — radar + sliders</span></div>
+    <p>Click a mood preset to load it. Move sliders to tune. The radar updates live. This is how a user interacts with the vector.</p>
+    <div class="skin-a">
+      <div class="skin-title">Vibe Mesh · Query builder</div>
+      <div class="presets" id="presets"></div>
+      <div class="skin-inner">
+        <div style="flex:0 0 240px;">
+          <svg id="radar" viewBox="0 0 240 240" width="240" height="240">
+            <defs><radialGradient id="rg" cx="50%" cy="50%"><stop offset="0%" stop-color="#c8b89a" stop-opacity="0.25"/><stop offset="100%" stop-color="#7c9e8a" stop-opacity="0.04"/></radialGradient></defs>
+            <polygon points="120,40 168,70 168,170 120,200 72,170 72,70" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <polygon points="120,65 151,83 151,157 120,175 89,157 89,83" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <polygon points="120,90 135,99 135,141 120,150 105,141 105,99" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="120" y1="120" x2="120" y2="40" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <line x1="120" y1="120" x2="168" y2="70" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <line x1="120" y1="120" x2="168" y2="170" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <line x1="120" y1="120" x2="120" y2="200" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <line x1="120" y1="120" x2="72" y2="170" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <line x1="120" y1="120" x2="72" y2="70" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <polygon id="dp" fill="url(#rg)" stroke="#c8b89a" stroke-width="1.5" stroke-linejoin="round"/>
+            <circle id="d0" r="3" fill="#c8b89a"/><circle id="d1" r="3" fill="#c8b89a"/>
+            <circle id="d2" r="3" fill="#c8b89a"/><circle id="d3" r="3" fill="#c8b89a"/>
+            <circle id="d4" r="3" fill="#c8b89a"/><circle id="d5" r="3" fill="#c8b89a"/>
+            <text x="120" y="30" text-anchor="middle" fill="#555" font-size="8" font-family="DM Mono,monospace">Energy</text>
+            <text x="177" y="68" fill="#555" font-size="8" font-family="DM Mono,monospace">Groove</text>
+            <text x="177" y="176" fill="#555" font-size="8" font-family="DM Mono,monospace">Emotion</text>
+            <text x="120" y="214" text-anchor="middle" fill="#555" font-size="8" font-family="DM Mono,monospace">Social</text>
+            <text x="62" y="176" text-anchor="end" fill="#555" font-size="8" font-family="DM Mono,monospace">Vocals</text>
+            <text x="62" y="68" text-anchor="end" fill="#555" font-size="8" font-family="DM Mono,monospace">Prod.</text>
+          </svg>
+        </div>
+        <div style="flex:1; min-width:180px; display:flex; flex-direction:column; gap:10px;" id="sliders"></div>
+      </div>
+      <div class="disc">
+        <div class="disc-top"><span class="disc-name">Discover</span><span class="disc-val" id="dv">0%</span></div>
+        <div class="disc-desc">How far outside your exact vector should we explore? Higher values nudge 1–2 axes into adjacent territory — surfaces music you'd never find yourself. Pure vector arithmetic, no popularity bias.</div>
+        <input type="range" class="disc-range" id="ds" min="0" max="100" value="0" style="width:100%">
+        <div class="disc-fx" id="dfx"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Moods -->
+  <div class="section">
+    <div class="sh"><span class="sn">04</span><span class="st">Mood presets</span></div>
+    <p>Pre-filled vectors. Named in context language people actually use. Science basis: three underlying reasons people listen to music — mood/arousal regulation, self-awareness, social relatedness. <strong>Click any card to load it into the radar above.</strong></p>
+    <div class="mgrid" id="mgrid"></div>
+  </div>
+
+  <!-- Science -->
+  <div class="section">
+    <div class="sh"><span class="sn">05</span><span class="st">Science cross-examination</span></div>
+    <p>Every axis was run against established music psychology research — Rentfrow's MUSIC model (replicated across three independent studies), Russell's circumplex model, and the PNAS cross-cultural 13-dimension study. Divergences are justified, not apologized for.</p>
+    <table class="sci">
+      <thead><tr><th>Axis</th><th>Research</th><th>Our position</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--text);font-weight:500;">Energy</td><td>Arousal — most replicated dimension in all music psychology</td><td>Identical to science</td><td><span class="sv sv-p">parallel</span></td></tr>
+        <tr><td style="color:var(--text);font-weight:500;">Groove</td><td>Contemporary/rhythmic factor (MUSIC model) — orthogonal to energy confirmed</td><td>Cleaner label, same construct. Slayer test validates independence.</td><td><span class="sv sv-p">parallel</span></td></tr>
+        <tr><td style="color:var(--text);font-weight:500;">Fidelity</td><td>Science uses genre as proxy — metal=aggressive, country=rootsy — never isolated as sonic texture</td><td>We decompose it. Lo-fi hip hop and lo-fi indie share production character across genres.</td><td><span class="sv sv-d">justified divergence</span></td></tr>
+        <tr><td style="color:var(--text);font-weight:500;">Vocals</td><td>Sophisticated factor had an instrumental confound — researchers flagged it, never resolved</td><td>We resolve it. Presence + character as one clean axis.</td><td><span class="sv sv-d">justified divergence</span></td></tr>
+        <tr><td style="color:var(--text);font-weight:500;">Emotion</td><td>Valence — Russell 1980, 40+ years, cross-cultural PNAS study. Nearly dropped mid-session.</td><td>Identical to science. Load-bearing. Never drop.</td><td><span class="sv sv-p">parallel</span></td></tr>
+        <tr><td style="color:var(--text);font-weight:500;">Social</td><td>Science studies listener social context — never encoded as a property of the music itself</td><td>We encode it. Artist intention is a sonic property. This is our IP.</td><td><span class="sv sv-n">novel</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Architecture -->
+  <div class="section">
+    <div class="sh"><span class="sn">06</span><span class="st">Architecture</span></div>
+    <div class="arch">
+      <div class="ab"><div class="ab-label">Catalogue</div><div class="ab-name">Spotify API</div><div class="ab-desc">Song identity, metadata. Finding what exists.</div></div>
+      <div class="aarrow">→</div>
+      <div class="ab"><div class="ab-label">Embedding</div><div class="ab-name">CLAP</div><div class="ab-desc">Pretrained audio+language joint embedding space. Songs and text land near each other semantically.</div></div>
+      <div class="aarrow">→</div>
+      <div class="ab ours"><div class="ab-label">Our layer · IP</div><div class="ab-name">Axis → Query</div><div class="ab-desc">6 axis values → semantically rich CLAP prompt. This translation is the product.</div></div>
+      <div class="aarrow">→</div>
+      <div class="ab"><div class="ab-label">Retrieval</div><div class="ab-name">Cosine sim</div><div class="ab-desc">In-memory vector store. Ranked results. &lt;200ms target.</div></div>
+    </div>
+  </div>
+
+  <!-- Log -->
+  <div class="section">
+    <div class="sh"><span class="sn">07</span><span class="st">Session log</span></div>
+    <div class="log">
+      <div class="lr"><span class="ld">2026-04-27</span><span class="lt">Session 1: Project created. Scaffold only. Uber Fx installed. No logic.</span></div>
+      <div class="lr"><span class="ld">2026-04-27</span><span class="lt">Session 2: Full design session. 6 axes + science cross-examination done. CLAP architecture. 10 mood presets with vectors. Discover mode scoped for MVP. Two UI skins. FOUNDATION.md. All docs rebuilt.</span></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const axes = ['Energy','Groove','Fidelity','Vocals','Emotion','Social'];
+const mins = ['Weightless','Static','Hi-fi','Instrumental','Dark','Solitary'];
+const maxs = ['Full rage','Can\'t stop','Raw','Raw exposed','Euphoric','Communal'];
+const cx = 120, cy = 120, maxR = 75;
+const angles = [-90,-30,30,90,150,210].map(d=>d*Math.PI/180);
+let vals = [0.8,0.7,0.3,0.65,0.85,0.55];
+
+function pt(i,v){ const r=v*maxR; return [cx+r*Math.cos(angles[i]), cy+r*Math.sin(angles[i])]; }
+function draw(){
+  const pts=vals.map((v,i)=>pt(i,v));
+  document.getElementById('dp').setAttribute('points',pts.map(p=>p.join(',')).join(' '));
+  pts.forEach((p,i)=>{ const d=document.getElementById('d'+i); d.setAttribute('cx',p[0]); d.setAttribute('cy',p[1]); });
+}
+
+const sw=document.getElementById('sliders');
+axes.forEach((n,i)=>{
+  const r=document.createElement('div'); r.className='slider-row';
+  r.innerHTML=`<div class="slider-top"><span class="slider-name">${n}</span><span class="slider-val" id="sv${i}">${vals[i].toFixed(2)}</span></div><input type="range" min="0" max="100" value="${Math.round(vals[i]*100)}" id="sl${i}"><div class="slider-ends"><span class="slider-end">${mins[i]}</span><span class="slider-end">${maxs[i]}</span></div>`;
+  sw.appendChild(r);
+  document.getElementById('sl'+i).addEventListener('input',e=>{
+    vals[i]=e.target.value/100;
+    document.getElementById('sv'+i).textContent=vals[i].toFixed(2);
+    draw();
+    document.querySelectorAll('.pb').forEach(b=>b.classList.remove('active'));
+  });
+});
+
+const moods=[
+  {name:'Release',dim:'Mood reg.',desc:'Catharsis. Anger, grief, letting it out.',ex:'RATM, Olivia Rodrigo, death metal',v:[0.85,0.35,0.70,0.75,0.20,0.25]},
+  {name:'Heartbreak',dim:'Mood reg.',desc:'Sitting with it. Not trying to fix it.',ex:'Bon Iver, Phoebe Bridgers, Frank Ocean',v:[0.20,0.15,0.55,0.80,0.15,0.10]},
+  {name:'Lift me up',dim:'Mood reg.',desc:'Actively trying to feel better.',ex:'Karol G, Dua Lipa, early Kanye',v:[0.80,0.70,0.30,0.65,0.85,0.55]},
+  {name:'Deep focus',dim:'Arousal reg.',desc:'Brain needs to work. Music as scaffold.',ex:'Brian Eno, Tycho, Nils Frahm',v:[0.30,0.20,0.25,0.10,0.55,0.15]},
+  {name:'In motion',dim:'Arousal reg.',desc:'Physical. Drive and rhythm above all.',ex:'Kendrick, Metro Boomin, electronic',v:[0.90,0.80,0.35,0.50,0.65,0.40]},
+  {name:'Wind down',dim:'Arousal reg.',desc:'End of day. Landing the plane.',ex:'Grouper, Massive Attack, jazz',v:[0.15,0.25,0.40,0.30,0.50,0.20]},
+  {name:'The room',dim:'Social',desc:'People around you. Music that pulls a room.',ex:'Afrobeats, EDM, Jonas Brothers',v:[0.85,0.90,0.20,0.60,0.80,0.95]},
+  {name:'Background',dim:'Social',desc:'Present but not demanding.',ex:'Norah Jones, bossa nova, Sade',v:[0.30,0.40,0.20,0.25,0.60,0.65]},
+  {name:'Night drive',dim:'Social',desc:'Moving through space. Cinematic.',ex:'The Weeknd, Beach House, Kavinsky',v:[0.45,0.40,0.25,0.45,0.35,0.30]},
+  {name:'Lost in it',dim:'Self-aware',desc:'Full attention. Music is the experience.',ex:'Radiohead, Kendrick albums, Arca',v:[0.50,0.30,0.50,0.55,0.45,0.10]},
+];
+
+const pp=document.getElementById('presets');
+const mg=document.getElementById('mgrid');
+const axShort=['Nrg','Grv','Fid','Voc','Emo','Soc'];
+
+function loadMood(v, name){
+  v.forEach((val,i)=>{
+    vals[i]=val;
+    const sl=document.getElementById('sl'+i);
+    if(sl){ sl.value=Math.round(val*100); document.getElementById('sv'+i).textContent=val.toFixed(2); }
+  });
+  draw();
+  document.querySelectorAll('.pb').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.pb').forEach(b=>{ if(b.textContent.trim()===name) b.classList.add('active'); });
+}
+
+moods.forEach(m=>{
+  const pb=document.createElement('button'); pb.className='pb'; pb.textContent=m.name;
+  pb.addEventListener('click',()=>loadMood(m.v,m.name));
+  pp.appendChild(pb);
+
+  const mc=document.createElement('div'); mc.className='mc';
+  const bars=m.v.map((v,i)=>`<div class="mr"><span class="ml">${axShort[i]}</span><div class="mt"><div class="mf" style="width:${v*100}%"></div></div></div>`).join('');
+  mc.innerHTML=`<div class="mc-top"><span class="mc-name">${m.name}</span><span class="mc-dim">${m.dim}</span></div><div class="mc-desc">${m.desc}</div><div class="mc-ex">${m.ex}</div><div class="mbars">${bars}</div>`;
+  mc.addEventListener('click',()=>loadMood(m.v,m.name));
+  mg.appendChild(mc);
+});
+
+const dfx=['','Exact match — tight to your vector.','Slight nudge — 1 axis expanded ±0.05.','Exploring — 2 axes nudged, radius +10%.','Wide — expect surprises.'];
+document.getElementById('ds').addEventListener('input',e=>{
+  const v=parseInt(e.target.value);
+  document.getElementById('dv').textContent=v+'%';
+  document.getElementById('dfx').textContent=dfx[Math.min(Math.floor(v/25),3)]||'';
+});
+
+draw();
+</script>
+</body>
+</html>

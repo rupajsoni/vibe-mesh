@@ -38,7 +38,7 @@ One file is missing from the scaffold and needs to be created:
 
 ## What is locked and ready to implement
 
-- 6 axes: Energy, Groove, Production (name TBD — see below), Vocals, Emotion, Social
+- 6 axes: Energy, Groove, Fidelity, Vocals, Emotion, Social
 - All normalized 0.0–1.0
 - 10 mood presets with vectors — all in CLAUDE.md
 - Discover mode — expand search radius + nudge 1–2 axes by delta. ~10 lines. In MVP.
@@ -49,8 +49,8 @@ One file is missing from the scaffold and needs to be created:
 
 ## What blocks implementation — resolve before writing code
 
-**1. Production axis name**
-The sixth axis concept is locked. The word is not. It blocks every struct field that references it. Candidates: Texture, Grain, Edge, Grit. Ask me to pick one before touching models.
+**1. ~~Fidelity axis name~~ — RESOLVED**
+Axis is named **Fidelity**. Struct field name: `Fidelity`. Range: hi-fi (0.0) → lo-fi → raw/abrasive (1.0).
 
 **2. Axis → CLAP query translation**
 How do 6 float values become a semantically rich CLAP text prompt? This is the soul of the product. It has not been designed. Do not invent it. Flag it when you reach service logic and wait.
@@ -74,7 +74,7 @@ net/http or Chi. Not decided. Flag when writing server.go. Default to net/http u
 ## Where to start when I say go
 
 `internal/models/song.go` — define the core structs:
-- `VibeVector` — 6 fields, one per axis (Production field name TBD — resolve first)
+- `VibeVector` — 6 fields: Energy, Groove, Fidelity, Vocals, Emotion, Social (all float64, 0.0–1.0)
 - `Song` — ID, title, artist, vector, metadata
 - `MoodPreset` — name, dimension, vector
 - `Query` — the incoming request shape
