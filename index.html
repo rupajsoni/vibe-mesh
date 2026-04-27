@@ -7,397 +7,182 @@
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #121212;
-  --surface: #181818;
-  --surface2: #282828;
-  --surface3: #333333;
-  --green: #1DB954;
-  --green-dim: #158a3e;
-  --white: #FFFFFF;
-  --white-dim: #B3B3B3;
-  --white-faint: #535353;
-  --text: #FFFFFF;
-  --muted: #B3B3B3;
-  --radius: 8px;
-  --radius-lg: 12px;
+  --bg: #121212; --surface: #181818; --surface2: #222; --surface3: #2a2a2a;
+  --green: #1DB954; --text: #fff; --muted: #a0a0a0; --faint: #535353; --radius: 8px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh; }
+html, body { height: 100%; overflow: hidden; }
+body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-serif; font-size: 14px; }
 
-/* Layout */
-.layout { display: flex; min-height: 100vh; }
-.sidebar { width: 240px; flex-shrink: 0; background: #000; padding: 24px 0; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
-.main { flex: 1; overflow-y: auto; padding: 0 0 80px; }
+.shell { display: flex; height: 100vh; }
 
 /* Sidebar */
-.logo { padding: 0 24px 32px; display: flex; align-items: center; gap: 10px; }
-.logo-mark { width: 32px; height: 32px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: #000; flex-shrink: 0; }
-.logo-text { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
-.nav { padding: 0 12px; }
-.nav-item { display: flex; align-items: center; gap: 14px; padding: 10px 12px; border-radius: 6px; color: var(--muted); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s; text-decoration: none; }
-.nav-item:hover { color: var(--white); background: var(--surface2); }
-.nav-item.active { color: var(--white); background: var(--surface2); }
-.nav-icon { width: 20px; height: 20px; flex-shrink: 0; }
-.nav-section { padding: 24px 24px 8px; font-size: 11px; font-weight: 700; color: var(--white-faint); text-transform: uppercase; letter-spacing: 0.1em; }
-.mood-nav { padding: 0 12px; display: flex; flex-direction: column; gap: 2px; }
-.mood-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-.sidebar-bottom { margin-top: auto; padding: 16px 24px; border-top: 1px solid var(--surface2); }
-.tagline-sidebar { font-size: 11px; color: var(--white-faint); font-style: italic; line-height: 1.4; }
+.sidebar { width: 196px; flex-shrink: 0; background: #000; display: flex; flex-direction: column; padding: 18px 0 14px; overflow-y: auto; }
+.logo { display: flex; align-items: center; gap: 9px; padding: 0 14px 22px; }
+.logo-mark { width: 26px; height: 26px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #000; flex-shrink: 0; }
+.logo-text { font-size: 14px; font-weight: 700; }
+.nav { padding: 0 7px; display: flex; flex-direction: column; gap: 1px; }
+.nav-item { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 5px; color: var(--muted); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+.nav-item:hover, .nav-item.active { color: var(--text); background: var(--surface2); }
+.nav-section { padding: 18px 14px 5px; font-size: 10px; font-weight: 700; color: var(--faint); text-transform: uppercase; letter-spacing: 0.1em; }
+.sidebar-bottom { margin-top: auto; padding: 14px; border-top: 1px solid #1a1a1a; }
+.tagline-sidebar { font-size: 10px; color: var(--faint); font-style: italic; line-height: 1.5; }
 
-/* Hero */
-.hero { background: linear-gradient(180deg, #1a3a2a 0%, #121212 100%); padding: 48px 32px 32px; }
-.hero-eyebrow { font-size: 12px; font-weight: 600; color: var(--green); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px; }
-.hero-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.05; letter-spacing: -1px; margin-bottom: 16px; }
-.hero-title span { color: var(--green); }
-.hero-sub { font-size: 16px; color: var(--muted); max-width: 560px; line-height: 1.6; margin-bottom: 28px; }
-.hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
-.pill { font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: 20px; background: var(--surface2); color: var(--white); border: 1px solid var(--surface3); cursor: pointer; transition: all 0.15s; }
-.pill:hover { background: var(--surface3); border-color: var(--white-faint); }
-.pill.green { background: var(--green); color: #000; border-color: var(--green); font-weight: 700; }
-.pill.green:hover { background: #1ed760; }
+/* Main */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
 
-/* Section */
-.section { padding: 32px; }
-.section + .section { padding-top: 0; }
-.section-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-.section-sub { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
-
-/* Vibe builder */
-.vibe-builder { display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start; }
-.radar-card { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; }
-.radar-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
-.sliders-card { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; }
-.slider-row { margin-bottom: 20px; }
-.slider-row:last-child { margin-bottom: 0; }
-.slider-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.slider-name-wrap { display: flex; align-items: center; gap: 8px; }
-.axis-icon { font-size: 16px; }
-.slider-name { font-size: 14px; font-weight: 600; }
-.slider-value { font-size: 13px; font-weight: 700; color: var(--green); background: rgba(29,185,84,0.1); padding: 2px 8px; border-radius: 4px; }
-input[type=range] { width: 100%; height: 4px; accent-color: var(--green); cursor: pointer; border-radius: 2px; }
-.slider-ends { display: flex; justify-content: space-between; margin-top: 4px; }
-.slider-end { font-size: 11px; color: var(--white-faint); }
-
-/* Mood presets */
-.presets-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
-.preset-chip { font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: 20px; background: var(--surface2); color: var(--muted); border: 1px solid var(--surface3); cursor: pointer; transition: all 0.15s; }
-.preset-chip:hover { color: var(--white); border-color: var(--white-faint); }
+/* Topbar */
+.topbar { padding: 14px 20px 10px; flex-shrink: 0; }
+.topbar-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 2px; }
+.topbar-title { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; }
+.topbar-title span { color: var(--green); }
+.topbar-sub { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+.presets-row { display: flex; gap: 5px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
+.presets-row::-webkit-scrollbar { display: none; }
+.preset-chip { font-size: 11px; font-weight: 500; padding: 4px 11px; border-radius: 14px; background: var(--surface2); color: var(--muted); border: 1px solid var(--surface3); cursor: pointer; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; }
+.preset-chip:hover { color: var(--text); border-color: var(--faint); }
 .preset-chip.active { background: var(--green); color: #000; border-color: var(--green); font-weight: 700; }
 
+/* Three panes */
+.panes { flex: 1; display: grid; grid-template-columns: 190px 1fr 260px; gap: 10px; padding: 0 20px 16px; overflow: hidden; min-height: 0; }
+
+/* Radar */
+.radar-pane { background: var(--surface); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; min-height: 0; }
+.pane-label { font-size: 10px; font-weight: 700; color: var(--faint); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; flex-shrink: 0; }
+.radar-wrap { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+#radar circle { cursor: grab; } #radar circle:active { cursor: grabbing; }
+
+/* Sliders */
+.sliders-pane { background: var(--surface); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.sliders-inner { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 0; overflow: hidden; }
+.slider-row { display: flex; flex-direction: column; gap: 1px; }
+.slider-top { display: flex; justify-content: space-between; align-items: center; }
+.slider-name-wrap { display: flex; align-items: center; gap: 5px; }
+.axis-icon { font-size: 12px; }
+.slider-name { font-size: 12px; font-weight: 600; }
+.slider-val { font-size: 11px; font-weight: 700; color: var(--green); }
+.slider-ends { display: flex; justify-content: space-between; }
+.slider-end { font-size: 9px; color: var(--faint); }
+input[type=range] { width: 100%; height: 3px; accent-color: var(--green); cursor: pointer; margin: 2px 0; }
+
 /* Discover */
-.discover-card { background: linear-gradient(135deg, #1a2a1a, #1e1e1e); border: 1px solid rgba(29,185,84,0.2); border-radius: var(--radius-lg); padding: 20px 24px; margin-top: 16px; }
-.discover-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.discover-name { font-size: 15px; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 8px; }
-.discover-badge { font-size: 10px; font-weight: 700; background: var(--green); color: #000; padding: 2px 7px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
-.discover-val { font-size: 14px; font-weight: 700; color: var(--green); }
-.discover-desc { font-size: 13px; color: var(--muted); margin-bottom: 12px; line-height: 1.5; }
-.discover-effect { font-size: 12px; color: var(--green); min-height: 18px; font-weight: 500; }
-input.discover-range { accent-color: var(--green); }
+.discover-row { flex-shrink: 0; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--surface2); }
+.discover-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
+.discover-label { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+.discover-badge { font-size: 8px; font-weight: 700; background: var(--green); color: #000; padding: 1px 5px; border-radius: 8px; text-transform: uppercase; }
+.discover-val { font-size: 11px; font-weight: 700; color: var(--green); }
+.discover-sub { font-size: 10px; color: var(--faint); margin-bottom: 2px; }
+.discover-effect { font-size: 10px; color: var(--green); min-height: 13px; }
+input.disc { accent-color: var(--green); width: 100%; height: 3px; margin: 2px 0; }
 
-/* Science infographic */
-.science-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-.science-card { background: var(--surface); border-radius: var(--radius-lg); padding: 20px; border: 1px solid var(--surface2); transition: border-color 0.15s; }
-.science-card:hover { border-color: var(--surface3); }
-.sci-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-.sci-axis { font-size: 15px; font-weight: 700; }
-.sci-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
-.badge-parallel { background: rgba(29,185,84,0.15); color: var(--green); }
-.badge-diverge { background: rgba(255,107,53,0.15); color: #ff6b35; }
-.badge-novel { background: rgba(100,150,255,0.15); color: #6496ff; }
-.sci-range { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
-.sci-pill { font-size: 11px; padding: 3px 8px; background: var(--surface2); border-radius: 4px; color: var(--muted); white-space: nowrap; }
-.sci-arrow { font-size: 10px; color: var(--white-faint); }
-.sci-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
-.sci-example { font-size: 11px; color: var(--white-faint); margin-top: 8px; font-style: italic; }
-
-/* Mood cards */
-.mood-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-.mood-card { background: var(--surface); border-radius: var(--radius-lg); padding: 16px; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
-.mood-card:hover { background: var(--surface2); border-color: var(--surface3); transform: translateY(-2px); }
-.mood-card.active { border-color: var(--green); background: rgba(29,185,84,0.08); }
-.mood-icon { font-size: 28px; margin-bottom: 10px; }
-.mood-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-.mood-dim { font-size: 11px; font-weight: 600; color: var(--green); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-.mood-desc { font-size: 12px; color: var(--muted); line-height: 1.4; margin-bottom: 10px; }
-.mood-artists { font-size: 11px; color: var(--white-faint); font-style: italic; }
-.mood-bars { margin-top: 10px; border-top: 1px solid var(--surface2); padding-top: 10px; display: flex; flex-direction: column; gap: 4px; }
-.mbar-row { display: flex; align-items: center; gap: 6px; }
-.mbar-label { font-size: 9px; font-weight: 600; color: var(--white-faint); width: 42px; flex-shrink: 0; text-transform: uppercase; }
-.mbar-track { flex: 1; height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
-.mbar-fill { height: 100%; border-radius: 2px; background: var(--green); }
-
-/* Architecture */
-.arch-flow { display: flex; align-items: stretch; gap: 0; margin-top: 8px; flex-wrap: wrap; }
-.arch-box { flex: 1; min-width: 140px; background: var(--surface); padding: 16px; border: 1px solid var(--surface2); }
-.arch-box:first-child { border-radius: var(--radius) 0 0 var(--radius); }
-.arch-box:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
-.arch-box:not(:last-child) { border-right: none; }
-.arch-box.highlight { border-color: var(--green); background: rgba(29,185,84,0.06); }
-.arch-tag { font-size: 10px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
-.arch-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-.arch-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
-.arch-arrow { display: flex; align-items: center; padding: 0 4px; color: var(--white-faint); font-size: 18px; }
-
-/* Stats row */
-.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 32px; }
-.stat-card { background: var(--surface); border-radius: var(--radius); padding: 16px 20px; }
-.stat-num { font-size: 32px; font-weight: 800; color: var(--green); line-height: 1; margin-bottom: 4px; }
-.stat-label { font-size: 13px; color: var(--muted); }
-
-/* Status */
-.status-bar { background: var(--surface); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; gap: 12px; margin-top: 24px; }
-.status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); flex-shrink: 0; box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-.status-text { font-size: 14px; font-weight: 500; }
-.status-text span { color: var(--muted); font-weight: 400; }
-
-/* Song results */
-.results-section { margin-top: 32px; }
-.results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.results-title { font-size: 18px; font-weight: 700; }
-.results-note { font-size: 12px; color: var(--white-faint); font-style: italic; }
-.song-list { display: flex; flex-direction: column; gap: 4px; }
-.song-row { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: var(--radius); transition: background 0.15s; cursor: default; }
+/* Results */
+.results-pane { background: var(--surface); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.results-inner { flex: 1; display: flex; flex-direction: column; gap: 2px; min-height: 0; overflow: hidden; }
+.song-row { display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 5px; transition: background 0.12s; cursor: default; flex-shrink: 0; }
 .song-row:hover { background: var(--surface2); }
-.song-idx { font-size: 14px; color: var(--white-faint); width: 20px; text-align: right; flex-shrink: 0; }
-.song-art { width: 40px; height: 40px; border-radius: 4px; flex-shrink: 0; }
+.song-idx { font-size: 12px; color: var(--faint); width: 14px; text-align: center; flex-shrink: 0; }
+.song-art { width: 36px; height: 36px; border-radius: 4px; flex-shrink: 0; }
 .song-info { flex: 1; min-width: 0; }
-.song-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.song-artist { font-size: 12px; color: var(--muted); }
-.song-pct { font-size: 12px; font-weight: 700; color: var(--green); flex-shrink: 0; min-width: 40px; text-align: right; }
-.more-btn { width: 100%; margin-top: 12px; padding: 10px; background: transparent; border: 1px solid var(--surface3); border-radius: 20px; font-size: 13px; font-weight: 600; color: var(--white-faint); cursor: not-allowed; opacity: 0.4; letter-spacing: 0.02em; }
+.song-title { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
+.song-artist { font-size: 11px; color: var(--muted); }
+.song-pct { font-size: 11px; font-weight: 700; color: var(--green); flex-shrink: 0; }
+.more-btn { flex-shrink: 0; margin-top: 6px; padding: 7px; background: transparent; border: 1px solid var(--surface3); border-radius: 14px; font-size: 11px; font-weight: 600; color: var(--faint); cursor: not-allowed; opacity: 0.45; }
+.results-note { flex-shrink: 0; font-size: 9px; color: var(--faint); font-style: italic; text-align: center; margin-top: 4px; }
 
-/* Radar drag */
-#radar circle { cursor: grab; }
-#radar circle:active { cursor: grabbing; }
-
-/* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .sidebar { display: none; }
-  .vibe-builder { grid-template-columns: 1fr; }
-  .hero { padding: 32px 20px 24px; }
-  .section { padding: 24px 20px; }
+  html, body { overflow: auto; }
+  .panes { grid-template-columns: 1fr; height: auto; overflow: visible; }
+  .radar-pane, .sliders-pane, .results-pane { height: auto; }
 }
 </style>
 </head>
 <body>
-<div class="layout">
-
-  <!-- Sidebar -->
+<div class="shell">
   <div class="sidebar">
-    <div class="logo">
-      <div class="logo-mark">V</div>
-      <span class="logo-text">Vibe Mesh</span>
+    <div class="logo"><div class="logo-mark">V</div><span class="logo-text">Vibe Mesh</span></div>
+    <div class="nav">
+      <div class="nav-item active">🎯 Find your vibe</div>
+      <div class="nav-item" onclick="window.location='living-brief.html'">🔬 Full brief</div>
     </div>
-    <nav class="nav">
-      <a class="nav-item active" href="#builder">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 100 18A9 9 0 0012 3zm0 16a7 7 0 110-14 7 7 0 010 14zm0-11a4 4 0 100 8 4 4 0 000-8z"/></svg>
-        Find your vibe
-      </a>
-      <a class="nav-item" href="#moods">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-        Mood presets
-      </a>
-      <a class="nav-item" href="#science">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
-        The science
-      </a>
-      <a class="nav-item" href="#architecture">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>
-        Architecture
-      </a>
-    </nav>
     <div class="nav-section">Mood presets</div>
-    <div class="mood-nav" id="moodNav"></div>
-    <div class="sidebar-bottom">
-      <div class="tagline-sidebar">"Vibes is just science felt."</div>
-    </div>
+    <div class="nav" id="moodNav"></div>
+    <div class="sidebar-bottom"><div class="tagline-sidebar">"Vibes is just science felt."</div></div>
   </div>
 
-  <!-- Main content -->
   <div class="main">
-
-    <!-- Hero -->
-    <div class="hero" id="builder">
-      <div class="hero-eyebrow">Vibe Mesh · Living Brief</div>
-      <h1 class="hero-title">Find your<br><span>vibe.</span></h1>
-      <p class="hero-sub">Shape the music around how you want to feel. Six science-backed dimensions. No genre tags. No popularity bias. Just the music that lives where your feeling does.</p>
-      <div class="hero-pills">
-        <span class="pill green">Try the builder ↓</span>
-        <span class="pill" onclick="document.getElementById('moods').scrollIntoView({behavior:'smooth'})">Mood presets</span>
-        <span class="pill" onclick="document.getElementById('science').scrollIntoView({behavior:'smooth'})">The science</span>
-      </div>
+    <div class="topbar">
+      <div class="topbar-title">Find your <span>vibe.</span></div>
+      <div class="topbar-sub">Shape the music around how you want to feel.</div>
+      <div class="presets-row" id="presetChips"></div>
     </div>
 
-    <!-- Stats -->
-    <div class="section">
-      <div class="stats-row">
-        <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Science-backed axes</div></div>
-        <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">Mood presets</div></div>
-        <div class="stat-card"><div class="stat-num">40+</div><div class="stat-label">Years of research behind it</div></div>
-        <div class="stat-card"><div class="stat-num">&lt;200ms</div><div class="stat-label">Target query latency</div></div>
-      </div>
+    <div class="panes">
 
-      <!-- Vibe Builder -->
-      <div class="section-title">Shape your signal</div>
-      <div class="section-sub">Move the sliders or pick a mood preset to get started</div>
-
-      <div class="presets-row" id="presetChips"></div>
-
-      <div class="vibe-builder">
-        <!-- Radar -->
-        <div class="radar-card">
-          <div class="radar-label">Vibe vector</div>
-          <svg id="radar" viewBox="0 0 260 260" width="100%" style="max-width:260px; display:block; margin:0 auto;">
-            <defs>
-              <radialGradient id="rg"><stop offset="0%" stop-color="#1DB954" stop-opacity="0.35"/><stop offset="100%" stop-color="#1DB954" stop-opacity="0.04"/></radialGradient>
-            </defs>
-            <polygon points="130,45 177,72 177,178 130,205 83,178 83,72" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-            <polygon points="130,75 160,93 160,157 130,175 100,157 100,93" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-            <polygon points="130,105 143,113 143,137 130,145 117,137 117,113" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-            <line x1="130" y1="130" x2="130" y2="45" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <line x1="130" y1="130" x2="177" y2="72" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <line x1="130" y1="130" x2="177" y2="178" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <line x1="130" y1="130" x2="130" y2="205" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <line x1="130" y1="130" x2="83" y2="178" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <line x1="130" y1="130" x2="83" y2="72" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <polygon id="dp" fill="url(#rg)" stroke="#1DB954" stroke-width="2" stroke-linejoin="round"/>
+      <!-- Radar -->
+      <div class="radar-pane">
+        <div class="pane-label">Vibe vector</div>
+        <div class="radar-wrap">
+          <svg id="radar" viewBox="0 0 200 200" width="100%" style="max-width:180px;">
+            <defs><radialGradient id="rg"><stop offset="0%" stop-color="#1DB954" stop-opacity="0.28"/><stop offset="100%" stop-color="#1DB954" stop-opacity="0.03"/></radialGradient></defs>
+            <polygon points="100,28 140,54 140,146 100,172 60,146 60,54" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <polygon points="100,54 123,68 123,132 100,146 77,132 77,68" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <polygon points="100,80 108,85 108,115 100,120 92,115 92,85" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <line x1="100" y1="100" x2="100" y2="28" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+            <line x1="100" y1="100" x2="140" y2="54" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+            <line x1="100" y1="100" x2="140" y2="146" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+            <line x1="100" y1="100" x2="100" y2="172" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+            <line x1="100" y1="100" x2="60" y2="146" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+            <line x1="100" y1="100" x2="60" y2="54" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+            <polygon id="dp" fill="url(#rg)" stroke="#1DB954" stroke-width="1.5" stroke-linejoin="round"/>
             <circle id="d0" r="4" fill="#1DB954"/><circle id="d1" r="4" fill="#1DB954"/>
             <circle id="d2" r="4" fill="#1DB954"/><circle id="d3" r="4" fill="#1DB954"/>
             <circle id="d4" r="4" fill="#1DB954"/><circle id="d5" r="4" fill="#1DB954"/>
-            <text x="130" y="34" text-anchor="middle" fill="#b3b3b3" font-size="10" font-family="Figtree,sans-serif" font-weight="600">Energy</text>
-            <text x="185" y="70" fill="#b3b3b3" font-size="10" font-family="Figtree,sans-serif" font-weight="600">Groove</text>
-            <text x="185" y="183" fill="#b3b3b3" font-size="10" font-family="Figtree,sans-serif" font-weight="600">Emotion</text>
-            <text x="130" y="220" text-anchor="middle" fill="#b3b3b3" font-size="10" font-family="Figtree,sans-serif" font-weight="600">Social</text>
-            <text x="73" y="183" text-anchor="end" fill="#b3b3b3" font-size="10" font-family="Figtree,sans-serif" font-weight="600">Vocals</text>
-            <text x="73" y="70" text-anchor="end" fill="#b3b3b3" font-size="10" font-family="Figtree,sans-serif" font-weight="600">Fidelity</text>
+            <text x="100" y="20" text-anchor="middle" fill="#555" font-size="9" font-family="Figtree,sans-serif" font-weight="600">Energy</text>
+            <text x="147" y="52" fill="#555" font-size="9" font-family="Figtree,sans-serif" font-weight="600">Groove</text>
+            <text x="147" y="152" fill="#555" font-size="9" font-family="Figtree,sans-serif" font-weight="600">Emotion</text>
+            <text x="100" y="186" text-anchor="middle" fill="#555" font-size="9" font-family="Figtree,sans-serif" font-weight="600">Social</text>
+            <text x="53" y="152" text-anchor="end" fill="#555" font-size="9" font-family="Figtree,sans-serif" font-weight="600">Vocals</text>
+            <text x="53" y="52" text-anchor="end" fill="#555" font-size="9" font-family="Figtree,sans-serif" font-weight="600">Fidelity</text>
           </svg>
         </div>
+      </div>
 
-        <!-- Sliders -->
-        <div class="sliders-card">
-          <div id="sliders"></div>
-          <div class="discover-card">
-            <div class="discover-top">
-              <span class="discover-name">✦ Discover <span class="discover-badge">MVP</span></span>
-              <span class="discover-val" id="dv">0%</span>
-            </div>
-            <div class="discover-desc">How far outside your exact vibe should we explore? Higher values nudge 1–2 axes into adjacent territory — surfaces music you'd never find yourself. No popularity bias. Pure vector math.</div>
-            <input type="range" class="discover-range" id="ds" min="0" max="100" value="0" style="width:100%">
-            <div class="discover-effect" id="dfx"></div>
+      <!-- Sliders -->
+      <div class="sliders-pane">
+        <div class="pane-label">Tune your axes</div>
+        <div class="sliders-inner" id="sliders"></div>
+        <div class="discover-row">
+          <div class="discover-top">
+            <span class="discover-label">✦ Discover <span class="discover-badge">MVP</span></span>
+            <span class="discover-val" id="dv">0%</span>
           </div>
+          <div class="discover-sub">Expand into adjacent vibe space. No popularity bias.</div>
+          <input type="range" class="disc" id="ds" min="0" max="100" value="0">
+          <div class="discover-effect" id="dfx"></div>
         </div>
       </div>
 
-      <!-- Song Results -->
-      <div class="results-section">
-        <div class="results-header">
-          <span class="results-title">Music for your vibe</span>
-          <span class="results-note">demo · illustrative only</span>
-        </div>
-        <div class="song-list" id="songList"></div>
+      <!-- Results -->
+      <div class="results-pane">
+        <div class="pane-label">Music for your vibe</div>
+        <div class="results-inner" id="songList"></div>
         <button class="more-btn">More results — coming soon</button>
-      </div>
-    </div>
-
-    <!-- Mood Presets -->
-    <div class="section" id="moods">
-      <div class="section-title">Mood presets</div>
-      <div class="section-sub">Start here, tune from there. Named in language people actually use — not genre tags.</div>
-      <div class="mood-grid" id="moodGrid"></div>
-    </div>
-
-    <!-- Science -->
-    <div class="section" id="science">
-      <div class="section-title">The science behind it</div>
-      <div class="section-sub">Every axis cross-examined against peer-reviewed music psychology research. Divergences are justified, not apologized for.</div>
-      <div class="science-grid">
-        <div class="science-card">
-          <div class="sci-top"><span class="sci-axis">⚡ Energy</span><span class="sci-badge badge-parallel">Parallel</span></div>
-          <div class="sci-range"><span class="sci-pill">Weightless</span><span class="sci-arrow">→</span><span class="sci-pill">Full rage</span></div>
-          <div class="sci-desc">Arousal — the single most replicated dimension in all of music psychology. Validated across 40+ years of research and multiple cultures.</div>
-          <div class="sci-example">Brian Eno (0.05) · Slayer (0.95)</div>
-        </div>
-        <div class="science-card">
-          <div class="sci-top"><span class="sci-axis">🎵 Groove</span><span class="sci-badge badge-parallel">Parallel</span></div>
-          <div class="sci-range"><span class="sci-pill">Static</span><span class="sci-arrow">→</span><span class="sci-pill">Can't sit still</span></div>
-          <div class="sci-desc">Contemporary/rhythmic factor (MUSIC model, Rentfrow). Orthogonal to Energy — the Slayer test confirmed these axes are fully independent.</div>
-          <div class="sci-example">Slayer: Energy 0.95, Groove 0.10. D'Angelo: Energy 0.30, Groove 0.80.</div>
-        </div>
-        <div class="science-card">
-          <div class="sci-top"><span class="sci-axis">📻 Fidelity</span><span class="sci-badge badge-diverge">Justified divergence</span></div>
-          <div class="sci-range"><span class="sci-pill">Hi-fi polished</span><span class="sci-arrow">→</span><span class="sci-pill">Lo-fi abrasive</span></div>
-          <div class="sci-desc">Science bundles this inside genre proxies. We decompose it as its own sonic dimension. Lo-fi hip hop and lo-fi indie share texture across genres. The vocabulary is already culturally fluent.</div>
-          <div class="sci-example">Michael Bublé (0.05) · Nine Inch Nails (0.90)</div>
-        </div>
-        <div class="science-card">
-          <div class="sci-top"><span class="sci-axis">🎤 Vocals</span><span class="sci-badge badge-diverge">Justified divergence</span></div>
-          <div class="sci-range"><span class="sci-pill">Instrumental</span><span class="sci-arrow">→</span><span class="sci-pill">Raw exposed</span></div>
-          <div class="sci-desc">Science identified this confound in the Sophisticated music factor and never resolved it. We resolve it — presence and character as one clean axis.</div>
-          <div class="sci-example">Tycho (0.05) · Fred Again — textural (0.40) · Phoebe Bridgers (0.85)</div>
-        </div>
-        <div class="science-card">
-          <div class="sci-top"><span class="sci-axis">🌗 Emotion</span><span class="sci-badge badge-parallel">Parallel</span></div>
-          <div class="sci-range"><span class="sci-pill">Dark / anguished</span><span class="sci-arrow">→</span><span class="sci-pill">Euphoric</span></div>
-          <div class="sci-desc">Valence. Russell's circumplex model. 40+ years of research. Cross-culturally consistent (PNAS 13-dimension study). Nearly dropped mid-session — now flagged in the codebase: never drop this.</div>
-          <div class="sci-example">Phoebe Bridgers (0.15) · Karol G Tusa (0.90)</div>
-        </div>
-        <div class="science-card">
-          <div class="sci-top"><span class="sci-axis">👥 Social</span><span class="sci-badge badge-novel">Novel · Our IP</span></div>
-          <div class="sci-range"><span class="sci-pill">3am headphones</span><span class="sci-arrow">→</span><span class="sci-pill">Room full of people</span></div>
-          <div class="sci-desc">Science studies listener social context. Nobody has encoded it as a property of the music itself. Artists build music intentionally for a context. We encode that intention.</div>
-          <div class="sci-example">Aphex Twin ambient (0.05) · Karol G Tusa (0.95)</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Architecture -->
-    <div class="section" id="architecture">
-      <div class="section-title">How it works</div>
-      <div class="section-sub">A pure backend API. Any frontend sits on top of it.</div>
-      <div class="arch-flow">
-        <div class="arch-box">
-          <div class="arch-tag">Catalogue</div>
-          <div class="arch-name">Spotify API</div>
-          <div class="arch-desc">Song identity, metadata. Finding what exists in the world.</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box">
-          <div class="arch-tag">Embedding</div>
-          <div class="arch-name">CLAP Model</div>
-          <div class="arch-desc">Audio + language in the same semantic space. Songs and feelings become neighbors.</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box highlight">
-          <div class="arch-tag">Our IP</div>
-          <div class="arch-name">Axis → Query</div>
-          <div class="arch-desc">6 axis values → semantically rich CLAP prompt. This translation is the product.</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-box">
-          <div class="arch-tag">Retrieval</div>
-          <div class="arch-name">Cosine similarity</div>
-          <div class="arch-desc">In-memory vector store. Ranked results. &lt;200ms target.</div>
-        </div>
+        <div class="results-note">demo · illustrative only</div>
       </div>
 
-      <div class="status-bar" style="margin-top:24px;">
-        <div class="status-dot"></div>
-        <div class="status-text">Design complete · Implementation beginning · <span>github.com/rupajsoni/vibe-mesh</span></div>
-      </div>
     </div>
-
   </div>
 </div>
 
 <script>
-const axes = ['Energy','Groove','Fidelity','Vocals','Emotion','Social'];
-const icons = ['⚡','🎵','📻','🎤','🌗','👥'];
-const mins = ['Weightless','Static','Hi-fi','Instrumental','Dark','Solitary'];
-const maxs = ['Full rage','Can\'t stop','Lo-fi','Raw exposed','Euphoric','Communal'];
-const cx=130, cy=130, maxR=82;
-const angles = [-90,-30,30,90,150,210].map(d=>d*Math.PI/180);
-let vals = [0.7,0.6,0.3,0.5,0.75,0.5];
+const axes=['Energy','Groove','Fidelity','Vocals','Emotion','Social'];
+const icons=['⚡','🎵','📻','🎤','🌗','👥'];
+const mins=['Weightless','Static','Hi-fi','Instrumental','Dark','Solitary'];
+const maxs=["Full rage","Can't stop","Lo-fi","Raw","Euphoric","Communal"];
+const cx=100,cy=100,maxR=68;
+const angles=[-90,-30,30,90,150,210].map(d=>d*Math.PI/180);
+let vals=[0.7,0.6,0.3,0.5,0.75,0.5];
 
 function pt(i,v){const r=v*maxR;return[cx+r*Math.cos(angles[i]),cy+r*Math.sin(angles[i])];}
 function draw(){
@@ -406,80 +191,50 @@ function draw(){
   pts.forEach((p,i)=>{const d=document.getElementById('d'+i);d.setAttribute('cx',p[0]);d.setAttribute('cy',p[1]);});
 }
 
-// Build sliders
 const sw=document.getElementById('sliders');
 axes.forEach((n,i)=>{
   const r=document.createElement('div');r.className='slider-row';
-  r.innerHTML=`<div class="slider-meta"><div class="slider-name-wrap"><span class="axis-icon">${icons[i]}</span><span class="slider-name">${n}</span></div><span class="slider-value" id="sv${i}">${vals[i].toFixed(2)}</span></div><input type="range" min="0" max="100" value="${Math.round(vals[i]*100)}" id="sl${i}"><div class="slider-ends"><span class="slider-end">${mins[i]}</span><span class="slider-end">${maxs[i]}</span></div>`;
+  r.innerHTML=`<div class="slider-top"><div class="slider-name-wrap"><span class="axis-icon">${icons[i]}</span><span class="slider-name">${n}</span></div><span class="slider-val" id="sv${i}">${vals[i].toFixed(2)}</span></div><input type="range" min="0" max="100" value="${Math.round(vals[i]*100)}" id="sl${i}"><div class="slider-ends"><span class="slider-end">${mins[i]}</span><span class="slider-end">${maxs[i]}</span></div>`;
   sw.appendChild(r);
   document.getElementById('sl'+i).addEventListener('input',e=>{
-    vals[i]=e.target.value/100;
-    document.getElementById('sv'+i).textContent=vals[i].toFixed(2);
-    draw();
-    renderSongs();
-    document.querySelectorAll('.preset-chip,.mood-card').forEach(b=>b.classList.remove('active'));
+    vals[i]=e.target.value/100;document.getElementById('sv'+i).textContent=vals[i].toFixed(2);
+    draw();renderSongs();document.querySelectorAll('.preset-chip,.mood-nav-item').forEach(b=>b.classList.remove('active'));
   });
 });
 
 const moods=[
-  {name:'Release',icon:'🔥',dim:'Mood regulation',desc:'Catharsis. Anger, grief, letting it out.',ex:'RATM · Olivia Rodrigo · Death metal',v:[0.85,0.35,0.70,0.75,0.20,0.25]},
-  {name:'Heartbreak',icon:'💔',dim:'Mood regulation',desc:'Sitting with sadness. Not trying to fix it.',ex:'Bon Iver · Phoebe Bridgers · Frank Ocean',v:[0.20,0.15,0.55,0.80,0.15,0.10]},
-  {name:'Lift me up',icon:'☀️',dim:'Mood regulation',desc:'Actively trying to feel better.',ex:'Karol G · Dua Lipa · Early Kanye',v:[0.80,0.70,0.30,0.65,0.85,0.55]},
-  {name:'Deep focus',icon:'🧠',dim:'Arousal regulation',desc:'Brain needs to work. Music as scaffold.',ex:'Brian Eno · Tycho · Nils Frahm',v:[0.30,0.20,0.25,0.10,0.55,0.15]},
-  {name:'In motion',icon:'🏃',dim:'Arousal regulation',desc:'Physical. Drive and rhythm above all.',ex:'Kendrick · Metro Boomin · Electronic',v:[0.90,0.80,0.35,0.50,0.65,0.40]},
-  {name:'Wind down',icon:'🌙',dim:'Arousal regulation',desc:'End of day. Landing the plane.',ex:'Grouper · Massive Attack · Jazz',v:[0.15,0.25,0.40,0.30,0.50,0.20]},
-  {name:'The room',icon:'🎉',dim:'Social',desc:'People around you. Music that pulls a room.',ex:'Afrobeats · EDM · Jonas Brothers',v:[0.85,0.90,0.20,0.60,0.80,0.95]},
-  {name:'Background',icon:'☕',dim:'Social',desc:'Present but not demanding.',ex:'Norah Jones · Bossa nova · Sade',v:[0.30,0.40,0.20,0.25,0.60,0.65]},
-  {name:'Night drive',icon:'🌃',dim:'Social',desc:'Moving through space. Cinematic.',ex:'The Weeknd · Beach House · Kavinsky',v:[0.45,0.40,0.25,0.45,0.35,0.30]},
-  {name:'Lost in it',icon:'🎧',dim:'Self-awareness',desc:'Full attention. Music is the experience.',ex:'Radiohead · Kendrick albums · Arca',v:[0.50,0.30,0.50,0.55,0.45,0.10]},
+  {name:'Release',icon:'🔥',v:[0.85,0.35,0.70,0.75,0.20,0.25]},
+  {name:'Heartbreak',icon:'💔',v:[0.20,0.15,0.55,0.80,0.15,0.10]},
+  {name:'Lift me up',icon:'☀️',v:[0.80,0.70,0.30,0.65,0.85,0.55]},
+  {name:'Deep focus',icon:'🧠',v:[0.30,0.20,0.25,0.10,0.55,0.15]},
+  {name:'In motion',icon:'🏃',v:[0.90,0.80,0.35,0.50,0.65,0.40]},
+  {name:'Wind down',icon:'🌙',v:[0.15,0.25,0.40,0.30,0.50,0.20]},
+  {name:'The room',icon:'🎉',v:[0.85,0.90,0.20,0.60,0.80,0.95]},
+  {name:'Background',icon:'☕',v:[0.30,0.40,0.20,0.25,0.60,0.65]},
+  {name:'Night drive',icon:'🌃',v:[0.45,0.40,0.25,0.45,0.35,0.30]},
+  {name:'Lost in it',icon:'🎧',v:[0.50,0.30,0.50,0.55,0.45,0.10]},
 ];
 
-const axShort=['Nrg','Grv','Fid','Voc','Emo','Soc'];
-
 function loadMood(v,name){
-  v.forEach((val,i)=>{
-    vals[i]=val;
-    const sl=document.getElementById('sl'+i);
-    if(sl){sl.value=Math.round(val*100);document.getElementById('sv'+i).textContent=val.toFixed(2);}
-  });
-  draw();
-  renderSongs();
-  document.querySelectorAll('.preset-chip,.mood-card').forEach(b=>b.classList.remove('active'));
+  v.forEach((val,i)=>{vals[i]=val;const sl=document.getElementById('sl'+i);if(sl){sl.value=Math.round(val*100);document.getElementById('sv'+i).textContent=val.toFixed(2);}});
+  draw();renderSongs();
+  document.querySelectorAll('.preset-chip,.mood-nav-item').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll(`[data-mood="${name}"]`).forEach(b=>b.classList.add('active'));
-  document.getElementById('builder').scrollIntoView({behavior:'smooth'});
 }
 
-// Preset chips
 const pc=document.getElementById('presetChips');
 moods.forEach(m=>{
-  const c=document.createElement('button');
-  c.className='preset-chip';c.textContent=m.icon+' '+m.name;
-  c.dataset.mood=m.name;
-  c.addEventListener('click',()=>loadMood(m.v,m.name));
-  pc.appendChild(c);
+  const c=document.createElement('button');c.className='preset-chip';c.textContent=m.icon+' '+m.name;c.dataset.mood=m.name;
+  c.addEventListener('click',()=>loadMood(m.v,m.name));pc.appendChild(c);
 });
 
-// Mood grid
-const mg=document.getElementById('moodGrid');
-moods.forEach(m=>{
-  const card=document.createElement('div');card.className='mood-card';card.dataset.mood=m.name;
-  const bars=m.v.map((v,i)=>`<div class="mbar-row"><span class="mbar-label">${axShort[i]}</span><div class="mbar-track"><div class="mbar-fill" style="width:${v*100}%"></div></div></div>`).join('');
-  card.innerHTML=`<div class="mood-icon">${m.icon}</div><div class="mood-name">${m.name}</div><div class="mood-dim">${m.dim}</div><div class="mood-desc">${m.desc}</div><div class="mood-artists">${m.ex}</div><div class="mood-bars">${bars}</div>`;
-  card.addEventListener('click',()=>loadMood(m.v,m.name));
-  mg.appendChild(card);
-});
-
-// Sidebar mood nav
 const mn=document.getElementById('moodNav');
 moods.forEach(m=>{
-  const item=document.createElement('div');
-  item.className='nav-item';item.style.fontSize='13px';
-  item.innerHTML=`<span style="font-size:14px">${m.icon}</span>${m.name}`;
-  item.addEventListener('click',()=>{loadMood(m.v,m.name);document.getElementById('moods').scrollIntoView({behavior:'smooth'});});
-  mn.appendChild(item);
+  const item=document.createElement('div');item.className='nav-item mood-nav-item';item.dataset.mood=m.name;
+  item.innerHTML=`<span>${m.icon}</span>${m.name}`;
+  item.addEventListener('click',()=>loadMood(m.v,m.name));mn.appendChild(item);
 });
 
-// Song library [Energy, Groove, Fidelity, Vocals, Emotion, Social]
 const songs=[
   {title:'Holocene',artist:'Bon Iver',v:[0.20,0.10,0.55,0.75,0.30,0.10],color:'#1a2e1a'},
   {title:'Skinny Love',artist:'Bon Iver',v:[0.22,0.12,0.65,0.85,0.18,0.10],color:'#1a2e1a'},
@@ -539,11 +294,7 @@ const songs=[
   {title:'La Vie en Rose',artist:'Édith Piaf',v:[0.28,0.22,0.35,0.88,0.62,0.35],color:'#220f0f'},
 ];
 
-function cosSim(a,b){
-  let dot=0,na=0,nb=0;
-  for(let i=0;i<a.length;i++){dot+=a[i]*b[i];na+=a[i]*a[i];nb+=b[i]*b[i];}
-  return dot/(Math.sqrt(na)*Math.sqrt(nb)||1);
-}
+function cosSim(a,b){let dot=0,na=0,nb=0;for(let i=0;i<a.length;i++){dot+=a[i]*b[i];na+=a[i]*a[i];nb+=b[i]*b[i];}return dot/(Math.sqrt(na)*Math.sqrt(nb)||1);}
 
 function renderSongs(){
   const scored=songs.map(s=>({...s,score:cosSim(vals,s.v)})).sort((a,b)=>b.score-a.score).slice(0,5);
@@ -556,35 +307,25 @@ function renderSongs(){
     </div>`).join('');
 }
 
-// Radar drag
 (function(){
   const svg=document.getElementById('radar');
-  const svgRect=()=>svg.getBoundingClientRect();
   let dragging=-1;
-  const dots=[0,1,2,3,4,5].map(i=>document.getElementById('d'+i));
-
   function getVal(e,i){
-    const r=svgRect();
-    const scale=260/r.width;
-    const mx=(( (e.clientX||e.touches[0].clientX)-r.left)*scale)-cx;
-    const my=(( (e.clientY||e.touches[0].clientY)-r.top)*scale)-cy;
-    const angle=angles[i];
-    const proj=mx*Math.cos(angle)+my*Math.sin(angle);
-    return Math.min(1,Math.max(0,proj/maxR));
+    const r=svg.getBoundingClientRect(),scale=200/r.width;
+    const mx=((e.clientX||e.touches[0].clientX)-r.left)*scale-cx;
+    const my=((e.clientY||e.touches[0].clientY)-r.top)*scale-cy;
+    return Math.min(1,Math.max(0,(mx*Math.cos(angles[i])+my*Math.sin(angles[i]))/maxR));
   }
-
   function onMove(e){
-    if(dragging<0)return;
-    e.preventDefault();
+    if(dragging<0)return;e.preventDefault();
     vals[dragging]=getVal(e,dragging);
     document.getElementById('sl'+dragging).value=Math.round(vals[dragging]*100);
     document.getElementById('sv'+dragging).textContent=vals[dragging].toFixed(2);
-    draw();
-    renderSongs();
-    document.querySelectorAll('.preset-chip,.mood-card').forEach(b=>b.classList.remove('active'));
+    draw();renderSongs();
+    document.querySelectorAll('.preset-chip,.mood-nav-item').forEach(b=>b.classList.remove('active'));
   }
-
-  dots.forEach((d,i)=>{
+  [0,1,2,3,4,5].forEach(i=>{
+    const d=document.getElementById('d'+i);
     d.addEventListener('mousedown',e=>{dragging=i;e.preventDefault();});
     d.addEventListener('touchstart',e=>{dragging=i;e.preventDefault();},{passive:false});
   });
@@ -594,12 +335,11 @@ function renderSongs(){
   window.addEventListener('touchend',()=>dragging=-1);
 })();
 
-// Discover
-const dfx=['','Exact match — tight to your vector.','Slight nudge — 1 axis expanded ±0.05.','Exploring — 2 axes nudged, radius +10%.','Wide open — expect surprises.'];
+const dfx=['','Exact match.','Slight nudge — 1 axis ±0.05.','2 axes nudged, +10% radius.','Wide open.'];
 document.getElementById('ds').addEventListener('input',e=>{
   const v=parseInt(e.target.value);
   document.getElementById('dv').textContent=v+'%';
-  document.getElementById('dfx').textContent=dfx[Math.min(Math.floor(v/25),4)]||'';
+  document.getElementById('dfx').textContent=dfx[Math.min(Math.floor(v/25),3)]||'';
 });
 
 draw();
