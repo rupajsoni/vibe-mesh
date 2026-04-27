@@ -128,6 +128,34 @@
   .lr:last-child { border-bottom: none; }
   .ld { color: var(--muted); flex-shrink: 0; font-size: 11px; }
   .lt { color: var(--text); }
+  /* Song results */
+  .results-wrap { margin-top: 1.5rem; }
+  .results-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; }
+  .results-label span { opacity: 0.5; font-size: 9px; }
+  .songs { display: flex; flex-direction: column; gap: 6px; }
+  .song { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; transition: border-color 0.15s; }
+  .song:hover { border-color: var(--border2); }
+  .song-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); width: 14px; flex-shrink: 0; }
+  .song-color { width: 32px; height: 32px; border-radius: 4px; flex-shrink: 0; }
+  .song-info { flex: 1; min-width: 0; }
+  .song-title { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .song-artist { font-size: 11px; color: var(--muted); }
+  .song-match { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent2); flex-shrink: 0; }
+  .more-btn { width: 100%; margin-top: 8px; padding: 8px; background: transparent; border: 1px solid var(--border); border-radius: 6px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); cursor: not-allowed; opacity: 0.4; letter-spacing: 0.08em; }
+  /* Song results */
+  .results-wrap { margin-top: 1.5rem; }
+  .results-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.75rem; display: flex; justify-content: space-between; }
+  .results-note { opacity: 0.45; font-size: 9px; }
+  .songs { display: flex; flex-direction: column; gap: 5px; }
+  .song { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; transition: border-color 0.15s; }
+  .song:hover { border-color: var(--border2); }
+  .song-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); width: 12px; flex-shrink: 0; }
+  .song-color { width: 30px; height: 30px; border-radius: 4px; flex-shrink: 0; }
+  .song-info { flex: 1; min-width: 0; }
+  .song-title { font-size: 12px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .song-artist { font-size: 11px; color: var(--muted); }
+  .song-match { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent2); flex-shrink: 0; }
+  .more-btn { width: 100%; margin-top: 8px; padding: 8px; background: transparent; border: 1px solid var(--border); border-radius: 6px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); cursor: not-allowed; opacity: 0.35; letter-spacing: 0.08em; }
 </style>
 </head>
 <body>
@@ -258,10 +286,13 @@
         <input type="range" class="disc-range" id="ds" min="0" max="100" value="0" style="width:100%">
         <div class="disc-fx" id="dfx"></div>
       </div>
+      <div class="results-wrap">
+        <div class="results-label">Music for your vibe <span class="results-note">demo · illustrative only</span></div>
+        <div class="songs" id="songList"></div>
+        <button class="more-btn">More results — coming soon</button>
+      </div>
     </div>
   </div>
-
-  <!-- Moods -->
   <div class="section">
     <div class="sh"><span class="sn">04</span><span class="st">Mood presets</span></div>
     <p>Pre-filled vectors. Named in context language people actually use. Science basis: three underlying reasons people listen to music — mood/arousal regulation, self-awareness, social relatedness. <strong>Click any card to load it into the radar above.</strong></p>
@@ -334,6 +365,7 @@ axes.forEach((n,i)=>{
     vals[i]=e.target.value/100;
     document.getElementById('sv'+i).textContent=vals[i].toFixed(2);
     draw();
+    renderSongs();
     document.querySelectorAll('.pb').forEach(b=>b.classList.remove('active'));
   });
 });
@@ -362,6 +394,7 @@ function loadMood(v, name){
     if(sl){ sl.value=Math.round(val*100); document.getElementById('sv'+i).textContent=val.toFixed(2); }
   });
   draw();
+  renderSongs();
   document.querySelectorAll('.pb').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.pb').forEach(b=>{ if(b.textContent.trim()===name) b.classList.add('active'); });
 }
@@ -385,7 +418,89 @@ document.getElementById('ds').addEventListener('input',e=>{
   document.getElementById('dfx').textContent=dfx[Math.min(Math.floor(v/25),3)]||'';
 });
 
+const songs=[
+  {title:'Holocene',artist:'Bon Iver',v:[0.20,0.10,0.55,0.75,0.30,0.10],color:'#243324'},
+  {title:'Skinny Love',artist:'Bon Iver',v:[0.22,0.12,0.65,0.85,0.18,0.10],color:'#243324'},
+  {title:'Moon Song',artist:'Phoebe Bridgers',v:[0.15,0.10,0.50,0.90,0.15,0.10],color:'#251835'},
+  {title:'Garden Song',artist:'Phoebe Bridgers',v:[0.25,0.15,0.45,0.85,0.30,0.15],color:'#251835'},
+  {title:'Motion Picture Soundtrack',artist:'Radiohead',v:[0.15,0.08,0.45,0.70,0.10,0.05],color:'#152235'},
+  {title:'Creep',artist:'Radiohead',v:[0.70,0.40,0.60,0.85,0.18,0.25],color:'#152235'},
+  {title:'Fake Plastic Trees',artist:'Radiohead',v:[0.28,0.15,0.42,0.80,0.20,0.15],color:'#152235'},
+  {title:'Godspeed',artist:'Frank Ocean',v:[0.15,0.08,0.42,0.82,0.35,0.12],color:'#153322'},
+  {title:'Self Control',artist:'Frank Ocean',v:[0.30,0.25,0.35,0.80,0.30,0.20],color:'#153322'},
+  {title:'Pink + White',artist:'Frank Ocean',v:[0.35,0.30,0.38,0.72,0.65,0.35],color:'#153322'},
+  {title:'Nights',artist:'Frank Ocean',v:[0.55,0.50,0.40,0.70,0.45,0.35],color:'#153322'},
+  {title:'Tusa',artist:'Karol G & Nicki Minaj',v:[0.90,0.92,0.20,0.85,0.85,0.95],color:'#3a1535'},
+  {title:'Physical',artist:'Dua Lipa',v:[0.85,0.90,0.18,0.82,0.88,0.85],color:'#351535'},
+  {title:'Levitating',artist:'Dua Lipa',v:[0.82,0.88,0.18,0.78,0.88,0.80],color:'#351535'},
+  {title:'Don\'t Start Now',artist:'Dua Lipa',v:[0.80,0.85,0.18,0.80,0.85,0.80],color:'#351535'},
+  {title:'HUMBLE.',artist:'Kendrick Lamar',v:[0.88,0.82,0.60,0.90,0.55,0.65],color:'#221515'},
+  {title:'Alright',artist:'Kendrick Lamar',v:[0.72,0.75,0.55,0.85,0.65,0.70],color:'#221515'},
+  {title:'DNA.',artist:'Kendrick Lamar',v:[0.92,0.78,0.65,0.92,0.45,0.60],color:'#221515'},
+  {title:'SICKO MODE',artist:'Travis Scott',v:[0.90,0.80,0.55,0.75,0.55,0.70],color:'#151522'},
+  {title:'goosebumps',artist:'Travis Scott',v:[0.80,0.70,0.55,0.72,0.50,0.60],color:'#151522'},
+  {title:'Blinding Lights',artist:'The Weeknd',v:[0.80,0.75,0.25,0.75,0.70,0.70],color:'#331515'},
+  {title:'After Hours',artist:'The Weeknd',v:[0.45,0.40,0.30,0.70,0.28,0.35],color:'#331515'},
+  {title:'Starboy',artist:'The Weeknd',v:[0.70,0.72,0.30,0.70,0.50,0.60],color:'#331515'},
+  {title:'Midnight City',artist:'M83',v:[0.70,0.65,0.30,0.45,0.72,0.55],color:'#151533'},
+  {title:'Outro',artist:'M83',v:[0.75,0.55,0.25,0.08,0.78,0.45],color:'#151533'},
+  {title:'Music for Airports 1/1',artist:'Brian Eno',v:[0.08,0.05,0.15,0.00,0.55,0.15],color:'#151520'},
+  {title:'Says',artist:'Nils Frahm',v:[0.25,0.20,0.22,0.00,0.55,0.18],color:'#152222'},
+  {title:'Awake',artist:'Tycho',v:[0.35,0.30,0.22,0.00,0.60,0.25],color:'#153333'},
+  {title:'Experience',artist:'Ludovico Einaudi',v:[0.20,0.10,0.20,0.00,0.55,0.20],color:'#202020'},
+  {title:'Gymnopédie No.1',artist:'Erik Satie',v:[0.10,0.05,0.25,0.00,0.50,0.25],color:'#202020'},
+  {title:'Something in the Way',artist:'Nirvana',v:[0.40,0.15,0.80,0.75,0.15,0.15],color:'#221a15'},
+  {title:'In Bloom',artist:'Nirvana',v:[0.85,0.55,0.85,0.80,0.40,0.45],color:'#221a15'},
+  {title:'Numb',artist:'Linkin Park',v:[0.82,0.45,0.65,0.85,0.18,0.45],color:'#151d22'},
+  {title:'Welcome to the Black Parade',artist:'My Chemical Romance',v:[0.88,0.50,0.70,0.88,0.20,0.55],color:'#151515'},
+  {title:'Do I Wanna Know?',artist:'Arctic Monkeys',v:[0.60,0.50,0.65,0.78,0.35,0.45],color:'#221515'},
+  {title:'R U Mine?',artist:'Arctic Monkeys',v:[0.80,0.65,0.70,0.80,0.45,0.55],color:'#221515'},
+  {title:'505',artist:'Arctic Monkeys',v:[0.55,0.40,0.60,0.78,0.35,0.40],color:'#221515'},
+  {title:'Intro',artist:'The xx',v:[0.20,0.25,0.38,0.08,0.42,0.28],color:'#181818'},
+  {title:'Angels',artist:'The xx',v:[0.22,0.18,0.40,0.68,0.40,0.25],color:'#181818'},
+  {title:'VCR',artist:'The xx',v:[0.28,0.30,0.38,0.65,0.45,0.30],color:'#181818'},
+  {title:'Teardrop',artist:'Massive Attack',v:[0.25,0.22,0.40,0.55,0.38,0.28],color:'#15152a'},
+  {title:'Dissolved Girl',artist:'Massive Attack',v:[0.30,0.28,0.45,0.62,0.30,0.25],color:'#15152a'},
+  {title:'retrograde',artist:'James Blake',v:[0.25,0.20,0.35,0.72,0.30,0.20],color:'#15222a'},
+  {title:'Limit to Your Love',artist:'James Blake',v:[0.20,0.15,0.38,0.78,0.25,0.18],color:'#15222a'},
+  {title:'Summertime Sadness',artist:'Lana Del Rey',v:[0.30,0.25,0.35,0.80,0.28,0.28],color:'#331515'},
+  {title:'Video Games',artist:'Lana Del Rey',v:[0.22,0.15,0.32,0.85,0.38,0.22],color:'#331515'},
+  {title:'Young and Beautiful',artist:'Lana Del Rey',v:[0.18,0.12,0.28,0.88,0.42,0.20],color:'#331515'},
+  {title:'Sweater Weather',artist:'The Neighbourhood',v:[0.50,0.40,0.55,0.72,0.35,0.35],color:'#1e1e1e'},
+  {title:'Oblivion',artist:'Grimes',v:[0.55,0.60,0.35,0.65,0.50,0.55],color:'#2a1522'},
+  {title:'Electric Feel',artist:'MGMT',v:[0.65,0.72,0.40,0.62,0.75,0.65],color:'#153322'},
+  {title:'Kids',artist:'MGMT',v:[0.70,0.68,0.38,0.58,0.78,0.62],color:'#153322'},
+  {title:'Passionfruit',artist:'Drake',v:[0.45,0.55,0.28,0.65,0.55,0.48],color:'#15222a'},
+  {title:'One Dance',artist:'Drake',v:[0.65,0.78,0.22,0.65,0.72,0.72],color:'#15222a'},
+  {title:'Take Care',artist:'Drake ft. Rihanna',v:[0.40,0.38,0.32,0.72,0.38,0.38],color:'#15222a'},
+  {title:'The Night We Met',artist:'Lord Huron',v:[0.25,0.20,0.48,0.82,0.25,0.22],color:'#1e1e2a'},
+  {title:'Breezeblocks',artist:'alt-J',v:[0.55,0.45,0.55,0.70,0.30,0.30],color:'#152222'},
+  {title:'Tessellate',artist:'alt-J',v:[0.40,0.35,0.52,0.68,0.38,0.28],color:'#152222'},
+  {title:'Redbone',artist:'Childish Gambino',v:[0.45,0.60,0.50,0.75,0.55,0.50],color:'#1e1e15'},
+  {title:'This Is America',artist:'Childish Gambino',v:[0.75,0.60,0.55,0.82,0.28,0.55],color:'#1e1e15'},
+  {title:'Clair de Lune',artist:'Debussy',v:[0.12,0.08,0.18,0.00,0.52,0.22],color:'#1e1e2a'},
+  {title:'La Vie en Rose',artist:'Édith Piaf',v:[0.28,0.22,0.35,0.88,0.62,0.35],color:'#2a1515'},
+];
+
+function cosSim(a,b){
+  let dot=0,na=0,nb=0;
+  for(let i=0;i<a.length;i++){dot+=a[i]*b[i];na+=a[i]*a[i];nb+=b[i]*b[i];}
+  return dot/(Math.sqrt(na)*Math.sqrt(nb)||1);
+}
+
+function renderSongs(){
+  const scored=songs.map(s=>({...s,score:cosSim(vals,s.v)})).sort((a,b)=>b.score-a.score).slice(0,5);
+  document.getElementById('songList').innerHTML=scored.map((s,i)=>`
+    <div class="song">
+      <span class="song-num">${i+1}</span>
+      <div class="song-color" style="background:${s.color}"></div>
+      <div class="song-info"><div class="song-title">${s.title}</div><div class="song-artist">${s.artist}</div></div>
+      <span class="song-match">${Math.round(s.score*100)}%</span>
+    </div>`).join('');
+}
+
 draw();
+renderSongs();
 </script>
 </body>
 </html>
