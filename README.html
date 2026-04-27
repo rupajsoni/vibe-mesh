@@ -153,9 +153,9 @@
   <!-- The Gap -->
   <div class="section">
     <div class="sh"><span class="sn">01</span><span class="st">The gap</span></div>
-    <p>Searching for music by title is a leaf node. It is maximally specific and bounded entirely by what you already know exists. Genre browsing is weak — genres are marketing categories, not sonic descriptions. Vibe curation is luck-based and a snapshot in time: it only exists if someone did a good job making a playlist, and that playlist is already aging. When apps do attempt vibe matching, it is <strong>popularity-biased</strong>.</p>
-    <p>The AI gap in music apps is real. In 2026, we are still browsing songs by titles.</p>
-    <p>Vibe Mesh replaces the title search with a feeling. You describe how you want to feel. The system finds the music that lives there.</p>
+    <p>Every time you look for music, you start with a feeling. And then you spend the next few minutes trying to translate that feeling into something the app understands — a title, a genre, a playlist someone else made for a moment that isn't quite yours. The translation is always lossy. Most of the time you settle.</p>
+    <p>The way music discovery works today is built around what you can search for, not what you actually feel. That's not a criticism — it's just a gap nobody has filled yet. The feeling itself has never been the input.</p>
+    <p>Vibe Mesh fills that gap. You describe how you want music to feel. The system finds the music that lives there.</p>
     <div class="callout">
       <div class="cl">What this is</div>
       <p>A pure backend REST API. Not a player. Not a playlist manager. A middleware layer that any frontend can sit on top of. The API is the product.</p>
@@ -186,9 +186,9 @@
             <td><span class="badge bl">locked</span></td>
           </tr>
           <tr>
-            <td><div class="an">Production</div><span class="badge bt" style="display:block;margin-top:4px;">name TBD</span></td>
+            <td><div class="an">Fidelity</div><span class="badge bt" style="display:block;margin-top:4px;"></span></td>
             <td>Grain and texture of sound. How processed vs raw. NIN vs Michael Bublé. Science bundles this in genre proxies — we decompose it cleanly.</td>
-            <td><div class="rp"><span class="pill">Hyper polished</span><span class="pa">→</span><span class="pill pill-m">Warm</span><span class="pa">→</span><span class="pill pill-m">Lo-fi</span><span class="pa">→</span><span class="pill">Raw / abrasive</span></div></td>
+            <td><div class="rp"><span class="pill">Hyper polished</span><span class="pa">→</span><span class="pill pill-m">Warm</span><span class="pa">→</span><span class="pill pill-m">Lo-fi</span><span class="pa">→</span><span class="pill">Lo-fi / abrasive</span></div></td>
             <td>Justified divergence from science — science uses genre as proxy, we isolate the sonic dimension</td>
             <td><span class="badge bl">concept locked</span></td>
           </tr>
@@ -277,7 +277,7 @@
       <tbody>
         <tr><td style="color:var(--text);font-weight:500;">Energy</td><td>Arousal — most replicated dimension in all music psychology</td><td>Identical to science</td><td><span class="sv sv-p">parallel</span></td></tr>
         <tr><td style="color:var(--text);font-weight:500;">Groove</td><td>Contemporary/rhythmic factor (MUSIC model) — orthogonal to energy confirmed</td><td>Cleaner label, same construct. Slayer test validates independence.</td><td><span class="sv sv-p">parallel</span></td></tr>
-        <tr><td style="color:var(--text);font-weight:500;">Production</td><td>Science uses genre as proxy — metal=aggressive, country=rootsy — never isolated as sonic texture</td><td>We decompose it. Lo-fi hip hop and lo-fi indie share production character across genres.</td><td><span class="sv sv-d">justified divergence</span></td></tr>
+        <tr><td style="color:var(--text);font-weight:500;">Fidelity</td><td>Science uses genre as proxy — metal=aggressive, country=rootsy — never isolated as sonic texture</td><td>We decompose it. Lo-fi hip hop and lo-fi indie share production character across genres.</td><td><span class="sv sv-d">justified divergence</span></td></tr>
         <tr><td style="color:var(--text);font-weight:500;">Vocals</td><td>Sophisticated factor had an instrumental confound — researchers flagged it, never resolved</td><td>We resolve it. Presence + character as one clean axis.</td><td><span class="sv sv-d">justified divergence</span></td></tr>
         <tr><td style="color:var(--text);font-weight:500;">Emotion</td><td>Valence — Russell 1980, 40+ years, cross-cultural PNAS study. Nearly dropped mid-session.</td><td>Identical to science. Load-bearing. Never drop.</td><td><span class="sv sv-p">parallel</span></td></tr>
         <tr><td style="color:var(--text);font-weight:500;">Social</td><td>Science studies listener social context — never encoded as a property of the music itself</td><td>We encode it. Artist intention is a sonic property. This is our IP.</td><td><span class="sv sv-n">novel</span></td></tr>
@@ -311,8 +311,8 @@
 </div>
 
 <script>
-const axes = ['Energy','Groove','Production','Vocals','Emotion','Social'];
-const mins = ['Weightless','Static','Polished','Instrumental','Dark','Solitary'];
+const axes = ['Energy','Groove','Fidelity','Vocals','Emotion','Social'];
+const mins = ['Weightless','Static','Hi-fi','Instrumental','Dark','Solitary'];
 const maxs = ['Full rage','Can\'t stop','Raw','Raw exposed','Euphoric','Communal'];
 const cx = 120, cy = 120, maxR = 75;
 const angles = [-90,-30,30,90,150,210].map(d=>d*Math.PI/180);
@@ -353,7 +353,7 @@ const moods=[
 
 const pp=document.getElementById('presets');
 const mg=document.getElementById('mgrid');
-const axShort=['Nrg','Grv','Prd','Voc','Emo','Soc'];
+const axShort=['Nrg','Grv','Fid','Voc','Emo','Soc'];
 
 function loadMood(v, name){
   v.forEach((val,i)=>{

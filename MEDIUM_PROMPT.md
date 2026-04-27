@@ -3,45 +3,57 @@
 
 ---
 
-I want to write a Medium article. Here is my existing writing so you understand my voice before we start:
+First, read my existing Medium article so you understand my voice before we start:
 https://medium.com/@rupaj.soni/stop-buying-expensive-espresso-machines-and-other-unsolicited-advice-4e8782e12909
 
-Read it first. Then read this brief.
+Read it. Then read this brief.
 
 ---
 
 ## What the article is about
 
-I spent a full day not writing code. By the end I had a 6-axis science-backed vector space, a real architecture decision, 10 mood presets with actual numbers, two UI skins, and a living technical brief. The project is called Vibe Mesh — a music discovery backend that replaces search with feeling.
+I'm building a music discovery backend called Vibe Mesh. The core idea: every time you look for music, you start with a feeling — and then you spend the next few minutes trying to translate that feeling into something searchable. A title, a genre, a playlist someone else made. That translation is always lossy. Most of the time you settle.
 
-The article is about the gap in music apps. We are in 2026 and we are still browsing songs by titles. Title search is a leaf node — maximally specific, bounded entirely by what you already know. Genre browsing is weak. Vibe curation is luck-based and popularity-biased. The AI gap in music is real and nobody is talking about it seriously.
+The article is about that gap. Not about any specific app or platform — they're doing what they were built to do. The gap is structural: music discovery has always been built around what you can search for, not what you actually feel. AI lets us finally operate at the level of the feeling itself.
 
-It is also about how the design happened. Not as a hero story. As a process story — what it looks like when you treat the pre-build session as the highest-leverage engineering work, use an AI as a thinking partner not a code generator, and actually go read the research before you name an axis.
-
-Key moments to draw from:
-- The Slayer test (maximum energy, zero groove — how we proved two axes are orthogonal)
-- The Emotion axis nearly getting dropped mid-session and being caught
-- The Social axis arriving from an observation: Aphex Twin and Karol G both know exactly what they're making it for. That artistic intention is a sonic property. Science has not encoded this. We did.
-- The tagline arriving mid-conversation: "Vibes is just science felt." Not planned. Not workshopped. Just the right words at the right moment.
-- The CLAP architecture replacing raw audio handling because we stopped and asked "is there a cleaner abstraction" instead of just building the first thing we knew.
-
-## Voice notes
-
-My espresso article used a framework (the lever tiers) disguised as a story. This article probably needs the same structure underneath — but the framework here is: title search is a leaf node, genre is weak, vibe is unsolved, here is what solving it actually looks like.
-
-I am self-aware about the nerd-out. I don't hide that I went and read music psychology papers. I also don't perform humility about it — I went and read them because they were useful, and they were.
-
-The ending should not be a call to action or a moral. It should land the way the espresso article lands — you've been given a way of thinking, now it's yours.
-
-Do NOT write the article yet.
-
-First: read my espresso article. Then ask me two questions. One about the angle (there are multiple ways into this story and I want to pick the right one before we write a word). One about what I want the reader to actually walk away thinking. Then we write.
+It is also about how I designed Vibe Mesh — specifically the pre-build session where no code was written but everything important got decided. Six science-backed axes. Ten mood presets with actual vectors. An architecture decision made by stopping and asking "is there a cleaner abstraction" instead of building the first thing I knew.
 
 ---
 
-## Suggested title directions (not final — just seeds)
+## The specific moments worth writing about
 
-- "Searching by title is a leaf node (and other things I learned designing a music discovery engine)"
-- "We Spent a Day Not Writing Code. It Was the Best Engineering Decision We Made."
-- "The AI Gap in Music Apps Nobody Is Talking About"
+- **The translation problem** — the feeling I had when I realized this: we always start from the feeling and retrofit it to a search term. That's the whole problem in one sentence.
+- **The Slayer test** — how we proved Energy and Groove are orthogonal. Maximum energy, near-zero groove. Two axes that feel like they should be related, confirmed independent.
+- **The Emotion axis nearly getting dropped** — we were deep in texture and production conversations and almost lost the most fundamental dimension in music psychology. Caught it. It's now flagged in the codebase: never drop this.
+- **The Social axis** — the insight that artists build music intentionally for a context. Aphex Twin and Karol G both know exactly what they're making it for. That artistic intention is a measurable sonic property. Science hasn't encoded this. We did.
+- **"Vibes is just science felt"** — arrived mid-conversation, unplanned. Not workshopped. Just the right words at the right moment.
+- **The CLAP architecture** — we stopped and asked "is there a cleaner abstraction than raw audio processing" and found one. That's the discipline the article is really about.
+
+---
+
+## Voice notes
+
+My espresso article used a framework (the lever tiers) disguised as a story. The engineer brain finding the pattern, then making it human. Same register here — but the framework is: the translation layer is the problem, AI lets us remove it, here's what removing it actually looks like when you do it properly.
+
+I'm self-aware about the nerd-out. I went and read music psychology papers. I'm not embarrassed about that — they were useful.
+
+I don't diss existing platforms. They're not the problem. The paradigm is the gap.
+
+The ending should land like the espresso article — you've been given a way of thinking about something you experience every day. Now it's yours.
+
+---
+
+## Suggested titles (seeds, not final)
+
+- "The Translation Problem in Music Discovery"
+- "I Spent a Day Not Writing Code. It Was the Best Engineering Decision I Made."
 - "Vibes Is Just Science Felt"
+- "You Always Start With a Feeling. Nobody Has Built For That. Until Now."
+
+---
+
+## Instructions
+
+Do NOT write the article yet.
+
+Read my espresso article first. Then ask me two questions — one about the angle (there are multiple ways in and I want to pick the right one), one about what I want the reader to walk away thinking. Then we write.
