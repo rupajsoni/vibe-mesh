@@ -27,6 +27,12 @@ body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-s
 .nav-section { padding: 18px 14px 5px; font-size: 10px; font-weight: 700; color: var(--faint); text-transform: uppercase; letter-spacing: 0.1em; }
 .sidebar-bottom { margin-top: auto; padding: 14px; border-top: 1px solid #1a1a1a; }
 .tagline-sidebar { font-size: 10px; color: var(--faint); font-style: italic; line-height: 1.5; }
+.discovery-panel { border: 1px solid #1e1e1e; border-radius: 6px; padding: 10px; background: #0d0d0d; margin-bottom: 2px; }
+.disc-heading { font-size: 9px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px; }
+.disc-stat { display: flex; flex-direction: column; margin-bottom: 6px; }
+.disc-num { font-size: 16px; font-weight: 800; color: var(--text); line-height: 1; }
+.disc-label { font-size: 9px; color: var(--faint); line-height: 1.4; margin-top: 1px; }
+.disc-copy { font-size: 9px; color: #444; line-height: 1.5; margin-top: 8px; padding-top: 8px; border-top: 1px solid #1a1a1a; }
 
 /* Main */
 .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
@@ -69,15 +75,18 @@ body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-s
 .slider-end { font-size: 9px; color: var(--faint); }
 input[type=range] { width: 100%; height: 3px; accent-color: var(--green); cursor: pointer; margin: 2px 0; }
 
-/* Discover */
-.discover-row { flex-shrink: 0; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--surface2); }
-.discover-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
-.discover-label { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
-.discover-badge { font-size: 8px; font-weight: 700; background: var(--green); color: #000; padding: 1px 5px; border-radius: 8px; text-transform: uppercase; }
-.discover-val { font-size: 11px; font-weight: 700; color: var(--green); }
-.discover-sub { font-size: 10px; color: var(--faint); margin-bottom: 2px; }
-.discover-effect { font-size: 10px; color: var(--green); min-height: 13px; }
-input.disc { accent-color: var(--green); width: 100%; height: 3px; margin: 2px 0; }
+/* Time travel */
+.era-row { flex-shrink: 0; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--surface2); }
+.era-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
+.era-label { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+.era-badge { font-size: 8px; font-weight: 700; background: var(--green); color: #000; padding: 1px 5px; border-radius: 8px; text-transform: uppercase; }
+.era-val { font-size: 11px; font-weight: 700; color: var(--green); }
+.era-sub { font-size: 10px; color: var(--faint); margin-bottom: 2px; }
+.era-effect { font-size: 10px; color: var(--green); min-height: 13px; }
+input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin: 2px 0; }
+.era-toggle { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; font-size: 10px; color: var(--muted); }
+.era-toggle input { accent-color: var(--green); }
+.era-slider:disabled { opacity: 0.35; }
 
 /* Results */
 .results-pane { background: var(--surface); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; min-width: 160px; flex-shrink: 0; }
@@ -111,13 +120,22 @@ input.disc { accent-color: var(--green); width: 100%; height: 3px; margin: 2px 0
     </div>
     <div class="nav-section">Mood presets</div>
     <div class="nav" id="moodNav"></div>
-    <div class="sidebar-bottom"><div class="tagline-sidebar">"Vibes is just science felt."</div></div>
+    <div class="sidebar-bottom">
+      <div class="discovery-panel">
+        <div class="disc-heading">The 95% problem</div>
+        <div class="disc-stat"><span class="disc-num">100K</span><span class="disc-label">songs uploaded daily</span></div>
+        <div class="disc-stat"><span class="disc-num">~90%</span><span class="disc-label">of streams go to the top 1% of artists</span></div>
+        <div class="disc-stat"><span class="disc-num">millions</span><span class="disc-label">of tracks never played once</span></div>
+        <div class="disc-copy">Algorithms recommend what's already popular. The artist who deserves to be heard isn't. The listener who would love them can't find them. Vibe Mesh doesn't know what's popular. It only knows what fits the feeling.</div>
+      </div>
+      <div class="tagline-sidebar" style="margin-top:10px">"Vibes is just science felt."</div>
+    </div>
   </div>
 
   <div class="main">
     <div class="topbar">
       <div class="topbar-title">Find your <span>vibe.</span></div>
-      <div class="topbar-sub">Shape the music around how you want to feel.</div>
+      <div class="topbar-sub">No popularity bias. No genre boxes. Just the feeling you're after.</div>
       <div class="presets-row" id="presetChips"></div>
     </div>
 
@@ -146,14 +164,15 @@ input.disc { accent-color: var(--green); width: 100%; height: 3px; margin: 2px 0
       <div class="sliders-pane" id="pane1">
         <div class="pane-label">Tune your axes</div>
         <div class="sliders-inner" id="sliders"></div>
-        <div class="discover-row">
-          <div class="discover-top">
-            <span class="discover-label">✦ Discover <span class="discover-badge">MVP</span></span>
-            <span class="discover-val" id="dv">0%</span>
+        <div class="era-row">
+          <div class="era-top">
+            <span class="era-label">✦ Time Travel <span class="era-badge">optional</span></span>
+            <span class="era-val" id="dv">All time</span>
           </div>
-          <div class="discover-sub">Expand into adjacent vibe space. No popularity bias.</div>
-          <input type="range" class="disc" id="ds" min="0" max="100" value="0">
-          <div class="discover-effect" id="dfx"></div>
+          <div class="era-toggle"><input type="checkbox" id="eraToggle"><label for="eraToggle">Enable era</label></div>
+          <div class="era-sub">Leave it off for all time. Turn it on to softly lean toward an era.</div>
+          <input type="range" class="era-slider" id="ds" min="1950" max="2026" value="1998" disabled>
+          <div class="era-effect" id="dfx">Off = all time</div>
         </div>
       </div>
 
@@ -164,7 +183,7 @@ input.disc { accent-color: var(--green); width: 100%; height: 3px; margin: 2px 0
         <div class="pane-label">Music for your vibe</div>
         <div class="results-inner" id="songList"></div>
         <button class="more-btn">More results — coming soon</button>
-        <div class="results-note">demo · illustrative only</div>
+        <div class="results-note">ranked by vibe match · no popularity signal</div>
       </div>
 
     </div>
@@ -376,12 +395,23 @@ function renderSongs(){
   window.addEventListener('touchend',()=>dragging=-1);
 })();
 
-const dfx=['','Exact match.','Slight nudge — 1 axis ±0.05.','2 axes nudged, +10% radius.','Wide open.'];
-document.getElementById('ds').addEventListener('input',e=>{
-  const v=parseInt(e.target.value);
-  document.getElementById('dv').textContent=v+'%';
-  document.getElementById('dfx').textContent=dfx[Math.min(Math.floor(v/25),3)]||'';
-});
+const eraToggle=document.getElementById('eraToggle');
+const eraSlider=document.getElementById('ds');
+function updateEraUI(){
+  if(!eraToggle.checked){
+    eraSlider.disabled=true;
+    document.getElementById('dv').textContent='All time';
+    document.getElementById('dfx').textContent='Off = all time';
+    return;
+  }
+  eraSlider.disabled=false;
+  const year=parseInt(eraSlider.value);
+  document.getElementById('dv').textContent=String(year);
+  document.getElementById('dfx').textContent='Soft nudge around '+year;
+}
+eraToggle.addEventListener('change',updateEraUI);
+eraSlider.addEventListener('input',updateEraUI);
+updateEraUI();
 
 // Pane resize
 (function(){

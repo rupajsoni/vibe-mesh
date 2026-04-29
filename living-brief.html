@@ -77,7 +77,7 @@
   .pb { font-family: 'DM Mono', monospace; font-size: 10px; padding: 4px 10px; background: transparent; border: 1px solid var(--border); border-radius: 3px; color: var(--muted); cursor: pointer; transition: all 0.15s; }
   .pb:hover, .pb.active { border-color: var(--accent); color: var(--accent); background: rgba(200,184,154,0.07); }
 
-  /* Discover */
+  /* Time travel */
   .disc { background: var(--surface2); border: 1px solid rgba(154,122,200,0.2); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 1.25rem; }
   .disc-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
   .disc-name { font-size: 13px; font-weight: 500; color: var(--text); }
@@ -85,6 +85,9 @@
   .disc-desc { font-size: 12px; color: var(--muted); margin-bottom: 8px; line-height: 1.5; }
   .disc-fx { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--purple); min-height: 16px; margin-top: 6px; }
   input.disc-range { accent-color: var(--purple); }
+  .disc-toggle { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 11px; color: var(--text); }
+  .disc-toggle input { accent-color: var(--purple); }
+  .disc-range[disabled] { opacity: 0.35; }
 
   /* Mood grid */
   .mgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 1.5rem 0; }
@@ -193,7 +196,7 @@
   <!-- The 6 Axes -->
   <div class="section">
     <div class="sh"><span class="sn">02</span><span class="st">The six axes</span></div>
-    <p>Users input a position on six axes, normalized 0.0–1.0. The backend converts that to a CLAP embedding query. Results ranked by cosine similarity against a pre-vectorized library. <strong>Click any mood preset below to load it into the radar.</strong></p>
+    <p>Users input a position on six axes, normalized 0.0–1.0. The backend converts that to a CLAP embedding query. Results ranked by cosine similarity against a pre-vectorized library. An optional era control can softly nudge results toward a time period; if untouched, the search stays open to <strong>all time</strong>. <strong>Click any mood preset below to load it into the radar.</strong></p>
 
     <div class="atw">
       <table class="at">
@@ -281,10 +284,11 @@
         <div style="flex:1; min-width:180px; display:flex; flex-direction:column; gap:10px;" id="sliders"></div>
       </div>
       <div class="disc">
-        <div class="disc-top"><span class="disc-name">Discover</span><span class="disc-val" id="dv">0%</span></div>
-        <div class="disc-desc">How far outside your exact vector should we explore? Higher values nudge 1–2 axes into adjacent territory — surfaces music you'd never find yourself. Pure vector arithmetic, no popularity bias.</div>
-        <input type="range" class="disc-range" id="ds" min="0" max="100" value="0" style="width:100%">
-        <div class="disc-fx" id="dfx"></div>
+        <div class="disc-top"><span class="disc-name">Time Travel</span><span class="disc-val" id="dv">All time</span></div>
+        <div class="disc-toggle"><input type="checkbox" id="eraToggle"><label for="eraToggle">Enable era nudge</label></div>
+        <div class="disc-desc">Optional soft era input. Off means all time. When on, slide toward a year and let it lightly bias the results without hard filtering.</div>
+        <input type="range" class="disc-range" id="ds" min="1950" max="2026" value="1998" disabled style="width:100%">
+        <div class="disc-fx" id="dfx">Off = all time</div>
       </div>
       <div class="results-wrap">
         <div class="results-label">Music for your vibe <span class="results-note">demo · illustrative only</span></div>
@@ -335,7 +339,8 @@
     <div class="sh"><span class="sn">07</span><span class="st">Session log</span></div>
     <div class="log">
       <div class="lr"><span class="ld">2026-04-27</span><span class="lt">Session 1: Project created. Scaffold only. Uber Fx installed. No logic.</span></div>
-      <div class="lr"><span class="ld">2026-04-27</span><span class="lt">Session 2: Full design session. 6 axes + science cross-examination done. CLAP architecture. 10 mood presets with vectors. Discover mode scoped for MVP. Two UI skins. FOUNDATION.md. All docs rebuilt.</span></div>
+      <div class="lr"><span class="ld">2026-04-27</span><span class="lt">Session 2: Full design session. 6 axes + science cross-examination done. CLAP architecture. 10 mood presets with vectors. Discover concept scoped. Two UI skins. FOUNDATION.md. All docs rebuilt.</span></div>
+      <div class="lr"><span class="ld">2026-04-29</span><span class="lt">Session 3: Era chosen as optional soft MVP control. Off means all time. Discover moved to post-MVP for focus.</span></div>
     </div>
   </div>
 
@@ -411,12 +416,23 @@ moods.forEach(m=>{
   mg.appendChild(mc);
 });
 
-const dfx=['','Exact match — tight to your vector.','Slight nudge — 1 axis expanded ±0.05.','Exploring — 2 axes nudged, radius +10%.','Wide — expect surprises.'];
-document.getElementById('ds').addEventListener('input',e=>{
-  const v=parseInt(e.target.value);
-  document.getElementById('dv').textContent=v+'%';
-  document.getElementById('dfx').textContent=dfx[Math.min(Math.floor(v/25),3)]||'';
-});
+const eraToggle=document.getElementById('eraToggle');
+const eraSlider=document.getElementById('ds');
+function updateEraDemo(){
+  if(!eraToggle.checked){
+    eraSlider.disabled=true;
+    document.getElementById('dv').textContent='All time';
+    document.getElementById('dfx').textContent='Off = all time';
+    return;
+  }
+  eraSlider.disabled=false;
+  const year=parseInt(eraSlider.value);
+  document.getElementById('dv').textContent=String(year);
+  document.getElementById('dfx').textContent='Soft nudge around '+year+' — touching water, not filtering.';
+}
+eraToggle.addEventListener('change',updateEraDemo);
+eraSlider.addEventListener('input',updateEraDemo);
+updateEraDemo();
 
 const songs=[
   {title:'Holocene',artist:'Bon Iver',v:[0.20,0.10,0.55,0.75,0.30,0.10],color:'#243324'},
