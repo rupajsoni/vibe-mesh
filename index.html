@@ -345,7 +345,7 @@ const songs=[
 function cosSim(a,b){let dot=0,na=0,nb=0;for(let i=0;i<a.length;i++){dot+=a[i]*b[i];na+=a[i]*a[i];nb+=b[i]*b[i];}return dot/(Math.sqrt(na)*Math.sqrt(nb)||1);}
 
 function renderSongs(){
-  const scored=songs.map(s=>({...s,score:cosSim(vals,s.v)})).sort((a,b)=>b.score-a.score).slice(0,5);
+  const scored=songs.map(s=>({...s,score:cosSim(vals,s.v)})).sort((a,b)=>b.score-a.score).slice(0,10);
   document.getElementById('songList').innerHTML=scored.map((s,i)=>`
     <div class="song-row">
       <span class="song-idx">${i+1}</span>
