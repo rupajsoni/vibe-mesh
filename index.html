@@ -118,7 +118,7 @@ input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin:
       <div class="nav-item active">🎯 Find your vibe</div>
       <div class="nav-item" onclick="window.location='living-brief.html'">🔬 Full brief</div>
     </div>
-    <div class="nav-section">Mood presets</div>
+    <div class="nav-section">Presets</div>
     <div class="nav" id="moodNav"></div>
     <div class="sidebar-bottom">
       <div class="discovery-panel">
@@ -134,8 +134,8 @@ input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin:
 
   <div class="main">
     <div class="topbar">
-      <div class="topbar-title">Find your <span>vibe.</span></div>
-      <div class="topbar-sub">No popularity bias. No genre boxes. Just the feeling you're after.</div>
+      <div class="topbar-title">Search from the <span>heart.</span></div>
+      <div class="topbar-sub">Move the sliders to describe how you want music to feel. We find what lives there.</div>
       <div class="presets-row" id="presetChips"></div>
     </div>
 
@@ -181,7 +181,7 @@ input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin:
         <div class="pane-label">Music for your vibe</div>
         <div class="results-inner" id="songList"></div>
         <button class="more-btn">More results — coming soon</button>
-        <div class="results-note">ranked by vibe match · no popularity signal</div>
+        <div class="results-note">ranked by vibe match · anchor + discovery blend</div>
       </div>
 
     </div>
@@ -282,62 +282,64 @@ moods.forEach(m=>{
 });
 
 const songs=[
+  // Fidelity = (1−acousticness)×0.6 + loudness_norm×0.4
+  // acoustic folk: ~0.35–0.45 | electric rock: ~0.75–0.90 | trap/produced: ~0.88–0.95 | classical piano: ~0.25 | quiet ambient: ~0.50–0.60
   {title:'Holocene',artist:'Bon Iver',v:[0.2,0.1,0.45,0.75,0.3,0.1],color:'#1a2e1a'},
   {title:'Skinny Love',artist:'Bon Iver',v:[0.22,0.12,0.35,0.85,0.18,0.1],color:'#1a2e1a'},
-  {title:'Moon Song',artist:'Phoebe Bridgers',v:[0.15,0.1,0.5,0.9,0.15,0.1],color:'#1e1228'},
-  {title:'Garden Song',artist:'Phoebe Bridgers',v:[0.25,0.15,0.55,0.85,0.3,0.15],color:'#1e1228'},
-  {title:'Motion Picture Soundtrack',artist:'Radiohead',v:[0.15,0.08,0.55,0.7,0.1,0.05],color:'#101828'},
-  {title:'Creep',artist:'Radiohead',v:[0.7,0.4,0.4,0.85,0.18,0.25],color:'#101828'},
-  {title:'Fake Plastic Trees',artist:'Radiohead',v:[0.28,0.15,0.58,0.8,0.2,0.15],color:'#101828'},
-  {title:'Godspeed',artist:'Frank Ocean',v:[0.15,0.08,0.58,0.82,0.35,0.12],color:'#0f2218'},
+  {title:'Moon Song',artist:'Phoebe Bridgers',v:[0.15,0.1,0.38,0.9,0.15,0.1],color:'#1e1228'},
+  {title:'Garden Song',artist:'Phoebe Bridgers',v:[0.25,0.15,0.44,0.85,0.3,0.15],color:'#1e1228'},
+  {title:'Motion Picture Soundtrack',artist:'Radiohead',v:[0.15,0.08,0.37,0.7,0.1,0.05],color:'#101828'},
+  {title:'Creep',artist:'Radiohead',v:[0.7,0.4,0.83,0.85,0.18,0.25],color:'#101828'},
+  {title:'Fake Plastic Trees',artist:'Radiohead',v:[0.28,0.15,0.56,0.8,0.2,0.15],color:'#101828'},
+  {title:'Godspeed',artist:'Frank Ocean',v:[0.15,0.08,0.37,0.82,0.35,0.12],color:'#0f2218'},
   {title:'Self Control',artist:'Frank Ocean',v:[0.3,0.25,0.65,0.8,0.3,0.2],color:'#0f2218'},
-  {title:'Pink + White',artist:'Frank Ocean',v:[0.35,0.3,0.62,0.72,0.65,0.35],color:'#0f2218'},
-  {title:'Nights',artist:'Frank Ocean',v:[0.55,0.5,0.6,0.7,0.45,0.35],color:'#0f2218'},
-  {title:'Tusa',artist:'Karol G & Nicki Minaj',v:[0.9,0.92,0.8,0.85,0.85,0.95],color:'#2a0f22'},
-  {title:'Physical',artist:'Dua Lipa',v:[0.85,0.9,0.82,0.82,0.88,0.85],color:'#28102a'},
-  {title:'Levitating',artist:'Dua Lipa',v:[0.82,0.88,0.82,0.78,0.88,0.8],color:'#28102a'},
-  {title:"Don't Start Now",artist:'Dua Lipa',v:[0.8,0.85,0.82,0.8,0.85,0.8],color:'#28102a'},
-  {title:'HUMBLE.',artist:'Kendrick Lamar',v:[0.88,0.82,0.4,0.9,0.55,0.65],color:'#1c1010'},
-  {title:'Alright',artist:'Kendrick Lamar',v:[0.72,0.75,0.45,0.85,0.65,0.7],color:'#1c1010'},
-  {title:'DNA.',artist:'Kendrick Lamar',v:[0.92,0.78,0.35,0.92,0.45,0.6],color:'#1c1010'},
-  {title:'SICKO MODE',artist:'Travis Scott',v:[0.9,0.8,0.45,0.75,0.55,0.7],color:'#101018'},
-  {title:'goosebumps',artist:'Travis Scott',v:[0.8,0.7,0.45,0.72,0.5,0.6],color:'#101018'},
-  {title:'Blinding Lights',artist:'The Weeknd',v:[0.8,0.75,0.75,0.75,0.7,0.7],color:'#280f0f'},
-  {title:'After Hours',artist:'The Weeknd',v:[0.45,0.4,0.7,0.7,0.28,0.35],color:'#280f0f'},
-  {title:'Starboy',artist:'The Weeknd',v:[0.7,0.72,0.7,0.7,0.5,0.6],color:'#280f0f'},
-  {title:'Midnight City',artist:'M83',v:[0.7,0.65,0.7,0.45,0.72,0.55],color:'#0f0f28'},
-  {title:'Outro',artist:'M83',v:[0.75,0.55,0.75,0.08,0.78,0.45],color:'#0f0f28'},
-  {title:'Music for Airports 1/1',artist:'Brian Eno',v:[0.08,0.05,0.85,0.0,0.55,0.15],color:'#101018'},
-  {title:'Says',artist:'Nils Frahm',v:[0.25,0.2,0.78,0.0,0.55,0.18],color:'#0f1a1a'},
-  {title:'Awake',artist:'Tycho',v:[0.35,0.3,0.78,0.0,0.6,0.25],color:'#0f2828'},
-  {title:'Gymnopédie No.1',artist:'Erik Satie',v:[0.1,0.05,0.75,0.0,0.5,0.25],color:'#181818'},
-  {title:'Something in the Way',artist:'Nirvana',v:[0.4,0.15,0.2,0.75,0.15,0.15],color:'#1a150f'},
-  {title:'In Bloom',artist:'Nirvana',v:[0.85,0.55,0.15,0.8,0.4,0.45],color:'#1a150f'},
-  {title:'Numb',artist:'Linkin Park',v:[0.82,0.45,0.35,0.85,0.18,0.45],color:'#0f181a'},
-  {title:'Welcome to the Black Parade',artist:'My Chemical Romance',v:[0.88,0.5,0.3,0.88,0.2,0.55],color:'#111111'},
-  {title:'Do I Wanna Know?',artist:'Arctic Monkeys',v:[0.6,0.5,0.35,0.78,0.35,0.45],color:'#1a0f0f'},
-  {title:'R U Mine?',artist:'Arctic Monkeys',v:[0.8,0.65,0.3,0.8,0.45,0.55],color:'#1a0f0f'},
-  {title:'505',artist:'Arctic Monkeys',v:[0.55,0.4,0.4,0.78,0.35,0.4],color:'#1a0f0f'},
-  {title:'Intro',artist:'The xx',v:[0.2,0.25,0.62,0.08,0.42,0.28],color:'#141414'},
-  {title:'Angels',artist:'The xx',v:[0.22,0.18,0.6,0.68,0.4,0.25],color:'#141414'},
-  {title:'Teardrop',artist:'Massive Attack',v:[0.25,0.22,0.6,0.55,0.38,0.28],color:'#0f0f1e'},
-  {title:'Dissolved Girl',artist:'Massive Attack',v:[0.3,0.28,0.55,0.62,0.3,0.25],color:'#0f0f1e'},
-  {title:'retrograde',artist:'James Blake',v:[0.25,0.2,0.65,0.72,0.3,0.2],color:'#0f1820'},
-  {title:'Summertime Sadness',artist:'Lana Del Rey',v:[0.3,0.25,0.65,0.8,0.28,0.28],color:'#280f0f'},
-  {title:'Video Games',artist:'Lana Del Rey',v:[0.22,0.15,0.68,0.85,0.38,0.22],color:'#280f0f'},
-  {title:'Young and Beautiful',artist:'Lana Del Rey',v:[0.18,0.12,0.72,0.88,0.42,0.2],color:'#280f0f'},
-  {title:'Sweater Weather',artist:'The Neighbourhood',v:[0.5,0.4,0.45,0.72,0.35,0.35],color:'#181818'},
-  {title:'Oblivion',artist:'Grimes',v:[0.55,0.6,0.65,0.65,0.5,0.55],color:'#22101a'},
-  {title:'Electric Feel',artist:'MGMT',v:[0.65,0.72,0.6,0.62,0.75,0.65],color:'#0f2818'},
-  {title:'Passionfruit',artist:'Drake',v:[0.45,0.55,0.72,0.65,0.55,0.48],color:'#0f1820'},
-  {title:'One Dance',artist:'Drake',v:[0.65,0.78,0.78,0.65,0.72,0.72],color:'#0f1820'},
-  {title:'Take Care',artist:'Drake ft. Rihanna',v:[0.4,0.38,0.68,0.72,0.38,0.38],color:'#0f1820'},
-  {title:'The Night We Met',artist:'Lord Huron',v:[0.25,0.2,0.52,0.82,0.25,0.22],color:'#181820'},
-  {title:'Breezeblocks',artist:'alt-J',v:[0.55,0.45,0.45,0.7,0.3,0.3],color:'#0f1a1a'},
-  {title:'Redbone',artist:'Childish Gambino',v:[0.45,0.6,0.5,0.75,0.55,0.5],color:'#18180f'},
-  {title:'This Is America',artist:'Childish Gambino',v:[0.75,0.6,0.45,0.82,0.28,0.55],color:'#18180f'},
-  {title:'Clair de Lune',artist:'Debussy',v:[0.12,0.08,0.82,0.0,0.52,0.22],color:'#151520'},
-  {title:'La Vie en Rose',artist:'Édith Piaf',v:[0.28,0.22,0.65,0.88,0.62,0.35],color:'#220f0f'},
+  {title:'Pink + White',artist:'Frank Ocean',v:[0.35,0.3,0.71,0.72,0.65,0.35],color:'#0f2218'},
+  {title:'Nights',artist:'Frank Ocean',v:[0.55,0.5,0.86,0.7,0.45,0.35],color:'#0f2218'},
+  {title:'Tusa',artist:'Karol G & Nicki Minaj',v:[0.9,0.92,0.95,0.85,0.85,0.95],color:'#2a0f22'},
+  {title:'Physical',artist:'Dua Lipa',v:[0.85,0.9,0.94,0.82,0.88,0.85],color:'#28102a'},
+  {title:'Levitating',artist:'Dua Lipa',v:[0.82,0.88,0.94,0.78,0.88,0.8],color:'#28102a'},
+  {title:"Don't Start Now",artist:'Dua Lipa',v:[0.8,0.85,0.93,0.8,0.85,0.8],color:'#28102a'},
+  {title:'HUMBLE.',artist:'Kendrick Lamar',v:[0.88,0.82,0.95,0.9,0.55,0.65],color:'#1c1010'},
+  {title:'Alright',artist:'Kendrick Lamar',v:[0.72,0.75,0.89,0.85,0.65,0.7],color:'#1c1010'},
+  {title:'DNA.',artist:'Kendrick Lamar',v:[0.92,0.78,0.95,0.92,0.45,0.6],color:'#1c1010'},
+  {title:'SICKO MODE',artist:'Travis Scott',v:[0.9,0.8,0.94,0.75,0.55,0.7],color:'#101018'},
+  {title:'goosebumps',artist:'Travis Scott',v:[0.8,0.7,0.90,0.72,0.5,0.6],color:'#101018'},
+  {title:'Blinding Lights',artist:'The Weeknd',v:[0.8,0.75,0.94,0.75,0.7,0.7],color:'#280f0f'},
+  {title:'After Hours',artist:'The Weeknd',v:[0.45,0.4,0.88,0.7,0.28,0.35],color:'#280f0f'},
+  {title:'Starboy',artist:'The Weeknd',v:[0.7,0.72,0.93,0.7,0.5,0.6],color:'#280f0f'},
+  {title:'Midnight City',artist:'M83',v:[0.7,0.65,0.92,0.45,0.72,0.55],color:'#0f0f28'},
+  {title:'Outro',artist:'M83',v:[0.75,0.55,0.88,0.08,0.78,0.45],color:'#0f0f28'},
+  {title:'Music for Airports 1/1',artist:'Brian Eno',v:[0.08,0.05,0.55,0.0,0.55,0.15],color:'#101018'},
+  {title:'Says',artist:'Nils Frahm',v:[0.25,0.2,0.52,0.0,0.55,0.18],color:'#0f1a1a'},
+  {title:'Awake',artist:'Tycho',v:[0.35,0.3,0.74,0.0,0.6,0.25],color:'#0f2828'},
+  {title:'Gymnopédie No.1',artist:'Erik Satie',v:[0.1,0.05,0.25,0.0,0.5,0.25],color:'#181818'},
+  {title:'Something in the Way',artist:'Nirvana',v:[0.4,0.15,0.34,0.75,0.15,0.15],color:'#1a150f'},
+  {title:'In Bloom',artist:'Nirvana',v:[0.85,0.55,0.79,0.8,0.4,0.45],color:'#1a150f'},
+  {title:'Numb',artist:'Linkin Park',v:[0.82,0.45,0.88,0.85,0.18,0.45],color:'#0f181a'},
+  {title:'Welcome to the Black Parade',artist:'My Chemical Romance',v:[0.88,0.5,0.88,0.88,0.2,0.55],color:'#111111'},
+  {title:'Do I Wanna Know?',artist:'Arctic Monkeys',v:[0.6,0.5,0.83,0.78,0.35,0.45],color:'#1a0f0f'},
+  {title:'R U Mine?',artist:'Arctic Monkeys',v:[0.8,0.65,0.90,0.8,0.45,0.55],color:'#1a0f0f'},
+  {title:'505',artist:'Arctic Monkeys',v:[0.55,0.4,0.80,0.78,0.35,0.4],color:'#1a0f0f'},
+  {title:'Intro',artist:'The xx',v:[0.2,0.25,0.76,0.08,0.42,0.28],color:'#141414'},
+  {title:'Angels',artist:'The xx',v:[0.22,0.18,0.74,0.68,0.4,0.25],color:'#141414'},
+  {title:'Teardrop',artist:'Massive Attack',v:[0.25,0.22,0.75,0.55,0.38,0.28],color:'#0f0f1e'},
+  {title:'Dissolved Girl',artist:'Massive Attack',v:[0.3,0.28,0.75,0.62,0.3,0.25],color:'#0f0f1e'},
+  {title:'retrograde',artist:'James Blake',v:[0.25,0.2,0.77,0.72,0.3,0.2],color:'#0f1820'},
+  {title:'Summertime Sadness',artist:'Lana Del Rey',v:[0.3,0.25,0.74,0.8,0.28,0.28],color:'#280f0f'},
+  {title:'Video Games',artist:'Lana Del Rey',v:[0.22,0.15,0.49,0.85,0.38,0.22],color:'#280f0f'},
+  {title:'Young and Beautiful',artist:'Lana Del Rey',v:[0.18,0.12,0.45,0.88,0.42,0.2],color:'#280f0f'},
+  {title:'Sweater Weather',artist:'The Neighbourhood',v:[0.5,0.4,0.77,0.72,0.35,0.35],color:'#181818'},
+  {title:'Oblivion',artist:'Grimes',v:[0.55,0.6,0.88,0.65,0.5,0.55],color:'#22101a'},
+  {title:'Electric Feel',artist:'MGMT',v:[0.65,0.72,0.89,0.62,0.75,0.65],color:'#0f2818'},
+  {title:'Passionfruit',artist:'Drake',v:[0.45,0.55,0.88,0.65,0.55,0.48],color:'#0f1820'},
+  {title:'One Dance',artist:'Drake',v:[0.65,0.78,0.92,0.65,0.72,0.72],color:'#0f1820'},
+  {title:'Take Care',artist:'Drake ft. Rihanna',v:[0.4,0.38,0.83,0.72,0.38,0.38],color:'#0f1820'},
+  {title:'The Night We Met',artist:'Lord Huron',v:[0.25,0.2,0.50,0.82,0.25,0.22],color:'#181820'},
+  {title:'Breezeblocks',artist:'alt-J',v:[0.55,0.45,0.83,0.7,0.3,0.3],color:'#0f1a1a'},
+  {title:'Redbone',artist:'Childish Gambino',v:[0.45,0.6,0.85,0.75,0.55,0.5],color:'#18180f'},
+  {title:'This Is America',artist:'Childish Gambino',v:[0.75,0.6,0.92,0.82,0.28,0.55],color:'#18180f'},
+  {title:'Clair de Lune',artist:'Debussy',v:[0.12,0.08,0.25,0.0,0.52,0.22],color:'#151520'},
+  {title:'La Vie en Rose',artist:'Édith Piaf',v:[0.28,0.22,0.42,0.88,0.62,0.35],color:'#220f0f'},
 ];
 
 function cosSim(a,b){let dot=0,na=0,nb=0;for(let i=0;i<a.length;i++){dot+=a[i]*b[i];na+=a[i]*a[i];nb+=b[i]*b[i];}return dot/(Math.sqrt(na)*Math.sqrt(nb)||1);}

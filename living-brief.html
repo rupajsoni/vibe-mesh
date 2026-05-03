@@ -166,15 +166,20 @@
 
   <!-- Hero -->
   <div class="hero">
-    <div class="eyebrow">Living brief · Session 4 · 2026-04-28</div>
+    <div class="eyebrow">Living brief · Session 7 · 2026-05-03</div>
     <div class="title">Vibe<br><em>Mesh</em></div>
     <div class="tagline-block">
-      <div class="tagline-label">The tagline</div>
-      <div class="tagline-text">Vibes is just science felt.</div>
-      <div class="tagline-sub">Not a slogan. The design philosophy. Every axis in this system has a scientific basis. The feeling is the interface. The math is underneath.</div>
+      <div class="tagline-label">For the listener</div>
+      <div class="tagline-text">Search from the heart.</div>
+      <div class="tagline-sub">Move the sliders to describe how you want music to feel. Vibe Mesh finds what lives there.</div>
+    </div>
+    <div class="tagline-block" style="margin-top:1rem;border-left-color:var(--muted);">
+      <div class="tagline-label">The design philosophy</div>
+      <div class="tagline-text" style="font-size:1.1rem;">Vibes is just science felt.</div>
+      <div class="tagline-sub">Every axis has a scientific basis. The feeling is the interface. The math is underneath.</div>
     </div>
     <div class="meta">
-      <div class="meta-item"><span class="meta-label">Phase</span><span class="meta-val">Ready to implement · Architecture locked</span></div>
+      <div class="meta-item"><span class="meta-label">Phase</span><span class="meta-val">Backend complete · wiring UI (T20)</span></div>
       <div class="meta-item"><span class="meta-label">Stack</span><span class="meta-val">Go · Kaggle · Spotify</span></div>
       <div class="meta-item"><span class="meta-label">Scope</span><span class="meta-val">English MVP</span></div>
       <div class="meta-item"><span class="meta-label">Author</span><span class="meta-val">rupajsoni</span></div>
@@ -218,8 +223,8 @@
           </tr>
           <tr>
             <td><div class="an">Fidelity</div><span class="badge bt" style="display:block;margin-top:4px;"></span></td>
-            <td>Grain and texture of sound. How processed vs raw. NIN vs Michael Bublé. Science bundles this in genre proxies — we decompose it cleanly.</td>
-            <td><div class="rp"><span class="pill">Hyper polished</span><span class="pa">→</span><span class="pill pill-m">Warm</span><span class="pa">→</span><span class="pill pill-m">Lo-fi</span><span class="pa">→</span><span class="pill">Lo-fi / abrasive</span></div></td>
+            <td>Grain and texture of sound. How raw vs produced. Elliott Smith vs Daft Punk. Formula: weighted blend of inverted acousticness and loudness normalisation — not just acousticness alone.</td>
+            <td><div class="rp"><span class="pill">Lo-fi / raw</span><span class="pa">→</span><span class="pill pill-m">Warm</span><span class="pa">→</span><span class="pill pill-m">Polished</span><span class="pa">→</span><span class="pill">Hi-fi / pristine</span></div></td>
             <td>Justified divergence from science — science uses genre as proxy, we isolate the sonic dimension</td>
             <td><span class="badge bl">concept locked</span></td>
           </tr>
@@ -284,11 +289,9 @@
         <div style="flex:1; min-width:180px; display:flex; flex-direction:column; gap:10px;" id="sliders"></div>
       </div>
       <div class="disc">
-        <div class="disc-top"><span class="disc-name">Time Travel</span><span class="disc-val" id="dv">All time</span></div>
-        <div class="disc-toggle"><input type="checkbox" id="eraToggle"><label for="eraToggle">Enable era nudge</label></div>
-        <div class="disc-desc">Optional soft era input. Off means all time. When on, slide toward a year and let it lightly bias the results without hard filtering.</div>
-        <input type="range" class="disc-range" id="ds" min="1950" max="2026" value="1998" disabled style="width:100%">
-        <div class="disc-fx" id="dfx">Off = all time</div>
+        <div class="disc-top"><span class="disc-name">Time Travel</span><span class="disc-val" style="background:var(--faint);color:var(--text)">coming soon</span></div>
+        <div class="disc-desc">Optional soft era input. Slide toward a year and let it lightly bias results without hard filtering.</div>
+        <input type="range" class="disc-range" id="ds" min="1950" max="2026" value="1998" disabled style="width:100%;opacity:0.2">
       </div>
       <div class="results-wrap">
         <div class="results-label">Music for your vibe <span class="results-note">demo · illustrative only</span></div>
@@ -298,8 +301,8 @@
     </div>
   </div>
   <div class="section">
-    <div class="sh"><span class="sn">04</span><span class="st">Mood presets</span></div>
-    <p>Pre-filled vectors. Named in context language people actually use. Science basis: three underlying reasons people listen to music — mood/arousal regulation, self-awareness, social relatedness. <strong>Click any card to load it into the radar above.</strong></p>
+    <div class="sh"><span class="sn">04</span><span class="st">Genre presets</span></div>
+    <p>Pre-filled vectors. Genre names are a bridge from where users already operate to the vibe model. Vectors are centroids computed from ~1,000 songs per genre in the dataset. <strong>Click any card to load it into the radar above.</strong></p>
     <div class="mgrid" id="mgrid"></div>
   </div>
 
@@ -326,9 +329,9 @@
 
     <p style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);margin-bottom:0.5rem;">MVP — feature mapping path</p>
     <div class="arch">
-      <div class="ab"><div class="ab-label">Seed library</div><div class="ab-name">Kaggle dataset</div><div class="ab-desc">~600K songs. Pre-computed Spotify audio features (energy, valence, danceability, acousticness, etc.). No audio files needed. One-time offline download.</div></div>
+      <div class="ab"><div class="ab-label">Seed library</div><div class="ab-name">Kaggle dataset</div><div class="ab-desc">~114K songs. Pre-computed Spotify audio features (energy, valence, danceability, acousticness, loudness, instrumentalness, liveness, etc.). No audio files needed. One-time offline download.</div></div>
       <div class="aarrow">→</div>
-      <div class="ab ours"><div class="ab-label">Our layer · IP</div><div class="ab-name">Feature mapping</div><div class="ab-desc">6-axis formula per song. Energy=energy, Groove=danceability, Fidelity=1−acousticness, Vocals=(speechiness+(1−instrumentalness))/2, Emotion=valence, Social=liveness·0.5+(danceability·energy)·0.5. Output: seeds.json.</div></div>
+      <div class="ab ours"><div class="ab-label">Our layer · IP</div><div class="ab-name">Feature mapping</div><div class="ab-desc">Energy=energy · Groove=danceability · Fidelity=(1−acousticness)·0.6+loudness_norm·0.4 · Vocals=1−instrumentalness · Emotion=valence · Social=sqrt(danceability·energy)·0.85+liveness·0.15. Output: data/seeds.json.</div></div>
       <div class="aarrow">→</div>
       <div class="ab"><div class="ab-label">Retrieval</div><div class="ab-name">6-dim cosine sim</div><div class="ab-desc">In-memory vector store. Pure Go math. No ML at query time. Sub-millisecond. &lt;200ms end-to-end target.</div></div>
       <div class="aarrow">→</div>
@@ -361,7 +364,10 @@
       <div class="lr"><span class="ld">2026-04-27</span><span class="lt">Session 1: Project created. Scaffold only. Uber Fx installed. No logic.</span></div>
       <div class="lr"><span class="ld">2026-04-27</span><span class="lt">Session 2: Full design session. 6 axes + science cross-examination done. CLAP architecture. 10 mood presets with vectors. Discover concept scoped. Two UI skins. FOUNDATION.md. All docs rebuilt.</span></div>
       <div class="lr"><span class="ld">2026-04-27</span><span class="lt">Session 3: Era chosen as optional soft MVP control. Off = all time. Discover moved to post-MVP for focus.</span></div>
-      <div class="lr"><span class="ld">2026-04-28</span><span class="lt">Session 4: Major architecture pivot. Kaggle Spotify dataset replaces CLAP as primary path — ~600K songs, pre-computed audio features, 6-axis formula maps directly. CLAP deferred to Phase 2 for long-tail. Three-entry preset system designed (mood / moment / genre). Anchor + discovery blending locked: 51% familiar / 49% discovery, floor at popularity ≥ 35. All docs updated. TASKS.md written. Ready to implement.</span></div>
+      <div class="lr"><span class="ld">2026-04-28</span><span class="lt">Session 4: Major architecture pivot. Kaggle Spotify dataset replaces CLAP as primary path. CLAP deferred to Phase 2 for long-tail. Anchor + discovery blending locked: 51% familiar / 49% discovery, floor at popularity ≥ 35. TASKS.md written.</span></div>
+      <div class="lr"><span class="ld">2026-05-02</span><span class="lt">Session 5: Dataset confirmed (114K songs, data/dataset.csv). 10-song scorecard. Vocals=1−instrumentalness locked. Fidelity formula upgraded to weighted blend: (1−acousticness)·0.6 + loudness_norm·0.4. Formula registry + v1-config.json created.</span></div>
+      <div class="lr"><span class="ld">2026-05-03</span><span class="lt">Session 6: Go types (T06). 10 genre presets (T07) — Pop→Ambient, vectors from dataset centroids. Social formula validated against known songs. In-memory vector store (T11), vibe service + anchor/discovery blending (T15, T23), HTTP handlers POST /query + GET /presets + GET /health (T17). Full backend stack complete.</span></div>
+      <div class="lr"><span class="ld">2026-05-03</span><span class="lt">Session 7: Server + config (T18), Fx wiring (T19). Backend runnable — go run ./cmd/api starts on :8080. Architecture and presets updated in both HTML files. Session log brought up to date.</span></div>
     </div>
   </div>
 
@@ -436,24 +442,6 @@ moods.forEach(m=>{
   mc.addEventListener('click',()=>loadMood(m.v,m.name));
   mg.appendChild(mc);
 });
-
-const eraToggle=document.getElementById('eraToggle');
-const eraSlider=document.getElementById('ds');
-function updateEraDemo(){
-  if(!eraToggle.checked){
-    eraSlider.disabled=true;
-    document.getElementById('dv').textContent='All time';
-    document.getElementById('dfx').textContent='Off = all time';
-    return;
-  }
-  eraSlider.disabled=false;
-  const year=parseInt(eraSlider.value);
-  document.getElementById('dv').textContent=String(year);
-  document.getElementById('dfx').textContent='Soft nudge around '+year+' — touching water, not filtering.';
-}
-eraToggle.addEventListener('change',updateEraDemo);
-eraSlider.addEventListener('input',updateEraDemo);
-updateEraDemo();
 
 const songs=[
   {title:'Holocene',artist:'Bon Iver',v:[0.20,0.10,0.55,0.75,0.30,0.10],color:'#243324'},
