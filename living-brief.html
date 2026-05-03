@@ -166,7 +166,7 @@
 
   <!-- Hero -->
   <div class="hero">
-    <div class="eyebrow">Living brief · Session 2 · 2026-04-27</div>
+    <div class="eyebrow">Living brief · Session 4 · 2026-04-28</div>
     <div class="title">Vibe<br><em>Mesh</em></div>
     <div class="tagline-block">
       <div class="tagline-label">The tagline</div>
@@ -174,8 +174,8 @@
       <div class="tagline-sub">Not a slogan. The design philosophy. Every axis in this system has a scientific basis. The feeling is the interface. The math is underneath.</div>
     </div>
     <div class="meta">
-      <div class="meta-item"><span class="meta-label">Phase</span><span class="meta-val">Pre-code · Design complete</span></div>
-      <div class="meta-item"><span class="meta-label">Stack</span><span class="meta-val">Go · CLAP · Spotify</span></div>
+      <div class="meta-item"><span class="meta-label">Phase</span><span class="meta-val">Ready to implement · Architecture locked</span></div>
+      <div class="meta-item"><span class="meta-label">Stack</span><span class="meta-val">Go · Kaggle · Spotify</span></div>
       <div class="meta-item"><span class="meta-label">Scope</span><span class="meta-val">English MVP</span></div>
       <div class="meta-item"><span class="meta-label">Author</span><span class="meta-val">rupajsoni</span></div>
     </div>
@@ -196,7 +196,7 @@
   <!-- The 6 Axes -->
   <div class="section">
     <div class="sh"><span class="sn">02</span><span class="st">The six axes</span></div>
-    <p>Users input a position on six axes, normalized 0.0–1.0. The backend converts that to a CLAP embedding query. Results ranked by cosine similarity against a pre-vectorized library. An optional era control can softly nudge results toward a time period; if untouched, the search stays open to <strong>all time</strong>. <strong>Click any mood preset below to load it into the radar.</strong></p>
+    <p>Users input a position on six axes, normalized 0.0–1.0. The backend maps those values to a 6-dim feature vector and ranks results by cosine similarity against a pre-mapped library (~600K songs from Kaggle). No ML at query time — pure vector math, sub-millisecond. An optional era control can softly nudge results toward a time period; if untouched, the search stays open to <strong>all time</strong>. <strong>Click any mood preset below to load it into the radar.</strong></p>
 
     <div class="atw">
       <table class="at">
@@ -323,14 +323,34 @@
   <!-- Architecture -->
   <div class="section">
     <div class="sh"><span class="sn">06</span><span class="st">Architecture</span></div>
+
+    <p style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);margin-bottom:0.5rem;">MVP — feature mapping path</p>
     <div class="arch">
-      <div class="ab"><div class="ab-label">Catalogue</div><div class="ab-name">Spotify API</div><div class="ab-desc">Song identity, metadata. Finding what exists.</div></div>
+      <div class="ab"><div class="ab-label">Seed library</div><div class="ab-name">Kaggle dataset</div><div class="ab-desc">~600K songs. Pre-computed Spotify audio features (energy, valence, danceability, acousticness, etc.). No audio files needed. One-time offline download.</div></div>
       <div class="aarrow">→</div>
-      <div class="ab"><div class="ab-label">Embedding</div><div class="ab-name">CLAP</div><div class="ab-desc">Pretrained audio+language joint embedding space. Songs and text land near each other semantically.</div></div>
+      <div class="ab ours"><div class="ab-label">Our layer · IP</div><div class="ab-name">Feature mapping</div><div class="ab-desc">6-axis formula per song. Energy=energy, Groove=danceability, Fidelity=1−acousticness, Vocals=(speechiness+(1−instrumentalness))/2, Emotion=valence, Social=liveness·0.5+(danceability·energy)·0.5. Output: seeds.json.</div></div>
       <div class="aarrow">→</div>
-      <div class="ab ours"><div class="ab-label">Our layer · IP</div><div class="ab-name">Axis → Query</div><div class="ab-desc">6 axis values → semantically rich CLAP prompt. This translation is the product.</div></div>
+      <div class="ab"><div class="ab-label">Retrieval</div><div class="ab-name">6-dim cosine sim</div><div class="ab-desc">In-memory vector store. Pure Go math. No ML at query time. Sub-millisecond. &lt;200ms end-to-end target.</div></div>
       <div class="aarrow">→</div>
-      <div class="ab"><div class="ab-label">Retrieval</div><div class="ab-name">Cosine sim</div><div class="ab-desc">In-memory vector store. Ranked results. &lt;200ms target.</div></div>
+      <div class="ab"><div class="ab-label">Metadata</div><div class="ab-name">Spotify API</div><div class="ab-desc">Enrich results with album art, Spotify URL, canonical metadata. Not used for search — used for display only.</div></div>
+    </div>
+
+    <div class="callout" style="margin-top:1rem;">
+      <div class="cl">Anchor + discovery blending</div>
+      <p>Results are not ranked purely by vibe match. They are blended across popularity tiers. <strong>51% familiar / 49% discovery.</strong></p>
+      <p>Positions 1–2: anchor tier — popularity ≥ 65, highest vibe match within tier. Positions 3–5: discovery tier — popularity 35–65, highest vibe match within tier. Both tiers enforce a minimum vibe match floor — popularity never overrides feeling.</p>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:0;">The familiar majority confirms the system understood the feeling. The discovery tier targets real artists who never had promotional machinery — quality floor at 35 excludes zero-play uploads. When a discovery result lands, the artist gets heard. That is the product working.</p>
+    </div>
+
+    <p style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);margin-top:1.5rem;margin-bottom:0.5rem;">Phase 2 — CLAP hybrid path (deferred)</p>
+    <div class="arch">
+      <div class="ab"><div class="ab-label">Audio source</div><div class="ab-name">FMA / long-tail</div><div class="ab-desc">Free Music Archive (CC-licensed). Songs without Kaggle feature coverage. Offline indexing only — no audio at query time.</div></div>
+      <div class="aarrow">→</div>
+      <div class="ab"><div class="ab-label">Dense embedding</div><div class="ab-name">CLAP</div><div class="ab-desc">laion/larger_clap_music. 512-dim joint audio+text space. Python FastAPI sidecar. Runs once at index time per new song.</div></div>
+      <div class="aarrow">→</div>
+      <div class="ab ours"><div class="ab-label">Our layer · IP</div><div class="ab-name">Hybrid re-ranker</div><div class="ab-desc">α · clap_similarity + (1−α) · axis_match. α = 0.5–0.7, empirically tuned after PoC. CLAP handles long-tail; axis match enforces feeling fidelity.</div></div>
+      <div class="aarrow">→</div>
+      <div class="ab"><div class="ab-label">Metadata</div><div class="ab-name">Spotify API</div><div class="ab-desc">Same as MVP path.</div></div>
     </div>
   </div>
 
@@ -340,7 +360,8 @@
     <div class="log">
       <div class="lr"><span class="ld">2026-04-27</span><span class="lt">Session 1: Project created. Scaffold only. Uber Fx installed. No logic.</span></div>
       <div class="lr"><span class="ld">2026-04-27</span><span class="lt">Session 2: Full design session. 6 axes + science cross-examination done. CLAP architecture. 10 mood presets with vectors. Discover concept scoped. Two UI skins. FOUNDATION.md. All docs rebuilt.</span></div>
-      <div class="lr"><span class="ld">2026-04-29</span><span class="lt">Session 3: Era chosen as optional soft MVP control. Off means all time. Discover moved to post-MVP for focus.</span></div>
+      <div class="lr"><span class="ld">2026-04-27</span><span class="lt">Session 3: Era chosen as optional soft MVP control. Off = all time. Discover moved to post-MVP for focus.</span></div>
+      <div class="lr"><span class="ld">2026-04-28</span><span class="lt">Session 4: Major architecture pivot. Kaggle Spotify dataset replaces CLAP as primary path — ~600K songs, pre-computed audio features, 6-axis formula maps directly. CLAP deferred to Phase 2 for long-tail. Three-entry preset system designed (mood / moment / genre). Anchor + discovery blending locked: 51% familiar / 49% discovery, floor at popularity ≥ 35. All docs updated. TASKS.md written. Ready to implement.</span></div>
     </div>
   </div>
 
@@ -376,16 +397,16 @@ axes.forEach((n,i)=>{
 });
 
 const moods=[
-  {name:'Release',dim:'Mood reg.',desc:'Catharsis. Anger, grief, letting it out.',ex:'RATM, Olivia Rodrigo, death metal',v:[0.85,0.35,0.70,0.75,0.20,0.25]},
-  {name:'Heartbreak',dim:'Mood reg.',desc:'Sitting with it. Not trying to fix it.',ex:'Bon Iver, Phoebe Bridgers, Frank Ocean',v:[0.20,0.15,0.55,0.80,0.15,0.10]},
-  {name:'Lift me up',dim:'Mood reg.',desc:'Actively trying to feel better.',ex:'Karol G, Dua Lipa, early Kanye',v:[0.80,0.70,0.30,0.65,0.85,0.55]},
-  {name:'Deep focus',dim:'Arousal reg.',desc:'Brain needs to work. Music as scaffold.',ex:'Brian Eno, Tycho, Nils Frahm',v:[0.30,0.20,0.25,0.10,0.55,0.15]},
-  {name:'In motion',dim:'Arousal reg.',desc:'Physical. Drive and rhythm above all.',ex:'Kendrick, Metro Boomin, electronic',v:[0.90,0.80,0.35,0.50,0.65,0.40]},
-  {name:'Wind down',dim:'Arousal reg.',desc:'End of day. Landing the plane.',ex:'Grouper, Massive Attack, jazz',v:[0.15,0.25,0.40,0.30,0.50,0.20]},
-  {name:'The room',dim:'Social',desc:'People around you. Music that pulls a room.',ex:'Afrobeats, EDM, Jonas Brothers',v:[0.85,0.90,0.20,0.60,0.80,0.95]},
-  {name:'Background',dim:'Social',desc:'Present but not demanding.',ex:'Norah Jones, bossa nova, Sade',v:[0.30,0.40,0.20,0.25,0.60,0.65]},
-  {name:'Night drive',dim:'Social',desc:'Moving through space. Cinematic.',ex:'The Weeknd, Beach House, Kavinsky',v:[0.45,0.40,0.25,0.45,0.35,0.30]},
-  {name:'Lost in it',dim:'Self-aware',desc:'Full attention. Music is the experience.',ex:'Radiohead, Kendrick albums, Arca',v:[0.50,0.30,0.50,0.55,0.45,0.10]},
+  {name:'Pop',         dim:'Genre',desc:'The mainstream centre. Vocal-forward, balanced groove and energy.',    ex:'Dua Lipa, The Weeknd, Doja Cat',    v:[0.64,0.61,0.76,0.97,0.53,0.55]},
+  {name:'Hip-Hop',     dim:'Genre',desc:'Groove-forward, vocal-driven. High danceability, high social.',       ex:'Kendrick, Drake, Cardi B',           v:[0.69,0.73,0.84,0.99,0.55,0.63]},
+  {name:'R&B',         dim:'Genre',desc:'Warm, emotional, smooth. Highest Emotion score in the set.',         ex:'Frank Ocean, SZA, Daniel Caesar',    v:[0.59,0.66,0.73,0.99,0.59,0.55]},
+  {name:'Rock',        dim:'Genre',desc:'High energy, low groove. Fidelity-polished, guitar-forward.',        ex:'Arctic Monkeys, Nirvana, Foo Fighters',v:[0.76,0.50,0.89,0.96,0.49,0.55]},
+  {name:'Electronic',  dim:'Genre',desc:'Dark, intense, reduced vocals. Progressive and driving.',             ex:'Aphex Twin, Nine Inch Nails, HEALTH', v:[0.78,0.61,0.90,0.73,0.37,0.61]},
+  {name:'House',       dim:'Genre',desc:'Groove-forward, mostly instrumental. Warm dancefloor energy.',       ex:'deadmau5, Four Tet, Peggy Gou',      v:[0.73,0.70,0.90,0.54,0.40,0.63]},
+  {name:'Dance Party', dim:'Genre',desc:'High energy, high social, high emotion. Peak communal joy.',         ex:'Marshmello, ABBA, Calvin Harris',    v:[0.76,0.65,0.88,0.96,0.59,0.62]},
+  {name:'Jazz',        dim:'Genre',desc:'Intimate, analog warmth. More energetic than assumed — vocal-heavy.',ex:'Miles Davis, Chet Baker, Norah Jones',v:[0.50,0.56,0.64,0.95,0.55,0.46]},
+  {name:'Chill',       dim:'Mood', desc:'Lower groove and vocals than expected. More instrumental than felt.', ex:'beabadoobee, Vansire, Tame Impala',  v:[0.43,0.55,0.59,0.58,0.34,0.42]},
+  {name:'Ambient',     dim:'Mood', desc:'Nearly instrumental. Very low Emotion and Social. Stillness.',       ex:'Brian Eno, Stars of the Lid, Ryuichi',v:[0.35,0.42,0.51,0.28,0.22,0.33]},
 ];
 
 const pp=document.getElementById('presets');

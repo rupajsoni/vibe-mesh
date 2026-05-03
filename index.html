@@ -166,13 +166,11 @@ input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin:
         <div class="sliders-inner" id="sliders"></div>
         <div class="era-row">
           <div class="era-top">
-            <span class="era-label">✦ Time Travel <span class="era-badge">optional</span></span>
-            <span class="era-val" id="dv">All time</span>
+            <span class="era-label">✦ Time Travel <span class="era-badge" style="background:var(--faint);color:var(--text)">coming soon</span></span>
           </div>
-          <div class="era-toggle"><input type="checkbox" id="eraToggle"><label for="eraToggle">Enable era</label></div>
-          <div class="era-sub">Leave it off for all time. Turn it on to softly lean toward an era.</div>
-          <input type="range" class="era-slider" id="ds" min="1950" max="2026" value="1998" disabled>
-          <div class="era-effect" id="dfx">Off = all time</div>
+          <div class="era-sub" style="color:var(--faint)">Soft era nudge — coming in a future update.</div>
+          <input type="range" class="era-slider" id="ds" min="1950" max="2026" value="1998" disabled style="opacity:0.2">
+          <div class="era-effect" id="dfx"></div>
         </div>
       </div>
 
@@ -251,16 +249,16 @@ axes.forEach((n,i)=>{
 });
 
 const moods=[
-  {name:'Release',icon:'🔥',v:[0.85,0.35,0.3,0.75,0.2,0.25]},
-  {name:'Heartbreak',icon:'💔',v:[0.2,0.15,0.45,0.8,0.15,0.1]},
-  {name:'Lift me up',icon:'☀️',v:[0.8,0.7,0.7,0.65,0.85,0.55]},
-  {name:'Deep focus',icon:'🧠',v:[0.3,0.2,0.75,0.1,0.55,0.15]},
-  {name:'In motion',icon:'🏃',v:[0.9,0.8,0.65,0.5,0.65,0.4]},
-  {name:'Wind down',icon:'🌙',v:[0.15,0.25,0.6,0.3,0.5,0.2]},
-  {name:'The room',icon:'🎉',v:[0.85,0.9,0.8,0.6,0.8,0.95]},
-  {name:'Background',icon:'☕',v:[0.3,0.4,0.8,0.25,0.6,0.65]},
-  {name:'Night drive',icon:'🌃',v:[0.45,0.4,0.75,0.45,0.35,0.3]},
-  {name:'Lost in it',icon:'🎧',v:[0.5,0.3,0.5,0.55,0.45,0.1]},
+  {name:'Pop',         icon:'🎵',v:[0.64,0.61,0.76,0.97,0.53,0.55]},
+  {name:'Hip-Hop',     icon:'🎤',v:[0.69,0.73,0.84,0.99,0.55,0.63]},
+  {name:'R&B',         icon:'🌊',v:[0.59,0.66,0.73,0.99,0.59,0.55]},
+  {name:'Rock',        icon:'🎸',v:[0.76,0.50,0.89,0.96,0.49,0.55]},
+  {name:'Electronic',  icon:'⚡',v:[0.78,0.61,0.90,0.73,0.37,0.61]},
+  {name:'House',       icon:'🔊',v:[0.73,0.70,0.90,0.54,0.40,0.63]},
+  {name:'Dance Party', icon:'🕺',v:[0.76,0.65,0.88,0.96,0.59,0.62]},
+  {name:'Jazz',        icon:'🎷',v:[0.50,0.56,0.64,0.95,0.55,0.46]},
+  {name:'Chill',       icon:'🌙',v:[0.43,0.55,0.59,0.58,0.34,0.42]},
+  {name:'Ambient',     icon:'🌌',v:[0.35,0.42,0.51,0.28,0.22,0.33]},
 ];
 
 function loadMood(v,name){
@@ -395,23 +393,6 @@ function renderSongs(){
   window.addEventListener('touchend',()=>dragging=-1);
 })();
 
-const eraToggle=document.getElementById('eraToggle');
-const eraSlider=document.getElementById('ds');
-function updateEraUI(){
-  if(!eraToggle.checked){
-    eraSlider.disabled=true;
-    document.getElementById('dv').textContent='All time';
-    document.getElementById('dfx').textContent='Off = all time';
-    return;
-  }
-  eraSlider.disabled=false;
-  const year=parseInt(eraSlider.value);
-  document.getElementById('dv').textContent=String(year);
-  document.getElementById('dfx').textContent='Soft nudge around '+year;
-}
-eraToggle.addEventListener('change',updateEraUI);
-eraSlider.addEventListener('input',updateEraUI);
-updateEraUI();
 
 // Pane resize
 (function(){
