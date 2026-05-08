@@ -1,0 +1,13 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Vibe Mesh icon: smooth interlocking waves -->
+  <g fill="currentColor">
+    <!-- Left stripe -->
+    <path d="M 30 70 Q 45 50 65 45 Q 85 42 100 60 L 100 140 Q 85 158 65 155 Q 45 150 30 130 Z" stroke-linejoin="round"/>
+
+    <!-- Center stripe -->
+    <path d="M 100 60 Q 115 50 135 50 Q 155 50 165 70 L 165 130 Q 155 150 135 150 Q 115 150 100 140 Z" stroke-linejoin="round"/>
+
+    <!-- Right stripe (top) -->
+    <path d="M 135 50 Q 155 40 170 60 Q 180 75 180 95 L 180 105 Q 180 125 170 140 Q 155 160 135 150 Q 155 130 155 95 Q 155 70 135 50 Z" stroke-linejoin="round"/>
+  </g>
+</svg>
