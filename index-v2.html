@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vibe Mesh — Find your vibe</title>
+<title>Vibe Mesh — How do you want to feel?</title>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -70,23 +70,61 @@ body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-s
 .slider-name-wrap { display: flex; align-items: center; gap: 5px; }
 .axis-icon { font-size: 12px; }
 .slider-name { font-size: 12px; font-weight: 600; }
-.slider-val { font-size: 11px; font-weight: 700; color: var(--green); }
+.slider-val { font-size: 12px; font-weight: 800; letter-spacing: -0.2px; transition: color 0.15s; }
 .slider-ends { display: flex; justify-content: space-between; }
 .slider-end { font-size: 9px; color: var(--faint); }
-input[type=range] { width: 100%; height: 3px; accent-color: var(--green); cursor: pointer; margin: 2px 0; }
 
-/* Time travel */
+/* Gradient slider */
+input[type=range].gs {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  margin: 4px 0;
+}
+input[type=range].gs::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+}
+input[type=range].gs::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  margin-top: -4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  cursor: pointer;
+  transition: box-shadow 0.12s;
+}
+input[type=range].gs::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.12), 0 1px 4px rgba(0,0,0,0.6);
+}
+input[type=range].gs::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+}
+input[type=range].gs::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  border: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  cursor: pointer;
+}
+
+/* Era row */
 .era-row { flex-shrink: 0; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--surface2); }
 .era-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
 .era-label { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
 .era-badge { font-size: 8px; font-weight: 700; background: var(--green); color: #000; padding: 1px 5px; border-radius: 8px; text-transform: uppercase; }
-.era-val { font-size: 11px; font-weight: 700; color: var(--green); }
 .era-sub { font-size: 10px; color: var(--faint); margin-bottom: 2px; }
-.era-effect { font-size: 10px; color: var(--green); min-height: 13px; }
 input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin: 2px 0; }
-.era-toggle { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; font-size: 10px; color: var(--muted); }
-.era-toggle input { accent-color: var(--green); }
-.era-slider:disabled { opacity: 0.35; }
+.era-slider:disabled { opacity: 0.2; }
 
 /* Results */
 .results-pane { background: var(--surface); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; min-width: 160px; flex-shrink: 0; }
@@ -102,6 +140,9 @@ input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin:
 .more-btn { flex-shrink: 0; margin-top: 6px; padding: 7px; background: transparent; border: 1px solid var(--surface3); border-radius: 14px; font-size: 11px; font-weight: 600; color: var(--faint); cursor: not-allowed; opacity: 0.45; }
 .results-note { flex-shrink: 0; font-size: 9px; color: var(--faint); font-style: italic; text-align: center; margin-top: 4px; }
 
+/* version badge */
+.v2-badge { font-size: 9px; font-weight: 700; background: #2a1a4a; color: #a78bfa; padding: 2px 7px; border-radius: 8px; border: 1px solid #3d2d6b; margin-left: 8px; vertical-align: middle; }
+
 @media (max-width: 900px) {
   .sidebar { display: none; }
   html, body { overflow: auto; }
@@ -115,7 +156,8 @@ input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin:
   <div class="sidebar">
     <div class="logo"><div class="logo-mark">V</div><span class="logo-text">Vibe Mesh</span></div>
     <div class="nav">
-      <div class="nav-item active">🎯 Find your vibe</div>
+      <div class="nav-item" onclick="window.location='index.html'">🎯 Find your vibe <span style="font-size:9px;color:var(--faint);margin-left:4px">v1</span></div>
+      <div class="nav-item active">✨ Feel it first <span style="font-size:9px;color:#a78bfa;margin-left:4px">v2</span></div>
       <div class="nav-item" onclick="window.location='living-brief.html'">🔬 Full brief</div>
     </div>
     <div class="nav-section">Presets</div>
@@ -134,8 +176,8 @@ input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin:
 
   <div class="main">
     <div class="topbar">
-      <div class="topbar-title">Search from the <span>heart.</span></div>
-      <div class="topbar-sub">Move the sliders to describe how you want music to feel. We find what lives there.</div>
+      <div class="topbar-title">Search from the <span>heart.</span><span class="v2-badge">v2 experiment</span></div>
+      <div class="topbar-sub">Each slider speaks in feeling, not numbers. Drag until it matches the inside of your head.</div>
       <div class="presets-row" id="presetChips"></div>
     </div>
 
@@ -143,7 +185,6 @@ input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin:
 
       <!-- Radar -->
       <div class="radar-pane" id="pane0">
-
         <div class="pane-label">Vibe vector</div>
         <div class="radar-wrap">
           <svg id="radar" viewBox="0 0 200 200" width="100%" height="100%" style="max-width:100%; max-height:100%;">
@@ -162,15 +203,14 @@ input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin:
 
       <!-- Sliders -->
       <div class="sliders-pane" id="pane1">
-        <div class="pane-label">Tune your axes</div>
+        <div class="pane-label">How do you want to feel?</div>
         <div class="sliders-inner" id="sliders"></div>
         <div class="era-row">
           <div class="era-top">
             <span class="era-label">✦ Time Travel <span class="era-badge" style="background:var(--faint);color:var(--text)">coming soon</span></span>
           </div>
           <div class="era-sub" style="color:var(--faint)">Soft era nudge — coming in a future update.</div>
-          <input type="range" class="era-slider" id="ds" min="1950" max="2026" value="1998" disabled style="opacity:0.2">
-          <div class="era-effect" id="dfx"></div>
+          <input type="range" class="era-slider" id="ds" min="1950" max="2026" value="1998" disabled>
         </div>
       </div>
 
@@ -189,13 +229,39 @@ input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin:
 </div>
 
 <script>
-const axes=['Energy','Groove','Fidelity','Vocals','Emotion','Social'];
-const icons=['⚡','🎵','📻','🎤','🌗','👥'];
-const mins=['Weightless','Static','Lo-fi','Instrumental','Dark','Solitary'];
-const maxs=["Full rage","Can't stop","Hi-fi","Raw","Euphoric","Communal"];
+const axisConfigs = [
+  { name: 'Energy',   icon: '⚡', labels: ['Still','Steady','Drive','Hype','Rage'],
+    grad: ['#2c3e6b','#e84c0a'] },
+  { name: 'Groove',   icon: '🎵', labels: ['Static','Barely','Nodding','Locked','Pulsing'],
+    grad: ['#1a2035','#00e676'] },
+  { name: 'Fidelity', icon: '📻', labels: ['Raw','Warm','Clear','Crisp','Hi-fi'],
+    grad: ['#5c3d2e','#26c6da'] },
+  { name: 'Vocals',   icon: '🎤', labels: ['Silent','Faint','Melodic','Forward','Loud'],
+    grad: ['#1a237e','#ef6c00'] },
+  { name: 'Emotion',  icon: '🌗', labels: ['Desolate','Heavy','Even','Hopeful','Euphoric'],
+    grad: ['#1a0533','#3d2d5f','#ffca28'] },
+  { name: 'Social',   icon: '👥', labels: ['Solo','Quiet','Mixed','Together','The Room'],
+    grad: ['#0d1b2a','#ff6b35'] },
+];
+
 const cx=100,cy=100,maxR=68;
 const angles=[-90,-30,30,90,150,210].map(d=>d*Math.PI/180);
 let vals=[0.7,0.6,0.3,0.5,0.75,0.5];
+
+function getLabel(cfg, val) {
+  return cfg.labels[Math.round(val * 4)];
+}
+
+function getGradientCSS(cfg) {
+  if (cfg.grad.length === 3) {
+    return `linear-gradient(to right, ${cfg.grad[0]}, ${cfg.grad[1]} 50%, ${cfg.grad[2]})`;
+  }
+  return `linear-gradient(to right, ${cfg.grad[0]}, ${cfg.grad[1]})`;
+}
+
+function accentColor(cfg) {
+  return cfg.grad[cfg.grad.length - 1];
+}
 
 function svgEl(tag,attrs){
   const el=document.createElementNS('http://www.w3.org/2000/svg',tag);
@@ -207,44 +273,65 @@ function buildGrid(){
   const grid=document.getElementById('radarGrid');
   const labels=document.getElementById('radarLabels');
   grid.innerHTML='';labels.innerHTML='';
-  // Ring lines at 25%, 50%, 75%, 100%
   [0.25,0.5,0.75,1].forEach(frac=>{
     const pts=angles.map(a=>`${cx+frac*maxR*Math.cos(a)},${cy+frac*maxR*Math.sin(a)}`).join(' ');
     grid.appendChild(svgEl('polygon',{points:pts,fill:'none',stroke:'rgba(255,255,255,0.06)','stroke-width':'1'}));
   });
-  // Axis spokes
   angles.forEach(a=>{
     grid.appendChild(svgEl('line',{x1:cx,y1:cy,x2:cx+maxR*Math.cos(a),y2:cy+maxR*Math.sin(a),stroke:'rgba(255,255,255,0.07)','stroke-width':'1'}));
   });
-  // Labels — offset outward past maxR
   const labelR=maxR+14;
   const labelOffset=[[0,-4],[6,0],[6,0],[0,5],[-6,0],[-6,0]];
-  axes.forEach((name,i)=>{
+  axisConfigs.forEach((cfg,i)=>{
     const lx=cx+labelR*Math.cos(angles[i])+(labelOffset[i]||[0,0])[0];
     const ly=cy+labelR*Math.sin(angles[i])+(labelOffset[i]||[0,0])[1];
     const anchor=i===0||i===3?'middle':i<3?'start':'end';
     const t=svgEl('text',{x:lx,y:ly,'text-anchor':anchor,fill:'#666','font-size':'9','font-family':'Figtree,sans-serif','font-weight':'600','dominant-baseline':'middle'});
-    t.textContent=name;
+    t.textContent=cfg.name;
     labels.appendChild(t);
   });
 }
 
-
 function pt(i,v){const r=v*maxR;return[cx+r*Math.cos(angles[i]),cy+r*Math.sin(angles[i])];}
+
 function draw(){
   const pts=vals.map((v,i)=>pt(i,v));
   document.getElementById('dp').setAttribute('points',pts.map(p=>p.join(',')).join(' '));
   pts.forEach((p,i)=>{const d=document.getElementById('d'+i);d.setAttribute('cx',p[0]);d.setAttribute('cy',p[1]);});
 }
 
+// Build sliders
 const sw=document.getElementById('sliders');
-axes.forEach((n,i)=>{
+const labelUpdaters=[];
+
+axisConfigs.forEach((cfg,i)=>{
   const r=document.createElement('div');r.className='slider-row';
-  r.innerHTML=`<div class="slider-top"><div class="slider-name-wrap"><span class="axis-icon">${icons[i]}</span><span class="slider-name">${n}</span></div><span class="slider-val" id="sv${i}">${vals[i].toFixed(2)}</span></div><input type="range" min="0" max="100" value="${Math.round(vals[i]*100)}" id="sl${i}"><div class="slider-ends"><span class="slider-end">${mins[i]}</span><span class="slider-end">${maxs[i]}</span></div>`;
+  r.innerHTML=`
+    <div class="slider-top">
+      <div class="slider-name-wrap"><span class="axis-icon">${cfg.icon}</span><span class="slider-name">${cfg.name}</span></div>
+      <span class="slider-val" id="sv${i}"></span>
+    </div>
+    <input type="range" min="0" max="100" value="${Math.round(vals[i]*100)}" id="sl${i}" class="gs">
+    <div class="slider-ends"><span class="slider-end">${cfg.labels[0]}</span><span class="slider-end">${cfg.labels[4]}</span></div>`;
   sw.appendChild(r);
-  document.getElementById('sl'+i).addEventListener('input',e=>{
-    vals[i]=e.target.value/100;document.getElementById('sv'+i).textContent=vals[i].toFixed(2);
-    draw();renderSongs();document.querySelectorAll('.preset-chip,.mood-nav-item').forEach(b=>b.classList.remove('active'));
+
+  const sl=document.getElementById('sl'+i);
+  const sv=document.getElementById('sv'+i);
+
+  sl.style.background=getGradientCSS(cfg);
+  sv.style.color=accentColor(cfg);
+
+  function updateLabel(){
+    sv.textContent=getLabel(cfg,vals[i]);
+  }
+  labelUpdaters.push(updateLabel);
+  updateLabel();
+
+  sl.addEventListener('input',e=>{
+    vals[i]=e.target.value/100;
+    updateLabel();
+    draw();renderSongs();
+    document.querySelectorAll('.preset-chip,.mood-nav-item').forEach(b=>b.classList.remove('active'));
   });
 });
 
@@ -262,7 +349,12 @@ const moods=[
 ];
 
 function loadMood(v,name){
-  v.forEach((val,i)=>{vals[i]=val;const sl=document.getElementById('sl'+i);if(sl){sl.value=Math.round(val*100);document.getElementById('sv'+i).textContent=val.toFixed(2);}});
+  v.forEach((val,i)=>{
+    vals[i]=val;
+    const sl=document.getElementById('sl'+i);
+    if(sl) sl.value=Math.round(val*100);
+    if(labelUpdaters[i]) labelUpdaters[i]();
+  });
   draw();renderSongs();
   document.querySelectorAll('.preset-chip,.mood-nav-item').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll(`[data-mood="${name}"]`).forEach(b=>b.classList.add('active'));
@@ -304,6 +396,7 @@ async function renderSongs(){
   }
 }
 
+// Radar drag
 (function(){
   const svg=document.getElementById('radar');
   let dragging=-1;
@@ -327,8 +420,9 @@ async function renderSongs(){
     const clientX=e.clientX||e.touches[0].clientX;
     const clientY=e.clientY||e.touches[0].clientY;
     vals[dragging]=getVal(clientX,clientY,dragging);
-    document.getElementById('sl'+dragging).value=Math.round(vals[dragging]*100);
-    document.getElementById('sv'+dragging).textContent=vals[dragging].toFixed(2);
+    const sl=document.getElementById('sl'+dragging);
+    if(sl) sl.value=Math.round(vals[dragging]*100);
+    if(labelUpdaters[dragging]) labelUpdaters[dragging]();
     draw();renderSongs();
     document.querySelectorAll('.preset-chip,.mood-nav-item').forEach(b=>b.classList.remove('active'));
   }
@@ -344,7 +438,6 @@ async function renderSongs(){
   window.addEventListener('touchend',()=>dragging=-1);
 })();
 
-
 // Pane resize
 (function(){
   const panes=[
@@ -356,7 +449,6 @@ async function renderSongs(){
     document.getElementById('handle0'),
     document.getElementById('handle1'),
   ];
-
   const container=document.querySelector('.panes');
   function setWidths(w0,w1,w2){
     panes[0].style.width=w0+'px';panes[0].style.flexShrink='0';
