@@ -105,9 +105,15 @@ input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin:
 .results-inner::-webkit-scrollbar { width: 3px; }
 .results-inner::-webkit-scrollbar-track { background: transparent; }
 .results-inner::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+.results-header { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; margin-bottom: 10px; }
+.results-header .pane-label { margin-bottom: 0; }
+.shuffle-btn { background: none; border: 1px solid var(--surface3); color: var(--muted); border-radius: 4px; width: 22px; height: 22px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: color 0.15s, border-color 0.15s; padding: 0; line-height: 1; }
+.shuffle-btn:hover { color: var(--text); border-color: var(--muted); }
+@keyframes spin-once { to { transform: rotate(360deg); } }
+.shuffle-btn.spinning { animation: spin-once 0.4s linear; }
 .spotify-player { flex-shrink: 0; margin-top: 8px; border-radius: 8px; overflow: hidden; display: none; }
 .spotify-player.visible { display: block; }
-#spotifyEmbed { border: none; width: 100%; height: 80px; display: block; }
+#spotifyEmbed { width: 100%; height: 80px; } #spotifyEmbed iframe { border: none; display: block; }
 a.playing .song-row { background: rgba(29,185,84,0.07); }
 a.playing .song-idx { color: var(--green); }
 
@@ -181,9 +187,9 @@ a.playing .song-idx { color: var(--green); }
       <span class="logo-text">Vibe Mesh</span>
     </div>
     <div class="nav">
-      <div class="nav-item" onclick="window.location='index.html'">🎯 Find your vibe <span style="font-size:9px;color:var(--faint);margin-left:4px">v1</span></div>
-      <div class="nav-item" onclick="window.location='index-v2.html'">✨ Feel it first <span style="font-size:9px;color:#a78bfa;margin-left:4px">v2</span></div>
-      <div class="nav-item active">🧪 Beta feedback <span style="font-size:9px;color:#f97316;margin-left:4px">beta</span></div>
+      <div class="nav-item" onclick="window.location='index.html'">✨ Find your vibe</div>
+      <div class="nav-item" </div>
+      <div class="nav-item active">🧪 Beta feedback</div>
       <div class="nav-item" onclick="window.location='living-brief.html'">🔬 Full brief</div>
     </div>
     <div class="nav-section">By feeling</div>
@@ -242,10 +248,13 @@ a.playing .song-idx { color: var(--green); }
       <div class="drag-handle" id="handle1"></div>
 
       <div class="results-pane" id="pane2">
-        <div class="pane-label">Music for your vibe</div>
+        <div class="results-header">
+          <span class="pane-label">Music for your vibe</span>
+          <button class="shuffle-btn" id="shuffleBtn" title="Shuffle">↻</button>
+        </div>
         <div class="results-inner" id="songList"></div>
         <div class="spotify-player" id="spotifyPlayer">
-          <iframe id="spotifyEmbed" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+          <div id="spotifyEmbed"></div>
         </div>
         <div class="export-bar">
           <span class="results-note">anchor + discovery blend</span>
@@ -441,12 +450,12 @@ function restoreRatings(){
 // === Song rendering ===
 function colorFromArtist(a){ const h=a.split('').reduce((s,c)=>s+c.charCodeAt(0),0)%360; return `hsl(${h},45%,25%)`; }
 
-const API_BASE=new URL(new URLSearchParams(window.location.search).get('api')||'http://localhost:8080',window.location).href.replace(/\/$/,'');
+const API_BASE=new URL(new URLSearchParams(window.location.search).get('api')||'https://vibe-mesh.fly.dev',window.location).href.replace(/\/$/,'');
 
 const FETCH_SIZE=50, PAGE_SIZE=10;
 let allResults=[], renderedCount=0, scrollObserver=null;
 
-function makeSongBlock(r,idx){
+function makeSongBlock(r,arrIdx){
   const id=esc(r.song.id), title=esc(r.song.title), artist=esc(r.song.artist);
   const score=Math.round(r.score*100);
   const stars=[1,2,3,4,5].map(n=>`<span class="star" data-r="${n}">☆</span>`).join('');
@@ -457,8 +466,9 @@ function makeSongBlock(r,idx){
   link.href=`https://open.spotify.com/track/${r.song.id}`;
   link.target='_blank'; link.rel='noopener noreferrer';
   link.style.cssText='text-decoration:none;color:inherit;display:block;';
+  link.dataset.idx=arrIdx;
   link.innerHTML=`<div class="song-row">
-    <span class="song-idx">${idx}</span>
+    <span class="song-idx">${arrIdx+1}</span>
     <div class="song-art" style="background:${colorFromArtist(r.song.artist)}"></div>
     <div class="song-info"><div class="song-title">${title}</div><div class="song-artist">${artist}</div></div>
     <div class="song-meta"><span class="song-pct">${score}%</span><div class="song-stars">${stars}</div></div>
@@ -477,7 +487,7 @@ function renderBatch(){
   if(!batch.length) return;
   const start=renderedCount;
   const frag=document.createDocumentFragment();
-  batch.forEach((r,i)=>frag.appendChild(makeSongBlock(r,start+i+1)));
+  batch.forEach((r,i)=>frag.appendChild(makeSongBlock(r,start+i)));
   list.appendChild(frag);
   renderedCount+=batch.length;
   restoreRatings();
@@ -493,15 +503,16 @@ function attachSentinel(){
     if(!entry.isIntersecting) return;
     s.remove();
     renderBatch();
-  },{root:document.getElementById('pane2'),rootMargin:'0px 0px 120px 0px'});
+  },{root:document.getElementById('songList'),rootMargin:'0px 0px 120px 0px'});
   scrollObserver.observe(s);
 }
 
-async function renderSongs(){
+async function renderSongs(overrideVals){
   const list=document.getElementById('songList');
   if(scrollObserver){scrollObserver.disconnect();scrollObserver=null;}
-  activeLink=null;
-  const query={vibe:{energy:vals[0],groove:vals[1],fidelity:vals[2],vocals:vals[3],emotion:vals[4],social:vals[5]},top_k:FETCH_SIZE};
+  activeLink=null; activeIndex=-1; nextTriggered=false;
+  const qVals=overrideVals||vals;
+  const query={vibe:{energy:qVals[0],groove:qVals[1],fidelity:qVals[2],vocals:qVals[3],emotion:qVals[4],social:qVals[5]},top_k:FETCH_SIZE};
   try{
     const resp=await fetch(API_BASE+'/v1/tracks/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(query)});
     if(!resp.ok){ list.innerHTML='<div style="padding:12px;font-size:12px;color:var(--faint)">Error loading results</div>'; return; }
@@ -596,13 +607,29 @@ document.getElementById('exportBtn').addEventListener('click',()=>{
 });
 
 // === Spotify embed ===
-let activeLink=null;
-function playTrack(trackId,linkEl){
-  document.getElementById('spotifyEmbed').src=`https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0&autoplay=1`;
+let embedController=null,activeLink=null,activeIndex=-1,nextTriggered=false;
+window.onSpotifyIframeApiReady=(IFrameAPI)=>{
+  IFrameAPI.createController(document.getElementById('spotifyEmbed'),{width:'100%',height:'80'},(ctrl)=>{
+    embedController=ctrl;
+    ctrl.addListener('playback_update',e=>{
+      const{duration,isPaused,position}=e.data;
+      if(!isPaused&&duration>0&&position>=duration-2&&!nextTriggered){nextTriggered=true;playNextTrack();}
+    });
+  });
+};
+function playNextTrack(){
+  if(activeIndex<0||activeIndex>=allResults.length-1) return;
+  const ni=activeIndex+1;
+  let nl=document.querySelector(`[data-idx="${ni}"]`);
+  if(!nl){while(renderedCount<=ni&&renderedCount<allResults.length)renderBatch();nl=document.querySelector(`[data-idx="${ni}"]`);}
+  if(nl){nl.scrollIntoView({behavior:'smooth',block:'nearest'});playTrack(allResults[ni].song.id,nl,ni);}
+}
+function playTrack(trackId,linkEl,idx){
   document.getElementById('spotifyPlayer').classList.add('visible');
   if(activeLink) activeLink.classList.remove('playing');
   linkEl.classList.add('playing');
-  activeLink=linkEl;
+  activeLink=linkEl; activeIndex=idx; nextTriggered=false;
+  if(embedController){embedController.loadUri(`spotify:track:${trackId}`);embedController.play();}
 }
 document.getElementById('songList').addEventListener('click',e=>{
   if(e.target.closest('.star')||e.target.closest('.note-row')) return;
@@ -610,8 +637,18 @@ document.getElementById('songList').addEventListener('click',e=>{
   if(!link) return;
   e.preventDefault();
   const trackId=link.href.split('/track/')[1]?.split('?')[0];
-  if(trackId) playTrack(trackId,link);
+  const idx=parseInt(link.dataset.idx??'-1');
+  if(trackId) playTrack(trackId,link,idx);
 });
+
+// === Shuffle ===
+function shuffleQuery(){
+  const btn=document.getElementById('shuffleBtn');
+  btn.classList.add('spinning');
+  btn.addEventListener('animationend',()=>btn.classList.remove('spinning'),{once:true});
+  renderSongs(vals.map(v=>Math.min(1,Math.max(0,v+(Math.random()-0.5)*0.16))));
+}
+document.getElementById('shuffleBtn').addEventListener('click',shuffleQuery);
 
 // === Radar drag ===
 (function(){
@@ -671,5 +708,6 @@ draw();
 renderSongs();
 updateExportBtn();
 </script>
+<script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
 </html>
