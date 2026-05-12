@@ -461,7 +461,7 @@ moods.forEach(m=>{
 function getColorFromArtist(artist){const h=artist.split('').reduce((a,c)=>a+c.charCodeAt(0),0)%360;return`hsl(${h},45%,25%)`;}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-const API_BASE=new URL(new URLSearchParams(window.location.search).get('api')||'https://vibe-mesh.fly.dev',window.location).href.replace(/\/$/,'');
+const API_BASE=new URL(new URLSearchParams(window.location.search).get('api')||'http://localhost:8080',window.location).href.replace(/\/$/,'');
 
 const FETCH_SIZE=50, PAGE_SIZE=10;
 let allResults=[], renderedCount=0, scrollObserver=null;
