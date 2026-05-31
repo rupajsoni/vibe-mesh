@@ -1,0 +1,25 @@
+# Compiled binaries
+api
+enrich
+similarity
+bin/
+
+# Test binaries
+*.test
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+
+# Environment
+.env
+.env.local
+
+# Personal writing drafts
+side-quests/editor-rupaj/

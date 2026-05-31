@@ -163,6 +163,9 @@ a.playing .song-idx { color: var(--green); }
 }
 .export-btn:hover { text-decoration: underline; }
 .export-btn:disabled { color: var(--faint); cursor: default; text-decoration: none; }
+.info-btn { background: none; border: none; color: var(--faint); cursor: pointer; font-size: 10px; padding: 0 2px; line-height: 1; transition: color 0.15s; flex-shrink: 0; }
+.info-btn:hover { color: var(--muted); }
+#info-popup { position: fixed; background: #1a1a1a; border: 1px solid var(--surface3); border-radius: 6px; padding: 8px 10px; font-size: 11px; color: var(--text); max-width: 200px; line-height: 1.5; z-index: 1000; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.5); pointer-events: none; }
 
 /* Badges */
 .beta-badge {
@@ -211,6 +214,7 @@ a.playing .song-idx { color: var(--green); }
     <div class="topbar">
       <div class="topbar-title">Search from the <span>heart.</span><span class="beta-badge">BETA</span></div>
       <div class="topbar-sub">Rate what lands and what doesn't. Your signal shapes the algorithm.</div>
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;font-size:9px;color:var(--faint);">Genre starting points <button class="info-btn" data-info="Starting points. Tap one to load a preset vibe, then tune from there.">ⓘ</button></div>
       <div class="presets-row" id="presetChips"></div>
     </div>
 
@@ -234,7 +238,7 @@ a.playing .song-idx { color: var(--green); }
       <div class="drag-handle" id="handle0"></div>
 
       <div class="sliders-pane" id="pane1">
-        <div class="pane-label">How do you want to feel?</div>
+        <div class="pane-label" style="display:flex;align-items:center;gap:5px;">How do you want to feel? <button class="info-btn" data-info="This isn't keyword search. Move the sliders to describe the feeling you want — the music finds you.">ⓘ</button></div>
         <div class="sliders-inner" id="sliders"></div>
         <div class="era-row">
           <div class="era-top">
@@ -249,7 +253,7 @@ a.playing .song-idx { color: var(--green); }
 
       <div class="results-pane" id="pane2">
         <div class="results-header">
-          <span class="pane-label">Music for your vibe</span>
+          <span class="pane-label" style="display:flex;align-items:center;gap:5px;">Music for your vibe <button class="info-btn" data-info="How closely this song's vibe matches your slider position. Not popularity.">ⓘ</button></span>
           <button class="shuffle-btn" id="shuffleBtn" title="Shuffle">↻</button>
         </div>
         <div class="results-inner" id="songList"></div>
@@ -268,12 +272,12 @@ a.playing .song-idx { color: var(--green); }
 
 <script>
 const axisConfigs = [
-  { name:'Energy',   icon:'⚡', labels:['Still','Steady','Drive','Hype','Rage'],        grad:['#2c3e6b','#e84c0a'] },
-  { name:'Groove',   icon:'🎵', labels:['Static','Barely','Nodding','Locked','Pulsing'], grad:['#1a2035','#00e676'] },
-  { name:'Fidelity', icon:'📻', labels:['Raw','Warm','Clear','Crisp','Hi-fi'],           grad:['#5c3d2e','#26c6da'] },
-  { name:'Vocals',   icon:'🎤', labels:['Silent','Faint','Melodic','Forward','Loud'],    grad:['#1a237e','#ef6c00'] },
-  { name:'Emotion',  icon:'🌗', labels:['Desolate','Heavy','Even','Hopeful','Euphoric'], grad:['#1a0533','#3d2d5f','#ffca28'] },
-  { name:'Social',   icon:'👥', labels:['Solo','Quiet','Mixed','Together','The Room'],   grad:['#0d1b2a','#ff6b35'] },
+  { name:'Energy',   icon:'⚡', labels:['Still','Steady','Drive','Hype','Rage'],        grad:['#2c3e6b','#e84c0a'], info:'How intense and physical the music feels. Bon Iver (low) → Slayer (high).' },
+  { name:'Groove',   icon:'🎵', labels:['Static','Barely','Nodding','Locked','Pulsing'], grad:['#1a2035','#00e676'], info:'How much the rhythm makes you move. Slayer (low) → James Brown (high).' },
+  { name:'Fidelity', icon:'📻', labels:['Raw','Warm','Clear','Crisp','Hi-fi'],           grad:['#5c3d2e','#26c6da'], info:'Production texture — raw warmth to studio gloss. Cassette lo-fi → Max Martin pop.' },
+  { name:'Vocals',   icon:'🎤', labels:['Silent','Faint','Melodic','Forward','Lead'],    grad:['#1a237e','#ef6c00'], info:'How prominent the singing is in the mix. Brian Eno (low) → Adele (high).' },
+  { name:'Emotion',  icon:'🌗', labels:['Desolate','Heavy','Even','Hopeful','Euphoric'], grad:['#1a0533','#3d2d5f','#ffca28'], info:'The emotional temperature. Phoebe Bridgers (dark) → Pharrell Williams (euphoric).' },
+  { name:'Social',   icon:'👥', labels:['Solo','Quiet','Mixed','Together','The Room'],   grad:['#0d1b2a','#ff6b35'], info:'The setting the music is built for. Bon Iver headphones → Beyoncé Homecoming.' },
 ];
 
 const cx=100, cy=100, maxR=68;
@@ -331,7 +335,7 @@ axisConfigs.forEach((cfg,i)=>{
   const r=document.createElement('div'); r.className='slider-row';
   r.innerHTML=`
     <div class="slider-top">
-      <div class="slider-name-wrap"><span class="axis-icon">${cfg.icon}</span><span class="slider-name">${cfg.name}</span></div>
+      <div class="slider-name-wrap"><span class="axis-icon">${cfg.icon}</span><span class="slider-name">${cfg.name}</span><button class="info-btn" data-info="${cfg.info}">ⓘ</button></div>
       <span class="slider-val" id="sv${i}"></span>
     </div>
     <input type="range" min="0" max="100" value="${Math.round(vals[i]*100)}" id="sl${i}" class="gs">
@@ -356,10 +360,12 @@ const moods=[
   {name:'Pop',         icon:'🎵',v:[0.64,0.61,0.76,0.97,0.53,0.55]},
   {name:'Hip-Hop',     icon:'🎤',v:[0.69,0.73,0.84,0.99,0.55,0.63]},
   {name:'R&B',         icon:'🌊',v:[0.59,0.66,0.73,0.99,0.59,0.55]},
+  {name:'Trap Soul',   icon:'💜',v:[0.30,0.62,0.65,0.78,0.32,0.28]},
   {name:'Rock',        icon:'🎸',v:[0.76,0.50,0.89,0.96,0.49,0.55]},
   {name:'Electronic',  icon:'⚡',v:[0.78,0.61,0.90,0.73,0.37,0.61]},
-  {name:'House',       icon:'🔊',v:[0.73,0.70,0.90,0.54,0.40,0.63]},
-  {name:'Dance Party', icon:'🕺',v:[0.76,0.65,0.88,0.96,0.59,0.62]},
+  {name:'House',           icon:'🔊',v:[0.73,0.70,0.90,0.54,0.40,0.63]},
+  {name:'Deep Progressive',icon:'🌀',v:[0.75,0.77,0.75,0.50,0.35,0.75]},
+  {name:'Dance Party',     icon:'🕺',v:[0.76,0.65,0.88,0.96,0.59,0.62]},
   {name:'Jazz',        icon:'🎷',v:[0.50,0.56,0.64,0.95,0.55,0.46]},
   {name:'Chill',       icon:'🌙',v:[0.43,0.55,0.59,0.58,0.34,0.42]},
   {name:'Ambient',     icon:'🌌',v:[0.35,0.42,0.51,0.28,0.22,0.33]},
@@ -608,15 +614,23 @@ document.getElementById('exportBtn').addEventListener('click',()=>{
 
 // === Spotify embed ===
 let embedController=null,activeLink=null,activeIndex=-1,nextTriggered=false;
+let lastPos=0,lastDur=0,lastPosTime=0,lastPaused=true;
 window.onSpotifyIframeApiReady=(IFrameAPI)=>{
   IFrameAPI.createController(document.getElementById('spotifyEmbed'),{width:'100%',height:'80'},(ctrl)=>{
     embedController=ctrl;
     ctrl.addListener('playback_update',e=>{
       const{duration,isPaused,position}=e.data;
-      if(!isPaused&&duration>0&&position>=duration-2&&!nextTriggered){nextTriggered=true;playNextTrack();}
+      lastPos=position;lastDur=duration;lastPosTime=Date.now();lastPaused=isPaused;
+      if(activeLink) activeLink.querySelector('.eq-bars')?.classList.toggle('paused',isPaused);
+      if(duration>0&&position>=duration-2&&!nextTriggered){nextTriggered=true;playNextTrack();}
     });
   });
 };
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden||nextTriggered||lastPaused||lastDur<=0||lastPosTime===0) return;
+  const estimated=lastPos+(Date.now()-lastPosTime)/1000;
+  if(estimated>=lastDur-2){nextTriggered=true;playNextTrack();}
+});
 function playNextTrack(){
   if(activeIndex<0||activeIndex>=allResults.length-1) return;
   const ni=activeIndex+1;
@@ -707,6 +721,9 @@ buildGrid();
 draw();
 renderSongs();
 updateExportBtn();
+
+const _ip=document.createElement('div');_ip.id='info-popup';document.body.appendChild(_ip);
+document.addEventListener('click',e=>{const b=e.target.closest('.info-btn');if(b){e.stopPropagation();const rc=b.getBoundingClientRect();_ip.textContent=b.dataset.info;_ip.style.display='block';let t=rc.bottom+6,l=rc.left;_ip.style.left=l+'px';_ip.style.top=t+'px';const pw=_ip.offsetWidth;if(l+pw>window.innerWidth-10)_ip.style.left=(window.innerWidth-pw-10)+'px';return;}_ip.style.display='none';});
 </script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>

@@ -111,8 +111,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-s
 .axis-icon { font-size: 12px; }
 .slider-name { font-size: 12px; font-weight: 600; }
 .slider-val { font-size: 12px; font-weight: 800; letter-spacing: -0.2px; transition: color 0.15s; }
-.slider-ends { display: flex; justify-content: space-between; }
-.slider-end { font-size: 9px; color: var(--faint); }
+.slider-track-row { display: flex; align-items: center; gap: 8px; }
+.slider-track-row input[type=range].gs { flex: 1; min-width: 0; }
+.slider-end { font-size: 10px; font-weight: 500; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
 
 /* Gradient slider */
 input[type=range].gs {
@@ -199,12 +200,65 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
   0%, 100% { height: 3px; }
   50%       { height: 13px; }
 }
-.song-art { width: 40px; height: 40px; border-radius: 4px; flex-shrink: 0; }
+.song-art { width: 40px; height: 40px; border-radius: 4px; flex-shrink: 0; background-size: cover; background-position: center; transition: opacity 0.2s; }
 .song-info { flex: 1; min-width: 0; }
 .song-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
 .song-artist { font-size: 12px; color: var(--muted); }
 .song-pct { font-size: 11px; font-weight: 700; color: var(--green); flex-shrink: 0; }
 .results-note { flex-shrink: 0; font-size: 9px; color: var(--faint); font-style: italic; text-align: center; margin-top: 4px; }
+
+/* ── Song card action buttons ── */
+.song-actions { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+.song-action-btn { width: 22px; height: 22px; border-radius: 50%; background: transparent; border: 1.5px solid var(--surface3); color: var(--faint); cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; transition: background 0.12s, border-color 0.12s, color 0.12s; padding: 0; position: relative; }
+.song-action-btn:hover { border-color: var(--muted); color: var(--text); }
+.info-btn { background: none; border: none; color: var(--faint); cursor: pointer; font-size: 10px; padding: 0 2px; line-height: 1; transition: color 0.15s; flex-shrink: 0; }
+.info-btn:hover { color: var(--muted); }
+#info-popup { position: fixed; background: #1a1a1a; border: 1px solid var(--surface3); border-radius: 6px; padding: 8px 10px; font-size: 11px; color: var(--text); max-width: 200px; line-height: 1.5; z-index: 1000; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.5); pointer-events: none; }
+.like-btn:hover { border-color: #e25d5d; color: #e25d5d; }
+.like-btn.liked { border-color: #e25d5d; color: #e25d5d; background: rgba(226,93,93,0.1); }
+.add-btn:hover { background: var(--green); border-color: var(--green); color: #fff; }
+.add-btn.added { border-color: var(--green); color: var(--green); }
+/* Tooltip */
+.song-action-btn::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #000; color: #ccc; font-size: 10px; font-weight: 500; white-space: nowrap; padding: 4px 8px; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity 0.15s; font-family: 'Figtree', sans-serif; }
+.song-action-btn:hover::after { opacity: 1; }
+
+/* ── Playlist modal ── */
+.sp-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.72); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.18s; }
+.sp-overlay.open { opacity: 1; pointer-events: all; }
+.sp-modal { background: #1a1a1e; border: 1px solid var(--surface3); border-radius: 12px; padding: 18px; width: 320px; max-width: 92vw; max-height: 72vh; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 28px 72px rgba(0,0,0,0.7); transform: translateY(10px); transition: transform 0.18s; }
+.sp-overlay.open .sp-modal { transform: translateY(0); }
+.sp-modal-title { font-size: 13px; font-weight: 700; color: var(--text); }
+.sp-modal-sub { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: -6px; }
+.sp-playlists { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; min-height: 80px; max-height: 280px; }
+.sp-playlists::-webkit-scrollbar { width: 3px; }
+.sp-playlists::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+.sp-playlist-item { padding: 7px 9px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); transition: background 0.1s; display: flex; align-items: center; gap: 8px; }
+.sp-playlist-item:hover { background: var(--surface2); }
+.sp-playlist-item.selected { background: rgba(139,92,246,0.14); }
+.sp-playlist-thumb { width: 30px; height: 30px; border-radius: 3px; background: var(--surface3); flex-shrink: 0; object-fit: cover; }
+.sp-playlist-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sp-playlist-count { font-size: 10px; color: var(--faint); flex-shrink: 0; }
+.sp-divider { height: 1px; background: var(--surface3); margin: 4px 0; flex-shrink: 0; }
+.sp-new-row { display: flex; align-items: center; gap: 8px; padding: 4px 9px; }
+.sp-new-input { flex: 1; background: var(--surface2); border: 1.5px solid var(--surface3); border-radius: 6px; padding: 6px 9px; color: var(--text); font-size: 12px; font-family: 'Figtree',sans-serif; outline: none; }
+.sp-new-input:focus { border-color: var(--green); }
+.sp-new-input::placeholder { color: var(--faint); }
+.sp-modal-actions { display: flex; gap: 8px; justify-content: flex-end; flex-shrink: 0; }
+.sp-btn { padding: 7px 15px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; font-family: 'Figtree',sans-serif; transition: opacity 0.12s; }
+.sp-btn-cancel { background: var(--surface2); color: var(--muted); }
+.sp-btn-cancel:hover { color: var(--text); }
+.sp-btn-add { background: var(--green); color: #fff; }
+.sp-btn-add:disabled { opacity: 0.38; cursor: not-allowed; }
+.sp-loading { text-align: center; padding: 24px 0; font-size: 12px; color: var(--muted); }
+.sp-login-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 16px 0; }
+.sp-login-copy { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.5; }
+.sp-login-btn { background: #1DB954; color: #000; border: none; border-radius: 20px; padding: 9px 22px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Figtree',sans-serif; display: inline-flex; align-items: center; gap: 7px; }
+.sp-login-btn:hover { background: #1ed760; }
+
+/* ── Toast ── */
+.sp-toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(56px); background: var(--surface2); border: 1px solid var(--surface3); color: var(--text); padding: 9px 16px; border-radius: 8px; font-size: 12px; font-weight: 500; z-index: 200; transition: transform 0.25s; white-space: nowrap; pointer-events: none; }
+.sp-toast.show { transform: translateX(-50%) translateY(0); }
+.sp-toast.success { border-color: var(--green); }
 
 @media (max-width: 900px) {
   .sidebar { display: none; }
@@ -241,7 +295,8 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
   <div class="main">
     <div class="topbar">
       <div class="topbar-title">Search from the <span>heart.</span></div>
-      <div class="topbar-sub">Genres are just anchors. Just hold on to the feeling and slide away till you <em class="feel-vibe">Feel the Vibe</em>.</div>
+      <div class="topbar-sub">Set the feeling. The right music finds you.</div>
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;font-size:9px;color:var(--faint);">Genre starting points <button class="info-btn" data-info="Starting points. Tap one to load a preset vibe, then tune from there.">ⓘ</button></div>
       <div class="presets-row" id="presetChips"></div>
     </div>
 
@@ -271,7 +326,7 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
 
       <!-- Sliders -->
       <div class="sliders-pane" id="pane1">
-        <div class="pane-label">How do you want to feel?</div>
+        <div class="pane-label" style="display:flex;align-items:center;gap:5px;">How do you want to feel? <button class="info-btn" data-info="This isn't keyword search. Move the sliders to describe the feeling you want — the music finds you.">ⓘ</button></div>
         <div class="sliders-inner" id="sliders"></div>
         <div class="era-row">
           <div class="era-top">
@@ -287,7 +342,7 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
       <!-- Results -->
       <div class="results-pane" id="pane2">
         <div class="results-header">
-          <span class="pane-label">Music for your vibe</span>
+          <span class="pane-label" style="display:flex;align-items:center;gap:5px;">Music for your vibe <button class="info-btn" data-info="How closely this song's vibe matches your slider position. Not popularity.">ⓘ</button></span>
           <button class="shuffle-btn" id="shuffleBtn" title="Shuffle">↻</button>
         </div>
         <div class="results-inner" id="songList"></div>
@@ -301,20 +356,244 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
   </div>
 </div>
 
+<!-- Spotify playlist modal -->
+<div class="sp-overlay" id="spOverlay">
+  <div class="sp-modal">
+    <div class="sp-modal-title">Add to playlist</div>
+    <div class="sp-modal-sub" id="spTrackLabel"></div>
+    <div class="sp-playlists" id="spPlaylists"></div>
+    <div class="sp-modal-actions">
+      <button class="sp-btn sp-btn-cancel" id="spCancel">Cancel</button>
+      <button class="sp-btn sp-btn-add" id="spAdd" disabled>Add</button>
+    </div>
+  </div>
+</div>
+<div class="sp-toast" id="spToast"></div>
+
 <script>
+// ── Spotify OAuth popup callback — must run before anything else ──
+if (window.opener && new URLSearchParams(window.location.search).has('code')) {
+  const _p = new URLSearchParams(window.location.search);
+  window.opener.postMessage({ type: 'spotify-oauth', code: _p.get('code'), state: _p.get('state') }, window.location.origin);
+  window.close();
+}
+
+// ── Spotify config ──
+// 1. Go to developer.spotify.com → create an app
+// 2. Add this page's URL as a Redirect URI (e.g. http://localhost:3001/index.html)
+// 3. Paste your Client ID below
+const SPOTIFY_CLIENT_ID = 'fc8560f790c949e0ab398a6bcea94337';
+const SPOTIFY_SCOPES = 'playlist-modify-public playlist-modify-private playlist-read-private user-read-private user-library-modify';
+const SPOTIFY_REDIRECT = window.location.href.split('?')[0].split('#')[0];
+
+const SpotifyAuth = {
+  async login() {
+    if (!SPOTIFY_CLIENT_ID) { showToast('Set SPOTIFY_CLIENT_ID in index.html first', false); return Promise.reject(); }
+    const verifier = this._rand(64);
+    const challenge = await this._challenge(verifier);
+    const state = this._rand(16);
+    localStorage.setItem('sp_v', verifier);
+    localStorage.setItem('sp_st', state);
+    const url = 'https://accounts.spotify.com/authorize?' + new URLSearchParams({
+      client_id: SPOTIFY_CLIENT_ID, response_type: 'code',
+      redirect_uri: SPOTIFY_REDIRECT, scope: SPOTIFY_SCOPES,
+      state, code_challenge_method: 'S256', code_challenge: challenge,
+    });
+    return new Promise((resolve, reject) => {
+      const popup = window.open(url, 'sp-auth', 'width=480,height=660,left=200,top=80');
+      if (!popup) { reject(new Error('Popup blocked — allow popups for this site')); return; }
+      const onMsg = async (e) => {
+        if (e.origin !== window.location.origin || e.data?.type !== 'spotify-oauth') return;
+        window.removeEventListener('message', onMsg);
+        clearInterval(poll);
+        if (e.data.state !== state) { reject(new Error('State mismatch')); return; }
+        try { await this._exchange(e.data.code); resolve(); } catch(err) { reject(err); }
+      };
+      window.addEventListener('message', onMsg);
+      const poll = setInterval(() => { if (popup.closed) { clearInterval(poll); window.removeEventListener('message', onMsg); reject(new Error('Closed')); } }, 800);
+    });
+  },
+  async _exchange(code) {
+    const r = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ grant_type: 'authorization_code', code,
+        redirect_uri: SPOTIFY_REDIRECT, client_id: SPOTIFY_CLIENT_ID,
+        code_verifier: localStorage.getItem('sp_v') }),
+    });
+    if (!r.ok) throw new Error('Token exchange failed');
+    this._store(await r.json());
+  },
+  async getToken() {
+    const exp = parseInt(localStorage.getItem('sp_exp') || '0');
+    if (Date.now() < exp - 60000) return localStorage.getItem('sp_at');
+    const refresh = localStorage.getItem('sp_rt');
+    if (!refresh) return null;
+    const r = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: refresh, client_id: SPOTIFY_CLIENT_ID }),
+    });
+    if (!r.ok) { this.logout(); return null; }
+    this._store(await r.json()); return localStorage.getItem('sp_at');
+  },
+  isLoggedIn() { return !!localStorage.getItem('sp_at'); },
+  logout() { ['sp_at','sp_rt','sp_exp','sp_uid','sp_v','sp_st'].forEach(k => localStorage.removeItem(k)); },
+  _store(d) {
+    localStorage.setItem('sp_at', d.access_token);
+    if (d.refresh_token) localStorage.setItem('sp_rt', d.refresh_token);
+    localStorage.setItem('sp_exp', String(Date.now() + d.expires_in * 1000));
+  },
+  _rand(n) {
+    const a = new Uint8Array(n); crypto.getRandomValues(a);
+    return btoa(String.fromCharCode(...a)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+  },
+  async _challenge(v) {
+    const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
+    return btoa(String.fromCharCode(...new Uint8Array(d))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+  },
+};
+
+const SpotifyAPI = {
+  async req(method, path, body) {
+    const token = await SpotifyAuth.getToken();
+    if (!token) throw new Error('Not authenticated');
+    const r = await fetch('https://api.spotify.com/v1' + path, {
+      method, headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    if (!r.ok) throw new Error('Spotify API ' + r.status);
+    if (r.status === 204) return null;
+    return r.json();
+  },
+  async getMe() {
+    if (localStorage.getItem('sp_uid')) return { id: localStorage.getItem('sp_uid') };
+    const d = await this.req('GET', '/me');
+    localStorage.setItem('sp_uid', d.id); return d;
+  },
+  async getPlaylists() {
+    const items = []; let path = '/me/playlists?limit=50';
+    while (path) {
+      const d = await this.req('GET', path);
+      items.push(...(d.items || []));
+      path = d.next ? d.next.replace('https://api.spotify.com/v1','') : null;
+    }
+    return items;
+  },
+  async addTrack(playlistId, trackId) { await this.req('POST', `/playlists/${playlistId}/tracks`, { uris: [`spotify:track:${trackId}`] }); },
+  async createPlaylist(name) { const me = await this.getMe(); return this.req('POST', `/users/${me.id}/playlists`, { name, public: false }); },
+  async likeTrack(trackId) { await this.req('PUT', `/me/tracks?ids=${trackId}`, {}); },
+};
+
+const PlaylistModal = {
+  trackId: null, title: '', artist: '', playlists: [], selectedId: null,
+
+  open(trackId, title, artist) {
+    this.trackId = trackId; this.title = title; this.artist = artist; this.selectedId = null;
+    document.getElementById('spTrackLabel').textContent = title + ' — ' + artist;
+    document.getElementById('spAdd').disabled = true;
+    document.getElementById('spAdd').textContent = 'Add';
+    document.getElementById('spOverlay').classList.add('open');
+    SpotifyAuth.isLoggedIn() ? (this._loading(), this._load()) : this._loginPrompt();
+  },
+
+  close() { document.getElementById('spOverlay').classList.remove('open'); },
+
+  _loading() { document.getElementById('spPlaylists').innerHTML = '<div class="sp-loading">Loading…</div>'; },
+
+  _loginPrompt() {
+    const c = document.getElementById('spPlaylists');
+    c.innerHTML = '';
+    const wrap = document.createElement('div'); wrap.className = 'sp-login-wrap';
+    wrap.innerHTML = `<p class="sp-login-copy">Connect Spotify to save songs<br>directly to your playlists.</p>
+      <button class="sp-login-btn" id="spLoginBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        Connect Spotify
+      </button>`;
+    c.appendChild(wrap);
+    document.getElementById('spLoginBtn').addEventListener('click', async () => {
+      try { await SpotifyAuth.login(); this._loading(); this._load(); }
+      catch(e) { showToast(e.message || 'Login failed', false); }
+    });
+  },
+
+  async _load() {
+    try {
+      this.playlists = await SpotifyAPI.getPlaylists();
+      this._render();
+    } catch(e) {
+      document.getElementById('spPlaylists').innerHTML = '<div class="sp-loading" style="color:var(--faint)">Could not load playlists</div>';
+    }
+  },
+
+  _render() {
+    const c = document.getElementById('spPlaylists'); c.innerHTML = '';
+    // New playlist input
+    const newRow = document.createElement('div'); newRow.className = 'sp-new-row';
+    newRow.innerHTML = `<input class="sp-new-input" id="spNewName" placeholder="＋ New playlist…" maxlength="60">`;
+    c.appendChild(newRow);
+    if (this.playlists.length) { const d = document.createElement('div'); d.className = 'sp-divider'; c.appendChild(d); }
+    newRow.querySelector('input').addEventListener('input', e => {
+      if (e.target.value.trim()) { this.selectedId = '__new__'; c.querySelectorAll('.sp-playlist-item').forEach(el => el.classList.remove('selected')); document.getElementById('spAdd').disabled = false; }
+      else if (this.selectedId === '__new__') { this.selectedId = null; document.getElementById('spAdd').disabled = true; }
+    });
+    this.playlists.forEach(pl => {
+      const item = document.createElement('div'); item.className = 'sp-playlist-item';
+      const img = pl.images?.[0]?.url;
+      item.innerHTML = `${img ? `<img class="sp-playlist-thumb" src="${esc(img)}" alt="">` : '<div class="sp-playlist-thumb"></div>'}<span class="sp-playlist-name">${esc(pl.name)}</span><span class="sp-playlist-count">${pl.tracks?.total ?? ''}</span>`;
+      item.addEventListener('click', () => {
+        this.selectedId = pl.id;
+        document.getElementById('spNewName').value = '';
+        c.querySelectorAll('.sp-playlist-item').forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+        document.getElementById('spAdd').disabled = false;
+      });
+      c.appendChild(item);
+    });
+  },
+
+  async add() {
+    if (!this.selectedId) return;
+    const btn = document.getElementById('spAdd'); btn.disabled = true; btn.textContent = 'Adding…';
+    try {
+      let pid = this.selectedId, pname = 'your playlist';
+      if (pid === '__new__') {
+        const name = document.getElementById('spNewName').value.trim();
+        if (!name) return;
+        const pl = await SpotifyAPI.createPlaylist(name); pid = pl.id; pname = name;
+      } else {
+        pname = this.playlists.find(p => p.id === pid)?.name || pname;
+      }
+      await SpotifyAPI.addTrack(pid, this.trackId);
+      document.querySelectorAll(`.add-btn[data-tid="${this.trackId}"]`).forEach(b => b.classList.add('added'));
+      this.close(); showToast('Added to ' + pname, true);
+    } catch(e) {
+      btn.disabled = false; btn.textContent = 'Add'; showToast('Failed — try again', false);
+    }
+  },
+};
+
+function showToast(msg, ok = true) {
+  const t = document.getElementById('spToast');
+  t.textContent = msg; t.className = 'sp-toast' + (ok ? ' success show' : ' show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+document.getElementById('spCancel').addEventListener('click', () => PlaylistModal.close());
+document.getElementById('spOverlay').addEventListener('click', e => { if (e.target === document.getElementById('spOverlay')) PlaylistModal.close(); });
+document.getElementById('spAdd').addEventListener('click', () => PlaylistModal.add());
+
 const axisConfigs = [
   { name: 'Energy',   icon: '⚡', labels: ['Still','Steady','Drive','Hype','Rage'],
-    grad: ['#2c3e6b','#e84c0a'] },
+    grad: ['#2c3e6b','#e84c0a'], info: 'How intense and physical the music feels. Bon Iver (low) → Slayer (high).' },
   { name: 'Groove',   icon: '🎵', labels: ['Static','Barely','Nodding','Locked','Pulsing'],
-    grad: ['#1a2035','#00e676'] },
+    grad: ['#1a2035','#00e676'], info: 'How much the rhythm makes you move. Slayer (low) → James Brown (high).' },
   { name: 'Fidelity', icon: '📻', labels: ['Raw','Warm','Clear','Crisp','Hi-fi'],
-    grad: ['#5c3d2e','#26c6da'] },
-  { name: 'Vocals',   icon: '🎤', labels: ['Silent','Faint','Melodic','Forward','Loud'],
-    grad: ['#1a237e','#ef6c00'] },
+    grad: ['#5c3d2e','#26c6da'], info: 'Production texture — raw warmth to studio gloss. Cassette lo-fi → Max Martin pop.' },
+  { name: 'Vocals',   icon: '🎤', labels: ['Silent','Faint','Melodic','Forward','Lead'],
+    grad: ['#1a237e','#ef6c00'], info: 'How prominent the singing is in the mix. Brian Eno (low) → Adele (high).' },
   { name: 'Emotion',  icon: '🌗', labels: ['Desolate','Heavy','Even','Hopeful','Euphoric'],
-    grad: ['#1a0533','#3d2d5f','#ffca28'] },
+    grad: ['#1a0533','#3d2d5f','#ffca28'], info: 'The emotional temperature. Phoebe Bridgers (dark) → Pharrell Williams (euphoric).' },
   { name: 'Social',   icon: '👥', labels: ['Solo','Quiet','Mixed','Together','The Room'],
-    grad: ['#0d1b2a','#ff6b35'] },
+    grad: ['#0d1b2a','#ff6b35'], info: 'The setting the music is built for. Bon Iver headphones → Beyoncé Homecoming.' },
 ];
 
 const cx=100,cy=100,maxR=74;
@@ -393,11 +672,14 @@ axisConfigs.forEach((cfg,i)=>{
   const r=document.createElement('div');r.className='slider-row';
   r.innerHTML=`
     <div class="slider-top">
-      <div class="slider-name-wrap"><span class="axis-icon">${cfg.icon}</span><span class="slider-name">${cfg.name}</span></div>
+      <div class="slider-name-wrap"><span class="axis-icon">${cfg.icon}</span><span class="slider-name">${cfg.name}</span><button class="info-btn" data-info="${cfg.info}">ⓘ</button></div>
       <span class="slider-val" id="sv${i}"></span>
     </div>
-    <input type="range" min="0" max="100" value="${Math.round(vals[i]*100)}" id="sl${i}" class="gs">
-    <div class="slider-ends"><span class="slider-end">${cfg.labels[0]}</span><span class="slider-end">${cfg.labels[4]}</span></div>`;
+    <div class="slider-track-row">
+      <span class="slider-end">${cfg.labels[0]}</span>
+      <input type="range" min="0" max="100" value="${Math.round(vals[i]*100)}" id="sl${i}" class="gs">
+      <span class="slider-end">${cfg.labels[4]}</span>
+    </div>`;
   sw.appendChild(r);
 
   const sl=document.getElementById('sl'+i);
@@ -424,10 +706,12 @@ const moods=[
   {name:'Pop',         icon:'🎵',v:[0.64,0.61,0.76,0.97,0.53,0.55]},
   {name:'Hip-Hop',     icon:'🎤',v:[0.69,0.73,0.84,0.99,0.55,0.63]},
   {name:'R&B',         icon:'🌊',v:[0.59,0.66,0.73,0.99,0.59,0.55]},
+  {name:'Trap Soul',   icon:'💜',v:[0.30,0.62,0.65,0.78,0.32,0.28]},
   {name:'Rock',        icon:'🎸',v:[0.76,0.50,0.89,0.96,0.49,0.55]},
   {name:'Electronic',  icon:'⚡',v:[0.78,0.61,0.90,0.73,0.37,0.61]},
-  {name:'House',       icon:'🔊',v:[0.73,0.70,0.90,0.54,0.40,0.63]},
-  {name:'Dance Party', icon:'🕺',v:[0.76,0.65,0.88,0.96,0.59,0.62]},
+  {name:'House',           icon:'🔊',v:[0.73,0.70,0.90,0.54,0.40,0.63]},
+  {name:'Deep Progressive',icon:'🌀',v:[0.75,0.77,0.75,0.50,0.35,0.75]},
+  {name:'Dance Party',     icon:'🕺',v:[0.76,0.65,0.88,0.96,0.59,0.62]},
   {name:'Jazz',        icon:'🎷',v:[0.50,0.56,0.64,0.95,0.55,0.46]},
   {name:'Chill',       icon:'🌙',v:[0.43,0.55,0.59,0.58,0.34,0.42]},
   {name:'Ambient',     icon:'🌌',v:[0.35,0.42,0.51,0.28,0.22,0.33]},
@@ -463,6 +747,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 
 const API_BASE=new URL(new URLSearchParams(window.location.search).get('api')||'http://localhost:8080',window.location).href.replace(/\/$/,'');
 
+
 const FETCH_SIZE=50, PAGE_SIZE=10;
 let allResults=[], renderedCount=0, scrollObserver=null;
 
@@ -477,7 +762,8 @@ function renderBatch(){
     a.target='_blank'; a.rel='noopener noreferrer';
     a.style.cssText='text-decoration:none;color:inherit;display:block;';
     a.dataset.idx=start+i;
-    a.innerHTML=`<div class="song-row"><span class="song-idx"><span class="song-num">${start+i+1}</span><span class="eq-bars"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span></span><div class="song-art" style="background:${getColorFromArtist(r.song.artist)}"></div><div class="song-info"><div class="song-title">${esc(r.song.title)}</div><div class="song-artist">${esc(r.song.artist)}</div></div><span class="song-pct">${Math.round(r.score*100)}%</span></div>`;
+    const artStyle=r.song.album_art?`background:${getColorFromArtist(r.song.artist)};background-image:url(${r.song.album_art})`:`background:${getColorFromArtist(r.song.artist)}`;
+    a.innerHTML=`<div class="song-row"><span class="song-idx"><span class="song-num">${start+i+1}</span><span class="eq-bars"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span></span><div class="song-art" data-tid="${r.song.id}" style="${artStyle}"></div><div class="song-info"><div class="song-title">${esc(r.song.title)}</div><div class="song-artist">${esc(r.song.artist)}</div></div><span class="song-pct">${Math.round(r.score*100)}%</span><div class="song-actions"><button class="song-action-btn like-btn" data-tid="${esc(r.song.id)}" data-tip="Like on Spotify">♡</button><button class="song-action-btn add-btn" data-tid="${esc(r.song.id)}" data-tip="Add to playlist">+</button></div></div>`;
     list.appendChild(a);
   });
   renderedCount+=batch.length;
@@ -543,6 +829,28 @@ function playTrack(trackId,linkEl,idx){
   if(embedController){embedController.loadUri(`spotify:track:${trackId}`);embedController.play();}
 }
 document.getElementById('songList').addEventListener('click',e=>{
+  const likeBtn=e.target.closest('.like-btn');
+  if(likeBtn){
+    e.preventDefault(); e.stopPropagation();
+    const tid=likeBtn.dataset.tid;
+    (async()=>{
+      if(!SpotifyAuth.getToken()) await SpotifyAuth.login();
+      if(!SpotifyAuth.getToken()) return;
+      try{
+        await SpotifyAPI.likeTrack(tid);
+        likeBtn.textContent='♥'; likeBtn.classList.add('liked');
+        showToast('Liked on Spotify');
+      }catch(err){ showToast('Could not like — try again'); console.error(err); }
+    })();
+    return;
+  }
+  const addBtn=e.target.closest('.add-btn');
+  if(addBtn){
+    e.preventDefault(); e.stopPropagation();
+    const link=addBtn.closest('a');
+    PlaylistModal.open(addBtn.dataset.tid, link?.querySelector('.song-title')?.textContent||'', link?.querySelector('.song-artist')?.textContent||'');
+    return;
+  }
   const link=e.target.closest('a[href*="open.spotify"]');
   if(!link) return;
   e.preventDefault();
@@ -655,6 +963,9 @@ document.getElementById('shuffleBtn').addEventListener('click',shuffleQuery);
 buildGrid();
 draw();
 renderSongs();
+
+const _ip=document.createElement('div');_ip.id='info-popup';document.body.appendChild(_ip);
+document.addEventListener('click',e=>{const b=e.target.closest('.info-btn');if(b){e.stopPropagation();const rc=b.getBoundingClientRect();_ip.textContent=b.dataset.info;_ip.style.display='block';let t=rc.bottom+6,l=rc.left;_ip.style.left=l+'px';_ip.style.top=t+'px';const pw=_ip.offsetWidth;if(l+pw>window.innerWidth-10)_ip.style.left=(window.innerWidth-pw-10)+'px';return;}_ip.style.display='none';});
 </script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
