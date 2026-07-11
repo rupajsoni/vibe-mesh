@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vibe Mesh — How do you want to feel?</title>
+<title>Vibes Mesh — How do you want to feel?</title>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -12,7 +12,7 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; }
-body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-serif; font-size: 14px; }
+body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-serif; font-size: 15px; }
 
 .shell { display: flex; height: 100vh; }
 
@@ -22,27 +22,50 @@ body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-s
 .logo-mark { width: 28px; height: 28px; color: var(--green); flex-shrink: 0; }
 .logo-text { font-size: 14px; font-weight: 700; }
 .nav { padding: 0 7px; display: flex; flex-direction: column; gap: 1px; }
-.nav-item { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 5px; color: var(--muted); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+.nav-item { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 5px; color: var(--muted); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
 .nav-item:hover, .nav-item.active { color: var(--text); background: var(--surface2); }
 .nav-section { padding: 18px 14px 5px; font-size: 10px; font-weight: 700; color: var(--faint); text-transform: uppercase; letter-spacing: 0.1em; }
 .sidebar-bottom { margin-top: auto; padding: 14px; border-top: 1px solid #1a1a1a; }
 .tagline-sidebar { font-size: 10px; color: var(--faint); font-style: italic; line-height: 1.5; }
 .discovery-panel { border: 1px solid #1e1e1e; border-radius: 6px; padding: 10px; background: #0d0d0d; margin-bottom: 2px; }
-.disc-heading { font-size: 9px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px; }
+.disc-heading { font-size: 10px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px; }
 .disc-stat { display: flex; flex-direction: column; margin-bottom: 6px; }
 .disc-num { font-size: 16px; font-weight: 800; color: var(--text); line-height: 1; }
-.disc-label { font-size: 9px; color: var(--faint); line-height: 1.4; margin-top: 1px; }
-.disc-copy { font-size: 9px; color: #444; line-height: 1.5; margin-top: 8px; padding-top: 8px; border-top: 1px solid #1a1a1a; }
+.disc-label { font-size: 10px; color: #888; line-height: 1.4; margin-top: 1px; }
+.disc-copy { font-size: 10px; color: #777; line-height: 1.5; margin-top: 8px; padding-top: 8px; border-top: 1px solid #222; }
+.saved-vibe-item { display: flex; align-items: center; gap: 4px; padding: 5px 9px 5px 14px; border-radius: 5px; color: var(--muted); font-size: 13px; cursor: pointer; transition: all 0.15s; }
+.saved-vibe-item:hover { color: var(--text); background: var(--surface2); }
+.saved-vibe-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.saved-vibe-del { opacity: 0; font-size: 15px; line-height: 1; color: var(--faint); padding: 0 2px; flex-shrink: 0; background: none; border: none; cursor: pointer; color: var(--faint); transition: opacity 0.15s; }
+.saved-vibe-item:hover .saved-vibe-del { opacity: 1; }
+.save-vibe-btn { display: flex; align-items: center; gap: 7px; padding: 6px 9px 6px 14px; border-radius: 5px; color: var(--muted); font-size: 12px; cursor: pointer; transition: color 0.15s; }
+.save-vibe-btn:hover { color: var(--green); }
+.save-vibe-input-row { padding: 4px 10px 8px; display: none; }
+.save-vibe-input { width: 100%; background: var(--surface2); border: 1px solid var(--surface3); border-radius: 4px; color: var(--text); font-size: 12px; padding: 5px 8px; outline: none; font-family: inherit; }
+.save-vibe-input:focus { border-color: rgba(139,92,246,0.5); }
+.save-vibe-desc-input { margin-top: 5px; font-size: 11px; color: var(--muted); }
+.save-vibe-form-actions { display: flex; gap: 6px; margin-top: 8px; }
+.save-confirm-btn { flex: 1; background: var(--green); border: none; color: #fff; font-size: 11px; font-weight: 600; font-family: 'Figtree', sans-serif; padding: 6px 0; border-radius: 4px; cursor: pointer; transition: opacity 0.15s; }
+.save-confirm-btn:hover { opacity: 0.85; }
+.save-cancel-btn { background: none; border: 1px solid #333; color: var(--faint); font-size: 11px; font-family: 'Figtree', sans-serif; padding: 6px 10px; border-radius: 4px; cursor: pointer; transition: all 0.15s; }
+.save-cancel-btn:hover { border-color: #555; color: var(--muted); }
+.yours-sub { font-size: 10px; color: #666; padding: 0 14px 6px; line-height: 1.5; }
+.saved-vibe-item { position: relative; }
+.saved-vibe-item[data-desc]::after { content: attr(data-desc); position: absolute; left: calc(100% + 8px); top: 50%; transform: translateY(-50%); background: #1e1e22; border: 1px solid #333; color: #aaa; font-size: 10px; font-family: 'Figtree', sans-serif; padding: 5px 10px; border-radius: 4px; width: 160px; word-break: break-word; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.15s; }
+.saved-vibe-item[data-desc]:hover::after { opacity: 1; }
+@keyframes vibeFlash { 0% { background: rgba(139,92,246,0.22); } 100% { background: transparent; } }
+.saved-vibe-item.newly-saved { animation: vibeFlash 1s ease forwards; }
+.share-card-generating { opacity: 0.6; pointer-events: none; }
 
 /* Main */
 .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
 
 /* Topbar */
-.topbar { padding: 20px 20px 12px; flex-shrink: 0; }
-.topbar-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+.topbar { padding: 12px 20px 8px; flex-shrink: 0; }
+.topbar-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 3px; }
 .topbar-title { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; }
 .topbar-title span { color: var(--green); text-shadow: 0 0 24px rgba(139,92,246,0.3); }
-.topbar-sub { font-size: 14px; color: rgba(255,255,255,0.82); margin-bottom: 12px; line-height: 1.5; animation: fadeSlideUp 0.65s ease 0.25s both; }
+.topbar-sub { font-size: 15px; color: rgba(255,255,255,0.82); margin-bottom: 8px; line-height: 1.5; animation: fadeSlideUp 0.65s ease 0.25s both; }
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -74,12 +97,12 @@ body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-s
 }
 .presets-row { display: flex; gap: 5px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
 .presets-row::-webkit-scrollbar { display: none; }
-.preset-chip { font-size: 11px; font-weight: 500; padding: 4px 11px; border-radius: 14px; background: var(--surface2); color: var(--muted); border: 1px solid var(--surface3); cursor: pointer; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; }
+.preset-chip { font-size: 13px; font-weight: 500; padding: 5px 13px; border-radius: 14px; background: var(--surface2); color: var(--muted); border: 1px solid var(--surface3); cursor: pointer; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; }
 .preset-chip:hover { color: var(--text); border-color: var(--faint); }
-.preset-chip.active { background: var(--green); color: #fff; border-color: var(--green); font-weight: 700; }
+.preset-chip.active { background: rgba(139,92,246,0.15); color: var(--green); border-color: rgba(139,92,246,0.4); font-weight: 600; }
 
 /* Three panes — resizable */
-.panes { flex: 1; display: flex; flex-direction: row; gap: 0; padding: 0 20px 16px; overflow: hidden; min-height: 0; }
+.panes { flex: 1; display: flex; flex-direction: row; gap: 0; padding: 0 16px 10px; overflow: hidden; min-height: 0; }
 .drag-handle { width: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: col-resize; position: relative; z-index: 10; }
 .drag-handle::after { content: ''; display: block; width: 2px; height: 32px; background: var(--surface3); border-radius: 2px; transition: background 0.15s; }
 .drag-handle:hover::after { background: var(--faint); }
@@ -87,7 +110,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-s
 
 /* Radar */
 .radar-pane { background: var(--surface); border-radius: var(--radius); padding: 0; display: flex; flex-direction: column; min-height: 0; min-width: 140px; margin-right: 0; flex-shrink: 0; overflow: hidden; position: relative; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 20px rgba(0,0,0,0.45); }
-.pane-label { font-size: 10px; font-weight: 700; color: #707070; text-transform: uppercase; letter-spacing: 0.1em; flex-shrink: 0; }
+.pane-label { font-size: 11px; font-weight: 700; color: #707070; text-transform: uppercase; letter-spacing: 0.1em; flex-shrink: 0; }
 .pane-label-float { position: absolute; top: 10px; left: 12px; z-index: 2; }
 .radar-wrap { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; overflow: hidden; padding: 0; position: relative; }
 .mood-glow { position: absolute; inset: 0; border-radius: 6px; pointer-events: none; transition: background 1.8s ease; }
@@ -103,17 +126,17 @@ body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-s
 #radar circle { cursor: grab; } #radar circle:active { cursor: grabbing; }
 
 /* Sliders */
-.sliders-pane { background: var(--surface); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; min-width: 180px; flex-shrink: 0; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 20px rgba(0,0,0,0.45); }
+.sliders-pane { background: var(--surface); border-radius: var(--radius); padding: 10px 12px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; min-width: 180px; flex-shrink: 0; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 20px rgba(0,0,0,0.45); }
 .sliders-inner { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 0; overflow: hidden; }
 .slider-row { display: flex; flex-direction: column; gap: 1px; }
 .slider-top { display: flex; justify-content: space-between; align-items: center; }
 .slider-name-wrap { display: flex; align-items: center; gap: 5px; }
-.axis-icon { font-size: 12px; }
-.slider-name { font-size: 12px; font-weight: 600; }
-.slider-val { font-size: 12px; font-weight: 800; letter-spacing: -0.2px; transition: color 0.15s; }
+.axis-icon { font-size: 13px; }
+.slider-name { font-size: 13px; font-weight: 600; }
+.slider-val { font-size: 13px; font-weight: 800; letter-spacing: -0.2px; transition: color 0.15s; }
 .slider-track-row { display: flex; align-items: center; gap: 8px; }
 .slider-track-row input[type=range].gs { flex: 1; min-width: 0; }
-.slider-end { font-size: 10px; font-weight: 500; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+.slider-end { font-size: 12px; font-weight: 500; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
 
 /* Gradient slider */
 input[type=range].gs {
@@ -168,7 +191,7 @@ input.era-slider { accent-color: var(--green); width: 100%; height: 3px; margin:
 .era-slider:disabled { opacity: 0.2; }
 
 /* Results */
-.results-pane { background: var(--surface); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; min-width: 160px; flex-shrink: 0; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 20px rgba(0,0,0,0.45); }
+.results-pane { background: var(--surface); border-radius: var(--radius); padding: 10px 12px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; min-width: 160px; flex-shrink: 0; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 20px rgba(0,0,0,0.45); }
 .results-inner { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; overflow-x: hidden; }
 .results-inner::-webkit-scrollbar { width: 3px; }
 .results-inner::-webkit-scrollbar-track { background: transparent; }
@@ -204,12 +227,12 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
 .song-info { flex: 1; min-width: 0; }
 .song-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
 .song-artist { font-size: 12px; color: var(--muted); }
-.song-pct { font-size: 11px; font-weight: 700; color: var(--green); flex-shrink: 0; }
+.song-pct { font-size: 12px; font-weight: 700; color: var(--green); flex-shrink: 0; }
 .results-note { flex-shrink: 0; font-size: 9px; color: var(--faint); font-style: italic; text-align: center; margin-top: 4px; }
 
 /* ── Song card action buttons ── */
 .song-actions { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
-.song-action-btn { width: 22px; height: 22px; border-radius: 50%; background: transparent; border: 1.5px solid var(--surface3); color: var(--faint); cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; transition: background 0.12s, border-color 0.12s, color 0.12s; padding: 0; position: relative; }
+.song-action-btn { width: 22px; height: 22px; border-radius: 50%; background: transparent; border: 1.5px solid #444; color: #777; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; transition: background 0.12s, border-color 0.12s, color 0.12s; padding: 0; position: relative; }
 .song-action-btn:hover { border-color: var(--muted); color: var(--text); }
 .info-btn { background: none; border: none; color: var(--faint); cursor: pointer; font-size: 10px; padding: 0 2px; line-height: 1; transition: color 0.15s; flex-shrink: 0; }
 .info-btn:hover { color: var(--muted); }
@@ -218,6 +241,7 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
 .like-btn.liked { border-color: #e25d5d; color: #e25d5d; background: rgba(226,93,93,0.1); }
 .add-btn:hover { background: var(--green); border-color: var(--green); color: #fff; }
 .add-btn.added { border-color: var(--green); color: var(--green); }
+.share-song-btn:hover { border-color: #a78bfa; color: #a78bfa; }
 /* Tooltip */
 .song-action-btn::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #000; color: #ccc; font-size: 10px; font-weight: 500; white-space: nowrap; padding: 4px 8px; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity 0.15s; font-family: 'Figtree', sans-serif; }
 .song-action-btn:hover::after { opacity: 1; }
@@ -271,31 +295,33 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
 <body>
 <div class="shell">
   <div class="sidebar">
-    <div class="logo"><svg class="logo-mark" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><rect x="0" y="13" width="5" height="15" rx="2.5"/><rect x="7.5" y="0" width="5" height="28" rx="2.5"/><rect x="15" y="6" width="5" height="22" rx="2.5"/><rect x="22.5" y="9" width="5" height="19" rx="2.5"/></svg><span class="logo-text">Vibe Mesh</span></div>
+    <div class="logo"><svg class="logo-mark" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><rect x="0" y="13" width="5" height="15" rx="2.5"/><rect x="7.5" y="0" width="5" height="28" rx="2.5"/><rect x="15" y="6" width="5" height="22" rx="2.5"/><rect x="22.5" y="9" width="5" height="19" rx="2.5"/></svg><span class="logo-text">Vibes Mesh</span></div>
     <div class="nav">
       <div class="nav-item active">✨ Find your vibe</div>
       <div class="nav-item" onclick="window.location='index-beta.html'">🧪 Beta feedback</div>
       <div class="nav-item" onclick="window.location='living-brief.html'">🔬 Full brief</div>
     </div>
-    <div class="nav-section">By feeling</div>
-    <div class="nav" id="moodNav"></div>
-    <div style="font-size: 9px; color: var(--faint); padding: 0 14px; margin-top: 4px; line-height: 1.4;">These are emotional entry points, not genre filters. Discover what each feeling really sounds like.</div>
-    <div class="sidebar-bottom">
-      <div class="discovery-panel">
-        <div class="disc-heading">The 95% problem</div>
-        <div class="disc-stat"><span class="disc-num">100K</span><span class="disc-label">songs uploaded daily</span></div>
-        <div class="disc-stat"><span class="disc-num">~90%</span><span class="disc-label">of streams go to the top 1% of artists</span></div>
-        <div class="disc-stat"><span class="disc-num">millions</span><span class="disc-label">of tracks never played once</span></div>
-        <div class="disc-copy">Algorithms recommend what's already popular. The artist who deserves to be heard isn't. The listener who would love them can't find them. Vibe Mesh doesn't know what's popular. It only knows what fits the feeling.</div>
+    <div class="nav-section" style="padding-top:22px;">Yours</div>
+    <div class="yours-sub">Feeling presets you've saved. Click any to return to it.</div>
+    <div id="savedVibesNav"></div>
+    <div class="save-vibe-btn" id="saveVibeBtn">＋ Save this vibe</div>
+    <div class="save-vibe-input-row" id="saveVibeInputRow">
+      <input class="save-vibe-input" id="saveVibeInput" placeholder="Name this vibe…" maxlength="40">
+      <input class="save-vibe-input save-vibe-desc-input" id="saveVibeDesc" placeholder="Sunday morning chill, 2am focus, pre-run energy… (optional)" maxlength="80">
+      <div class="save-vibe-form-actions">
+        <button id="saveVibeConfirm" class="save-confirm-btn">Save vibe</button>
+        <button id="saveCancelBtn" class="save-cancel-btn">Cancel</button>
       </div>
-      <div class="tagline-sidebar" style="margin-top:10px">"Vibes is just science felt."</div>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="tagline-sidebar">"Vibes is just science felt."</div>
     </div>
   </div>
 
   <div class="main">
     <div class="topbar">
       <div class="topbar-title">Search from the <span>heart.</span></div>
-      <div class="topbar-sub">Set the feeling. The right music finds you.</div>
+      <div class="topbar-sub">Genres are a starting point, not a filter. Set the sliders to your feeling — the music finds you.</div>
       <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;font-size:9px;color:var(--faint);">Genre starting points <button class="info-btn" data-info="Starting points. Tap one to load a preset vibe, then tune from there.">ⓘ</button></div>
       <div class="presets-row" id="presetChips"></div>
     </div>
@@ -343,7 +369,10 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
       <div class="results-pane" id="pane2">
         <div class="results-header">
           <span class="pane-label" style="display:flex;align-items:center;gap:5px;">Music for your vibe <button class="info-btn" data-info="How closely this song's vibe matches your slider position. Not popularity.">ⓘ</button></span>
-          <button class="shuffle-btn" id="shuffleBtn" title="Shuffle">↻</button>
+          <div style="display:flex;gap:5px;align-items:center;">
+            <button class="shuffle-btn" id="shareVibeBtn" title="Copy vibe link — share your exact slider position"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>
+            <button class="shuffle-btn" id="shuffleBtn" title="Shuffle">↻</button>
+          </div>
         </div>
         <div class="results-inner" id="songList"></div>
         <div class="spotify-player" id="spotifyPlayer">
@@ -379,8 +408,8 @@ if (window.opener && new URLSearchParams(window.location.search).has('code')) {
 }
 
 // ── Spotify config ──
-// 1. Go to developer.spotify.com → create an app
-// 2. Add this page's URL as a Redirect URI (e.g. http://localhost:3001/index.html)
+// 1. Go to developer.spotify.com → your app → Settings → Redirect URIs
+// 2. Add: https://vibesmesh.netlify.app/ (localhost is rejected by Spotify validation)
 // 3. Paste your Client ID below
 const SPOTIFY_CLIENT_ID = 'fc8560f790c949e0ab398a6bcea94337';
 const SPOTIFY_SCOPES = 'playlist-modify-public playlist-modify-private playlist-read-private user-read-private user-library-modify';
@@ -732,17 +761,15 @@ moods.forEach(m=>{
   c.addEventListener('click',()=>loadMood(m.v,m.name));pc.appendChild(c);
 });
 
-const mn=document.getElementById('moodNav');
-moods.forEach(m=>{
-  const item=document.createElement('div');item.className='nav-item mood-nav-item';item.dataset.mood=m.name;
-  item.innerHTML=`<span>${m.icon}</span>${m.name}`;
-  item.addEventListener('click',()=>loadMood(m.v,m.name));mn.appendChild(item);
-});
-
 function getColorFromArtist(artist){const h=artist.split('').reduce((a,c)=>a+c.charCodeAt(0),0)%360;return`hsl(${h},45%,25%)`;}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-const API_BASE=new URL(new URLSearchParams(window.location.search).get('api')||'https://vibemesh-kejr.onrender.com',window.location).href.replace(/\/$/,'');
+const API_BASE=(()=>{
+  const override=new URLSearchParams(window.location.search).get('api');
+  if(override) return new URL(override,window.location).href.replace(/\/$/,'');
+  const isLocal=['localhost','127.0.0.1'].includes(window.location.hostname);
+  return isLocal?'http://localhost:8080':'https://vibemesh-kejr.onrender.com';
+})();
 
 
 const FETCH_SIZE=50, PAGE_SIZE=10;
@@ -760,7 +787,7 @@ function renderBatch(){
     a.style.cssText='text-decoration:none;color:inherit;display:block;';
     a.dataset.idx=start+i;
     const artStyle=r.song.album_art?`background:${getColorFromArtist(r.song.artist)};background-image:url(${r.song.album_art})`:`background:${getColorFromArtist(r.song.artist)}`;
-    a.innerHTML=`<div class="song-row"><span class="song-idx"><span class="song-num">${start+i+1}</span><span class="eq-bars"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span></span><div class="song-art" data-tid="${r.song.id}" style="${artStyle}"></div><div class="song-info"><div class="song-title">${esc(r.song.title)}</div><div class="song-artist">${esc(r.song.artist)}</div></div><span class="song-pct">${Math.round(r.score*100)}%</span><div class="song-actions"><button class="song-action-btn like-btn" data-tid="${esc(r.song.id)}" data-tip="Like on Spotify">♡</button><button class="song-action-btn add-btn" data-tid="${esc(r.song.id)}" data-tip="Add to playlist">+</button></div></div>`;
+    a.innerHTML=`<div class="song-row"><span class="song-idx"><span class="song-num">${start+i+1}</span><span class="eq-bars"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span></span><div class="song-art" data-tid="${r.song.id}" style="${artStyle}"></div><div class="song-info"><div class="song-title">${esc(r.song.title)}</div><div class="song-artist">${esc(r.song.artist)}</div></div><span class="song-pct">${Math.round(r.score*100)}%</span><div class="song-actions"><button class="song-action-btn like-btn" data-tid="${esc(r.song.id)}" data-tip="Like on Spotify">♡</button><button class="song-action-btn add-btn" data-tid="${esc(r.song.id)}" data-tip="Add to playlist">+</button><button class="song-action-btn share-song-btn" data-idx="${start+i}" data-tip="Found on Vibes Mesh — share it"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button></div></div>`;
     list.appendChild(a);
   });
   renderedCount+=batch.length;
@@ -846,6 +873,14 @@ document.getElementById('songList').addEventListener('click',e=>{
     e.preventDefault(); e.stopPropagation();
     const link=addBtn.closest('a');
     PlaylistModal.open(addBtn.dataset.tid, link?.querySelector('.song-title')?.textContent||'', link?.querySelector('.song-artist')?.textContent||'');
+    return;
+  }
+  const shareSongBtn=e.target.closest('.share-song-btn');
+  if(shareSongBtn){
+    e.preventDefault(); e.stopPropagation();
+    const idx=parseInt(shareSongBtn.dataset.idx??'-1');
+    const result=allResults[idx];
+    if(result) shareCard(result.song, result.score);
     return;
   }
   const link=e.target.closest('a[href*="open.spotify"]');
@@ -956,6 +991,223 @@ document.getElementById('shuffleBtn').addEventListener('click',shuffleQuery);
     active=-1;
   });
 })();
+
+// ── TC4: Load shared vibe from URL params ──
+(function(){
+  const p=new URLSearchParams(window.location.search);
+  const keys=['e','g','f','v','em','s'];
+  if(keys.every(k=>p.has(k))){
+    keys.forEach((k,i)=>{
+      vals[i]=Math.min(1,Math.max(0,parseFloat(p.get(k))||0));
+      const sl=document.getElementById('sl'+i);
+      if(sl) sl.value=Math.round(vals[i]*100);
+      if(labelUpdaters[i]) labelUpdaters[i]();
+    });
+  }
+})();
+
+function shareVibeURL(){
+  const keys=['e','g','f','v','em','s'];
+  const params=new URLSearchParams();
+  keys.forEach((k,i)=>params.set(k,vals[i].toFixed(2)));
+  const base=window.location.href.split('?')[0].split('#')[0];
+  const url=base+'?'+params.toString();
+  (navigator.clipboard?.writeText(url)||Promise.reject()).then(()=>{
+    showToast('Vibe link copied — share it!',true);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=url; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('Vibe link copied — share it!',true);
+  });
+}
+
+document.getElementById('shareVibeBtn').addEventListener('click',shareVibeURL);
+
+// ── Song share card (canvas → PNG) ──
+async function generateShareCard(song,score){
+  await document.fonts.ready;
+  const W=600,H=315,splitX=280;
+  const canvas=document.createElement('canvas');
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+
+  // Background
+  ctx.fillStyle='#111113'; ctx.fillRect(0,0,W,H);
+
+  // Album art (left panel)
+  let artLoaded=false;
+  if(song.album_art){
+    try{
+      const img=new Image();
+      await new Promise((res,rej)=>{
+        img.onload=res;
+        img.onerror=()=>rej();
+        img.crossOrigin='anonymous';
+        img.src=song.album_art;
+        setTimeout(rej,4000);
+      });
+      ctx.drawImage(img,0,0,splitX,H);
+      artLoaded=true;
+    }catch{}
+  }
+  if(!artLoaded){
+    const h=song.artist.split('').reduce((a,c)=>a+c.charCodeAt(0),0)%360;
+    ctx.fillStyle=`hsl(${h},40%,16%)`; ctx.fillRect(0,0,splitX,H);
+  }
+
+  // Fade art into dark bg
+  const fade=ctx.createLinearGradient(splitX-90,0,splitX,0);
+  fade.addColorStop(0,'rgba(17,17,19,0)'); fade.addColorStop(1,'rgba(17,17,19,1)');
+  ctx.fillStyle=fade; ctx.fillRect(splitX-90,0,90,H);
+
+  // Right side text
+  const tx=splitX+20;
+
+  // Mini waveform logo
+  [[0,7,9],[7,0,16],[14,3,13],[21,5,11]].forEach(([bx,by,bh])=>{
+    ctx.fillStyle='#8B5CF6'; ctx.fillRect(tx+bx,26+by,4,bh);
+  });
+  ctx.fillStyle='#8B5CF6';
+  ctx.font='700 12px "Figtree",sans-serif';
+  ctx.fillText('Vibes Mesh',tx+30,40);
+
+  // Song title
+  ctx.fillStyle='#ffffff';
+  ctx.font='700 22px "Figtree",sans-serif';
+  const maxW=W-tx-20;
+  let title=song.title;
+  while(ctx.measureText(title).width>maxW&&title.length>1) title=title.slice(0,-1);
+  if(title!==song.title) title=title.slice(0,-1)+'…';
+  ctx.fillText(title,tx,108);
+
+  // Artist
+  ctx.fillStyle='#a0a0a0';
+  ctx.font='400 15px "Figtree",sans-serif';
+  let artist=song.artist;
+  while(ctx.measureText(artist).width>maxW&&artist.length>1) artist=artist.slice(0,-1);
+  if(artist!==song.artist) artist=artist.slice(0,-1)+'…';
+  ctx.fillText(artist,tx,134);
+
+  // Score
+  ctx.fillStyle='#8B5CF6';
+  ctx.font='600 13px "Figtree",sans-serif';
+  ctx.fillText(`${Math.round(score*100)}% vibe match`,tx,176);
+
+  // URL
+  ctx.fillStyle='#535353';
+  ctx.font='400 11px "Figtree",sans-serif';
+  ctx.fillText('vibesmesh.netlify.app',tx,H-18);
+
+  // Bottom accent strip
+  ctx.fillStyle='#8B5CF6'; ctx.fillRect(0,H-4,W,4);
+
+  return canvas;
+}
+
+const SHARE_URL='https://vibesmesh.netlify.app/';
+
+async function shareCard(song,score){
+  showToast('Generating card…',true);
+  try{
+    const canvas=await generateShareCard(song,score);
+    canvas.toBlob(async blob=>{
+      const file=new File([blob],'vibes-mesh.png',{type:'image/png'});
+      if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+        await navigator.share({
+          files:[file],
+          title:song.title,
+          text:`${song.title} — ${song.artist} · Found on Vibes Mesh`,
+          url:SHARE_URL
+        });
+      } else {
+        // Download card + copy the link so they can paste it alongside
+        const objUrl=URL.createObjectURL(blob);
+        const a=document.createElement('a');
+        a.href=objUrl;
+        a.download=`${song.title.replace(/[^a-z0-9]/gi,'-').toLowerCase()}-vibes-mesh.png`;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(()=>URL.revokeObjectURL(objUrl),5000);
+        navigator.clipboard?.writeText(SHARE_URL).catch(()=>{});
+        showToast('Card saved · link copied — send both',true);
+      }
+    },'image/png');
+  }catch(err){
+    showToast('Could not generate card',false);
+  }
+}
+
+const SavedVibes = {
+  KEY: 'vm_vibes',
+  all() { try { return JSON.parse(localStorage.getItem(this.KEY) || '[]'); } catch { return []; } },
+  save(name, desc = '') {
+    const vibes = this.all();
+    vibes.unshift({ id: Date.now().toString(36), name, desc, vals: [...vals], saved: Date.now() });
+    localStorage.setItem(this.KEY, JSON.stringify(vibes));
+    this.render();
+    const first = document.querySelector('#savedVibesNav .saved-vibe-item');
+    if (first) { first.classList.add('newly-saved'); setTimeout(() => first.classList.remove('newly-saved'), 1000); }
+  },
+  remove(id) {
+    localStorage.setItem(this.KEY, JSON.stringify(this.all().filter(v => v.id !== id)));
+    this.render();
+  },
+  render() {
+    const nav = document.getElementById('savedVibesNav');
+    const vibes = this.all();
+    nav.innerHTML = '';
+    if (!vibes.length) {
+      const el = document.createElement('div');
+      el.style.cssText = 'font-size:11px;color:var(--faint);padding:4px 14px 8px;line-height:1.6';
+      el.innerHTML = 'Nothing saved yet.<br>Tune the sliders to a feeling<br>and save it to come back.';
+      nav.appendChild(el);
+      return;
+    }
+    vibes.forEach(v => {
+      const item = document.createElement('div');
+      item.className = 'saved-vibe-item';
+      if (v.desc) item.setAttribute('data-desc', v.desc);
+      item.innerHTML = `<span class="saved-vibe-name">${esc(v.name)}</span><button class="saved-vibe-del" title="Delete"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>`;
+      item.querySelector('.saved-vibe-name').addEventListener('click', () => loadMood(v.vals, null));
+      item.querySelector('.saved-vibe-del').addEventListener('click', e => { e.stopPropagation(); SavedVibes.remove(v.id); });
+      nav.appendChild(item);
+    });
+  }
+};
+
+document.getElementById('saveVibeBtn').addEventListener('click', () => {
+  document.getElementById('saveVibeBtn').style.display = 'none';
+  document.getElementById('saveVibeInputRow').style.display = 'block';
+  document.getElementById('saveVibeInput').value = '';
+  document.getElementById('saveVibeDesc').value = '';
+  document.getElementById('saveVibeInput').focus();
+});
+
+function hideVibeInput() {
+  document.getElementById('saveVibeBtn').style.display = '';
+  document.getElementById('saveVibeInputRow').style.display = 'none';
+}
+
+function doSaveVibe() {
+  const name = document.getElementById('saveVibeInput').value.trim();
+  if (!name) { document.getElementById('saveVibeInput').focus(); return; }
+  const desc = document.getElementById('saveVibeDesc').value.trim();
+  SavedVibes.save(name, desc);
+  hideVibeInput();
+}
+
+document.getElementById('saveVibeConfirm').addEventListener('click', doSaveVibe);
+document.getElementById('saveCancelBtn').addEventListener('click', hideVibeInput);
+document.getElementById('saveVibeInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('saveVibeDesc').focus(); }
+  if (e.key === 'Escape') hideVibeInput();
+});
+document.getElementById('saveVibeDesc').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); doSaveVibe(); }
+  if (e.key === 'Escape') hideVibeInput();
+});
+
+SavedVibes.render();
 
 buildGrid();
 draw();

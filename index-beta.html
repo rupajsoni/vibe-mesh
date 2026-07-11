@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vibe Mesh — Beta</title>
+<title>Vibes Mesh — Beta</title>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -187,7 +187,7 @@ a.playing .song-idx { color: var(--green); }
   <div class="sidebar">
     <div class="logo">
       <svg class="logo-mark" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="M 30 70 Q 45 50 65 45 Q 85 42 100 60 L 100 140 Q 85 158 65 155 Q 45 150 30 130 Z"/><path d="M 100 60 Q 115 50 135 50 Q 155 50 165 70 L 165 130 Q 155 150 135 150 Q 115 150 100 140 Z"/><path d="M 135 50 Q 155 40 170 60 Q 180 75 180 95 L 180 105 Q 180 125 170 140 Q 155 160 135 150 Q 155 130 155 95 Q 155 70 135 50 Z"/></g></svg>
-      <span class="logo-text">Vibe Mesh</span>
+      <span class="logo-text">Vibes Mesh</span>
     </div>
     <div class="nav">
       <div class="nav-item" onclick="window.location='index.html'">✨ Find your vibe</div>
@@ -204,7 +204,7 @@ a.playing .song-idx { color: var(--green); }
         <div class="disc-stat"><span class="disc-num">100K</span><span class="disc-label">songs uploaded daily</span></div>
         <div class="disc-stat"><span class="disc-num">~90%</span><span class="disc-label">of streams go to the top 1% of artists</span></div>
         <div class="disc-stat"><span class="disc-num">millions</span><span class="disc-label">of tracks never played once</span></div>
-        <div class="disc-copy">Algorithms recommend what's already popular. The artist who deserves to be heard isn't. The listener who would love them can't find them. Vibe Mesh doesn't know what's popular. It only knows what fits the feeling.</div>
+        <div class="disc-copy">Algorithms recommend what's already popular. The artist who deserves to be heard isn't. The listener who would love them can't find them. Vibes Mesh doesn't know what's popular. It only knows what fits the feeling.</div>
       </div>
       <div class="tagline-sidebar" style="margin-top:10px">"Vibes is just science felt."</div>
     </div>
@@ -357,18 +357,15 @@ axisConfigs.forEach((cfg,i)=>{
 
 // === Moods ===
 const moods=[
-  {name:'Pop',         icon:'🎵',v:[0.64,0.61,0.76,0.97,0.53,0.55]},
-  {name:'Hip-Hop',     icon:'🎤',v:[0.69,0.73,0.84,0.99,0.55,0.63]},
-  {name:'R&B',         icon:'🌊',v:[0.59,0.66,0.73,0.99,0.59,0.55]},
-  {name:'Trap Soul',   icon:'💜',v:[0.30,0.62,0.65,0.78,0.32,0.28]},
-  {name:'Rock',        icon:'🎸',v:[0.76,0.50,0.89,0.96,0.49,0.55]},
-  {name:'Electronic',  icon:'⚡',v:[0.78,0.61,0.90,0.73,0.37,0.61]},
-  {name:'House',           icon:'🔊',v:[0.73,0.70,0.90,0.54,0.40,0.63]},
-  {name:'Deep Progressive',icon:'🌀',v:[0.75,0.77,0.75,0.50,0.35,0.75]},
-  {name:'Dance Party',     icon:'🕺',v:[0.76,0.65,0.88,0.96,0.59,0.62]},
-  {name:'Jazz',        icon:'🎷',v:[0.50,0.56,0.64,0.95,0.55,0.46]},
-  {name:'Chill',       icon:'🌙',v:[0.43,0.55,0.59,0.58,0.34,0.42]},
-  {name:'Ambient',     icon:'🌌',v:[0.35,0.42,0.51,0.28,0.22,0.33]},
+  {name:'Pop',              icon:'🎵',v:[0.64,0.61,0.76,0.97,0.53,0.55]},
+  {name:'Rock',             icon:'🎸',v:[0.76,0.50,0.89,0.96,0.49,0.55]},
+  {name:'Afrobeats',        icon:'🌍',v:[0.75,0.82,0.82,0.90,0.78,0.80]},
+  {name:'Neo-Soul',         icon:'🌿',v:[0.42,0.66,0.62,0.88,0.42,0.38]},
+  {name:'House',            icon:'🔊',v:[0.73,0.70,0.90,0.54,0.40,0.63]},
+  {name:'Deep Progressive', icon:'🌀',v:[0.75,0.77,0.75,0.50,0.35,0.75]},
+  {name:'Kinetic Indie',    icon:'⚡',v:[0.78,0.78,0.80,0.50,0.50,0.22]},
+  {name:'Jazz',             icon:'🎷',v:[0.50,0.56,0.64,0.95,0.55,0.46]},
+  {name:'Lo-fi',            icon:'📼',v:[0.35,0.50,0.22,0.38,0.28,0.30]},
 ];
 
 function loadMood(v,name){
