@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Your Vibe — Company North Star</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0b0f1a;
+  --bg-card:  #111827;
+  --bg-hi:    #1a2235;
+  --border:   rgba(241,245,249,0.09);
+  --border-accent: rgba(212,168,83,0.35);
+  --text:     #f1f5f9;
+  --muted:    #94a3b8;
+  --dim:      #4b5563;
+  --gold:     #d4a853;
+  --gold-bg:  rgba(212,168,83,0.08);
+  --blue:     #3b82f6;
+  --blue-bg:  rgba(59,130,246,0.08);
+  --green:    #3fb950;
+  --green-bg: rgba(63,185,80,0.08);
+  --orange:   #e88c2a;
+  --red:      #f85149;
+  --font:     'Plus Jakarta Sans', system-ui, sans-serif;
+  --mono:     'JetBrains Mono', 'Courier New', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;overflow-x:hidden}
+a{color:var(--blue);text-decoration:none}
+code{font-family:var(--mono);font-size:0.85em;background:var(--bg-hi);padding:2px 6px;border-radius:4px;color:var(--gold)}
+
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:52px;background:rgba(13,17,23,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 32px;gap:0;justify-content:space-between}
+.nav-brand{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--text)}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{font-size:12px;color:var(--muted);padding:4px 10px;border-radius:6px;transition:all 0.15s;font-weight:400}
+.nav-links a:hover{color:var(--text);background:var(--bg-hi)}
+.nav-stat{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--border);padding:3px 10px;border-radius:20px}
+.nav-stat span{color:var(--gold);font-weight:500}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1100px;margin:0 auto;padding:0 32px}
+.section{padding:80px 0}
+.section-sm{padding:48px 0}
+.label{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.label::before{content:'';width:20px;height:1px;background:var(--gold)}
+h1{font-size:clamp(40px,6vw,72px);font-weight:700;line-height:1.05;letter-spacing:-0.02em}
+h2{font-size:clamp(26px,3.5vw,40px);font-weight:600;line-height:1.15;letter-spacing:-0.01em}
+h3{font-size:18px;font-weight:600;margin-bottom:8px}
+p.lead{font-size:17px;line-height:1.75;color:var(--muted);max-width:620px}
+
+/* ─── REVEAL ─── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.4s}
+
+/* ─── HERO ─── */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:52px;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 30% 50%,rgba(200,184,154,0.05) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 80% 20%,rgba(88,166,255,0.04) 0%,transparent 60%);pointer-events:none}
+.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.hero-badge{font-family:var(--mono);font-size:11px;background:var(--gold-bg);border:1px solid var(--border-accent);color:var(--gold);padding:4px 12px;border-radius:20px;letter-spacing:0.1em}
+.hero-counter-inline{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.hero-title{margin-bottom:24px;color:var(--text)}
+.hero-title .accent{color:var(--gold)}
+.hero-sub{font-size:18px;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:48px}
+.hero-metrics{display:flex;gap:32px;flex-wrap:wrap;margin-bottom:56px}
+.metric-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px 24px;display:flex;flex-direction:column;gap:4px;min-width:160px}
+.metric-num{font-size:28px;font-weight:700;color:var(--text);line-height:1;font-family:var(--mono)}
+.metric-num .unit{font-size:14px;color:var(--muted);font-family:var(--font);font-weight:400}
+.metric-label{font-size:12px;color:var(--muted)}
+.hero-grid{display:grid;grid-template-columns:1fr 400px;gap:80px;align-items:center;min-height:100vh;padding-top:52px}
+.hero-right{position:relative}
+
+/* ─── ORIENTATION CARD ─── */
+.orient-card{background:var(--bg-card);border:1px solid var(--gold);border-radius:12px;padding:32px;position:relative;overflow:hidden}
+.orient-card::before{content:'QUICK ORIENTATION';position:absolute;top:16px;right:20px;font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.2em;opacity:0.5}
+.orient-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.orient-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.orient-title::before{content:'↩';color:var(--gold);font-size:16px}
+.orient-row{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
+.orient-icon{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px}
+.icon-gold{background:var(--gold-bg);color:var(--gold)}
+.icon-blue{background:var(--blue-bg);color:var(--blue)}
+.icon-green{background:var(--green-bg);color:var(--green)}
+.orient-content{font-size:13px;line-height:1.6}
+.orient-content strong{color:var(--text);font-weight:500}
+.orient-content p{color:var(--muted)}
+.orient-divider{height:1px;background:var(--border);margin:16px 0}
+.orient-cmd{margin-top:16px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
+.cmd-chip{font-family:var(--mono);background:var(--bg-hi);border:1px solid var(--border);padding:3px 10px;border-radius:6px;color:var(--gold);font-size:11px}
+.orient-links{display:flex;flex-wrap:wrap;gap:4px 0;align-items:center;font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:10px}
+.doc-link{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(212,168,83,0.25);transition:border-color 0.15s,color 0.15s}
+.doc-link:hover{border-bottom-color:var(--gold);color:var(--text)}
+.stream-where a{color:inherit;text-decoration:none}.stream-where a:hover{color:var(--text)}
+
+/* ─── CARDS ─── */
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:24px}
+.card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.card-top{width:100%;height:3px;border-radius:3px 3px 0 0;margin-bottom:20px}
+.bg-gold{background:var(--gold)}.bg-blue{background:var(--blue)}.bg-green{background:var(--green)}.bg-orange{background:var(--orange)}
+.stat-big{font-size:36px;font-weight:700;font-family:var(--mono);line-height:1}
+.stat-label{font-size:12px;color:var(--muted);margin-top:4px}
+.tag{display:inline-flex;align-items:center;font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:4px;letter-spacing:0.05em;font-weight:500}
+.tag-gold{background:var(--gold-bg);color:var(--gold);border:1px solid rgba(200,184,154,0.2)}
+.tag-blue{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(88,166,255,0.2)}
+.tag-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(63,185,80,0.2)}
+.tag-orange{background:rgba(232,140,42,0.1);color:var(--orange);border:1px solid rgba(232,140,42,0.2)}
+.tag-dim{background:var(--bg-hi);color:var(--muted);border:1px solid var(--border)}
+
+/* ─── THE CRACK ─── */
+.moat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:28px;transition:border-color 0.2s,transform 0.2s;cursor:default}
+.moat-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.moat-num{font-family:var(--mono);font-size:11px;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.moat-num::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ─── RADAR ─── */
+#radar-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:32px;display:flex;gap:40px;align-items:flex-start}
+#radar-canvas{width:280px;height:280px;flex-shrink:0;cursor:pointer}
+.radar-right{flex:1}
+.preset-btns{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.preset-btn{font-size:12px;font-weight:500;padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--bg-hi);color:var(--muted);cursor:pointer;transition:all 0.15s;font-family:var(--font)}
+.preset-btn:hover,.preset-btn.active{border-color:var(--gold);color:var(--gold);background:var(--gold-bg)}
+.axis-list{display:flex;flex-direction:column;gap:14px}
+.axis-item{display:grid;grid-template-columns:90px 1fr 40px;gap:12px;align-items:center}
+.axis-name-label{font-size:12px;color:var(--muted);font-weight:500}
+.axis-bar-track{height:4px;background:var(--bg-hi);border-radius:2px;position:relative;overflow:hidden}
+.axis-bar-fill{height:100%;border-radius:2px;transition:width 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+.axis-val{font-family:var(--mono);font-size:11px;color:var(--gold);text-align:right}
+.radar-note{margin-top:20px;font-size:12px;color:var(--dim);border-top:1px solid var(--border);padding-top:16px;line-height:1.6}
+
+/* ─── FLOWCHART: THE LOOP ─── */
+#loop-chart{width:100%;overflow-x:auto;padding-bottom:16px}
+.flow-row{display:flex;align-items:center;gap:0;position:relative;min-width:700px}
+.flow-node{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px 18px;text-align:center;min-width:130px;flex-shrink:0;transition:border-color 0.3s,background 0.3s;cursor:default}
+.flow-node.active-node{border-color:var(--gold);background:var(--gold-bg)}
+.flow-node-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.flow-node-sub{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.flow-arrow{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-width:32px}
+.flow-arrow svg{color:var(--dim);width:24px;height:24px}
+.flow-return{display:flex;align-items:center;justify-content:flex-end;margin-top:16px;padding:0 8px;min-width:700px}
+.return-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--dim),var(--gold));margin-right:8px}
+.return-label{font-family:var(--mono);font-size:10px;color:var(--gold);white-space:nowrap;display:flex;align-items:center;gap:6px}
+.return-label::after{content:'↖';color:var(--gold)}
+.decision-node{background:var(--bg-card);border:1px solid var(--border);border-radius:0;padding:12px 16px;text-align:center;flex-shrink:0;transform:rotate(45deg);width:70px;height:70px;display:flex;align-items:center;justify-content:center;transition:border-color 0.3s}
+.decision-node span{transform:rotate(-45deg);font-size:11px;font-weight:600;color:var(--text);display:block}
+.flow-vertical{display:flex;flex-direction:column;align-items:center;position:relative}
+.flow-branch{display:flex;gap:20px;margin-top:16px}
+.branch-yes,.branch-no{display:flex;flex-direction:column;align-items:center;gap:8px}
+.branch-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em}
+
+/* ─── AI ORCHESTRATION ─── */
+.orch-diagram{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.orch-layer{padding:20px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:20px;transition:background 0.2s}
+.orch-layer:last-child{border-bottom:none}
+.orch-layer:hover{background:var(--bg-hi)}
+.orch-layer-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;min-width:90px;flex-shrink:0}
+.orch-items{display:flex;gap:8px;flex-wrap:wrap;flex:1}
+.orch-chip{display:flex;align-items:center;gap:6px;background:var(--bg-hi);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--text);font-weight:500}
+.orch-chip-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.dot-gold{background:var(--gold)}.dot-blue{background:var(--blue)}.dot-green{background:var(--green)}.dot-orange{background:var(--orange)}
+.orch-connector{display:flex;justify-content:center;padding:8px 0;color:var(--dim);font-size:18px;background:var(--bg)}
+.orch-desc{font-size:12px;color:var(--muted);max-width:300px;line-height:1.5}
+.orch-layer-human{background:rgba(200,184,154,0.04)}
+.orch-layer-ai{background:rgba(88,166,255,0.04)}
+
+/* ─── TIMELINE ─── */
+.timeline-wrap{position:relative;padding:32px 0}
+.tl-line{position:absolute;left:0;right:0;top:50px;height:2px;background:var(--border);z-index:0}
+.tl-progress{position:absolute;left:0;top:50px;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold));width:0;transition:width 1.2s ease;z-index:1}
+.tl-nodes{display:flex;justify-content:space-between;position:relative;z-index:2}
+.tl-node{display:flex;flex-direction:column;align-items:center;max-width:130px}
+.tl-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--dim);background:var(--bg);margin-bottom:16px;transition:all 0.5s;flex-shrink:0}
+.tl-node.done .tl-dot{border-color:var(--gold);background:var(--gold)}
+.tl-node.now .tl-dot{border-color:var(--gold);background:var(--gold);box-shadow:0 0 0 4px rgba(200,184,154,0.2);animation:ripple 2s ease-in-out infinite}
+@keyframes ripple{0%,100%{box-shadow:0 0 0 0 rgba(200,184,154,0.4)}50%{box-shadow:0 0 0 8px rgba(200,184,154,0)}}
+.tl-date{font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:6px;text-align:center}
+.tl-label{font-size:11px;color:var(--text);text-align:center;line-height:1.4;font-weight:500}
+
+/* ─── MARKET MAP ─── */
+#market-map{position:relative;height:360px;display:flex;align-items:center;justify-content:center}
+.market-ring{position:absolute;border-radius:50%;border:1px solid;display:flex;align-items:center;justify-content:center;transition:transform 0.6s ease}
+.ring-0{width:130px;height:130px;background:rgba(200,184,154,0.08);border-color:var(--gold);z-index:3}
+.ring-1{width:240px;height:240px;background:rgba(88,166,255,0.03);border-color:rgba(88,166,255,0.3);z-index:2}
+.ring-2{width:350px;height:350px;background:rgba(63,185,80,0.02);border-color:rgba(63,185,80,0.15);z-index:1}
+.ring-center{text-align:center;z-index:10}
+.ring-center-name{font-size:14px;font-weight:700;color:var(--gold)}
+.ring-center-sub{font-size:10px;color:var(--muted);margin-top:2px;font-family:var(--mono)}
+.ring-node{position:absolute;font-size:11px;font-weight:600;color:var(--text);text-align:center;white-space:nowrap}
+.ring-node-sub{font-size:9px;color:var(--muted);font-family:var(--mono);display:block;margin-top:2px}
+
+/* ─── PIPELINE ─── */
+.pipeline-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;display:flex;align-items:center;gap:16px;transition:border-color 0.2s}
+.pipeline-card:hover{border-color:rgba(200,184,154,0.3)}
+.pipeline-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.pipe-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.pipe-detail{font-size:12px;color:var(--muted)}
+.pipe-status{margin-left:auto;flex-shrink:0}
+.status-dot{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;font-family:var(--mono)}
+.sdot{width:7px;height:7px;border-radius:50%;animation:blink 2s ease-in-out infinite}
+.sdot-orange{background:var(--orange)}.sdot-blue{background:var(--blue)}.sdot-green{background:var(--green)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* ─── NORTH STAR ─── */
+#northstar{background:linear-gradient(135deg,rgba(200,184,154,0.04) 0%,transparent 50%),linear-gradient(225deg,rgba(88,166,255,0.04) 0%,transparent 50%);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;padding:100px 32px}
+.ns-big{font-size:clamp(36px,6vw,80px);font-weight:700;letter-spacing:-0.03em;line-height:1.05;margin:24px 0 40px;color:var(--text)}
+.ns-big .line2{color:var(--gold)}
+.ns-metric-card{display:inline-block;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:32px 40px;max-width:600px;margin:0 auto 48px;text-align:left}
+.ns-metric-card p{font-size:16px;line-height:1.7;color:var(--muted)}
+.ns-metric-card p strong{color:var(--text);font-weight:600}
+.ns-domains{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:40px}
+.domain-chip{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 20px;font-size:13px;font-weight:500;color:var(--muted);transition:all 0.2s;cursor:default}
+.domain-chip.active{border-color:var(--gold);color:var(--gold);background:var(--gold-bg)}
+.domain-chip:hover{color:var(--text);border-color:rgba(230,237,243,0.3)}
+
+/* ─── SYSTEM STREAMS ─── */
+.stream-row{display:flex;gap:2px}
+.stream-card{flex:1;background:var(--bg-card);border:1px solid var(--border);padding:20px;transition:background 0.2s}
+.stream-card:first-child{border-radius:8px 0 0 8px}
+.stream-card:last-child{border-radius:0 8px 8px 0}
+.stream-card:hover{background:var(--bg-hi)}
+.stream-top{width:100%;height:2px;border-radius:2px;margin-bottom:16px}
+.stream-icon-lg{font-size:20px;margin-bottom:10px}
+.stream-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.stream-where{font-family:var(--mono);font-size:10px;color:var(--gold);margin-bottom:8px}
+.stream-desc{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* ─── FOOTER ─── */
+footer{border-top:1px solid var(--border);padding:32px;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.footer-left{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.footer-left span{color:var(--gold)}
+.footer-right{font-size:13px;color:var(--muted);font-style:italic}
+
+/* ─── LENS SYSTEM ─── */
+.lens-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:32px}
+.lens-btn{font-size:12px;font-weight:500;padding:7px 16px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.18s;font-family:var(--font);letter-spacing:0.01em}
+.lens-btn:hover{color:var(--text);border-color:rgba(241,245,249,0.2)}
+.lens-btn.active{background:var(--blue-bg);border-color:var(--blue);color:var(--blue)}
+
+/* ─── ARCHITECTURE DIAGRAM ─── */
+.arch-wrap{display:grid;grid-template-columns:1fr 300px;gap:32px;align-items:start}
+.arch-stack{display:flex;flex-direction:column;position:relative}
+.an{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:18px 20px;transition:border-color 0.25s,background 0.25s,opacity 0.25s;position:relative}
+.an.dimmed{opacity:0.25}
+.an.lit{border-color:var(--blue);background:rgba(59,130,246,0.07)}
+.an.lit-gold{border-color:var(--gold);background:rgba(212,168,83,0.07)}
+.an.lit-green{border-color:var(--green);background:rgba(63,185,80,0.07)}
+.an.lit-orange{border-color:var(--orange);background:rgba(232,140,42,0.07)}
+.an-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.an-tag{font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:2px 8px;border-radius:4px;font-weight:500;flex-shrink:0}
+.an-tag-gold{background:var(--gold-bg);color:var(--gold);border:1px solid rgba(212,168,83,0.2)}
+.an-tag-blue{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(59,130,246,0.2)}
+.an-tag-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(63,185,80,0.2)}
+.an-tag-orange{background:rgba(232,140,42,0.08);color:var(--orange);border:1px solid rgba(232,140,42,0.2)}
+.an-tag-dim{background:var(--bg-hi);color:var(--muted);border:1px solid var(--border)}
+.an-title{font-size:13px;font-weight:600;color:var(--text)}
+.an-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.an-chip{font-family:var(--mono);font-size:10px;background:var(--bg-hi);border:1px solid var(--border);border-radius:4px;padding:3px 8px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.an-chip-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.an-note{font-size:11px;color:var(--dim);margin-top:8px;font-style:italic;line-height:1.5}
+.arch-conn{display:flex;align-items:center;padding:2px 0 2px 20px;position:relative}
+.arch-conn-line{width:1px;height:28px;background:var(--dim);flex-shrink:0}
+.arch-conn-label{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:0.1em;margin-left:10px;white-space:nowrap}
+.arch-conn-arrow{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:6px solid var(--dim);position:absolute;left:17px;bottom:-2px}
+.arch-split{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.arch-feedback{position:relative;padding:10px 0}
+.arch-feedback-wrap{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(63,185,80,0.06);border:1px solid rgba(63,185,80,0.2);border-radius:6px;border-style:dashed}
+.arch-feedback-icon{font-size:16px;color:var(--green);flex-shrink:0}
+.arch-feedback-text{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.08em}
+
+/* Annotation panel */
+.arch-anno{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:24px;position:sticky;top:72px}
+.anno-perspective{font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.anno-perspective::after{content:'';flex:1;height:1px;background:var(--border)}
+.anno-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:12px;line-height:1.3}
+.anno-points{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.anno-point{display:flex;gap:10px;align-items:flex-start}
+.anno-point-num{font-family:var(--mono);font-size:10px;color:var(--gold);flex-shrink:0;margin-top:2px}
+.anno-point-text{font-size:12px;color:var(--muted);line-height:1.65}
+.anno-point-text strong{color:var(--text);font-weight:500}
+.anno-watch{border-top:1px solid var(--border);padding-top:16px;font-family:var(--mono);font-size:10px;color:var(--dim);line-height:1.7}
+.anno-watch span{color:var(--gold)}
+
+/* ─── BLUEPRINT ─── */
+#blueprint{background:var(--bg-card);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.bp-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px}
+.bp-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:24px;font-family:var(--mono)}
+.bp-card-title{font-size:10px;color:var(--gold);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.bp-card-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.bp-code{font-size:11px;line-height:1.85;color:var(--muted)}
+.bp-code .k{color:var(--blue)}.bp-code .v{color:var(--green)}.bp-code .c{color:var(--dim)}.bp-code .h{color:var(--gold)}
+.bp-tree{font-size:11px;line-height:2;color:var(--muted)}
+.bp-tree .root{color:var(--gold);font-weight:500}
+.bp-tree .branch{color:var(--blue)}
+.bp-tree .leaf{color:var(--muted)}
+.bp-tree .note{color:var(--dim)}
+.state-machine{display:flex;flex-direction:column;gap:6px}
+.sm-state{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg-hi);border-radius:6px;font-size:11px;border-left:2px solid transparent}
+.sm-state.s-active{border-left-color:var(--gold);color:var(--gold)}
+.sm-state.s-work{border-left-color:var(--blue);color:var(--blue)}
+.sm-state.s-close{border-left-color:var(--green);color:var(--green)}
+.sm-state-label{font-weight:500;min-width:80px}
+.sm-state-desc{color:var(--dim);font-size:10px}
+.sm-arrow{padding-left:16px;color:var(--dim);font-size:10px}
+
+/* ─── UTILS ─── */
+.divider{height:1px;background:var(--border);margin:0 32px}
+.text-gold{color:var(--gold)}.text-blue{color:var(--blue)}.text-green{color:var(--green)}.text-muted{color:var(--muted)}
+.flex{display:flex}.flex-col{flex-direction:column}.gap-8{gap:8px}.gap-16{gap:16px}.gap-24{gap:24px}.gap-32{gap:32px}
+.mt-8{margin-top:8px}.mt-16{margin-top:16px}.mt-24{margin-top:24px}.mt-32{margin-top:32px}.mt-48{margin-top:48px}.mt-64{margin-top:64px}
+.mb-8{margin-bottom:8px}.mb-16{margin-bottom:16px}.mb-24{margin-bottom:24px}.mb-32{margin-bottom:32px}.mb-48{margin-bottom:48px}
+.fs-12{font-size:12px}.fs-13{font-size:13px}.fs-14{font-size:14px}.fw-600{font-weight:600}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-dot"></div>
+    Find Your Vibe
+  </div>
+  <ul class="nav-links">
+    <li><a href="#hero">Overview</a></li>
+    <li><a href="#crack">Moat</a></li>
+    <li><a href="#product">Product</a></li>
+    <li><a href="#loop">Loop</a></li>
+    <li><a href="#dance">AI System</a></li>
+    <li><a href="#blueprint">Blueprint</a></li>
+    <li><a href="#traction">Traction</a></li>
+    <li><a href="#northstar">North Star</a></li>
+  </ul>
+  <div class="nav-stat">Day <span id="nav-day">—</span> &nbsp;·&nbsp; <span>Live</span></div>
+</nav>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section id="hero">
+  <div class="wrap" style="display:grid;grid-template-columns:1fr 380px;gap:64px;align-items:center;min-height:calc(100vh - 52px);padding-top:52px">
+
+    <div>
+      <div class="hero-eyebrow">
+        <div class="hero-badge">FIND YOUR VIBE</div>
+        <div class="hero-counter-inline">Started Apr 27, 2026 &nbsp;·&nbsp; <span id="day-count" style="color:var(--gold)">—</span> days</div>
+      </div>
+
+      <h1 class="hero-title reveal">
+        Feeling is<br>
+        <span class="accent">the new search.</span>
+      </h1>
+
+      <p class="hero-sub reveal d1">
+        Music discovery backend that replaces keyword search with a 6-axis vibe vector. You describe how you want to feel. The engine finds the music that lives there. Music is the beachhead. The methodology scales to every domain where emotion precedes choice.
+      </p>
+
+      <div class="hero-metrics reveal d2">
+        <div class="metric-pill">
+          <div class="metric-num">114<span class="unit">K</span></div>
+          <div class="metric-label">Songs vectorized</div>
+        </div>
+        <div class="metric-pill">
+          <div class="metric-num">6</div>
+          <div class="metric-label">Science-backed axes</div>
+        </div>
+        <div class="metric-pill">
+          <div class="metric-num">&lt;200<span class="unit">ms</span></div>
+          <div class="metric-label">Query latency</div>
+        </div>
+        <div class="metric-pill">
+          <div class="metric-num" id="sessions-count">18</div>
+          <div class="metric-label">Build sessions</div>
+        </div>
+      </div>
+
+      <div class="flex gap-8 reveal d3">
+        <span class="tag tag-gold">Pre-professional demo</span>
+        <span class="tag tag-blue">YC W2027 target</span>
+        <span class="tag tag-green">Backend live :8080</span>
+      </div>
+    </div>
+
+    <!-- Orient card -->
+    <div class="orient-card reveal d2">
+      <div class="orient-title">You've been away. Here's everything.</div>
+
+      <div class="orient-row">
+        <div class="orient-icon icon-gold">◈</div>
+        <div class="orient-content">
+          <strong>What this is</strong>
+          <p>Vibes Mesh music engine + Find Your Vibe platform company. Feeling as the universal input interface.</p>
+        </div>
+      </div>
+
+      <div class="orient-row">
+        <div class="orient-icon icon-green">✓</div>
+        <div class="orient-content">
+          <strong>What's built</strong>
+          <p>Go backend live · 114K songs · Spotify OAuth · pitch deck · company OS structured</p>
+        </div>
+      </div>
+
+      <div class="orient-row">
+        <div class="orient-icon icon-blue">→</div>
+        <div class="orient-content">
+          <strong>Where we are in the journey</strong>
+          <p><strong style="color:var(--gold)">Pre-proof phase.</strong> Product is functionally complete. Closing the last polish gaps before first professional contact. The next milestone is <em>Proof</em> — a music supervisor or DJ uses this in their actual workflow without being asked to demo it.</p>
+        </div>
+      </div>
+
+      <div class="orient-divider"></div>
+
+      <div class="orient-row">
+        <div class="orient-icon icon-gold">⚡</div>
+        <div class="orient-content">
+          <strong>Active pipeline</strong>
+          <p>Art studio · Warner Music curator · Karan's network (Pitchfork intro)</p>
+        </div>
+      </div>
+
+      <div class="orient-cmd">
+        <div class="cmd-chip">/lessgo</div>
+        <span>in Claude Code → full oriented brief in 30s</span>
+      </div>
+      <div class="orient-links">
+        <a class="doc-link" href="NORTH_STAR.md" target="_blank">NORTH_STAR.md</a><span style="margin:0 6px">·</span>
+        <a class="doc-link" href="TASKS.md" target="_blank">TASKS.md</a><span style="margin:0 6px">·</span>
+        <a class="doc-link" href="docs/business/company-vision.md" target="_blank">company-vision.md</a><span style="margin:0 6px">·</span>
+        <a class="doc-link" href="curator-deck.html" target="_blank">curator-deck.html</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ THE CRACK ═══════════════════════════════ -->
+<section id="crack" class="section">
+  <div class="wrap">
+    <div class="label reveal">The Moat</div>
+    <h2 class="reveal d1">Three things that can't be replicated<br>by starting today.</h2>
+    <p class="lead mt-16 reveal d2">Every time you look for music, you start with a feeling. Nobody has built for the feeling itself. The translation from emotion to search term is always lossy. Vibes Mesh removes the translation.</p>
+
+    <div class="card-grid-3 mt-48">
+      <div class="moat-card reveal d1">
+        <div class="moat-num">01 &nbsp;STRUCTURAL</div>
+        <h3>Neutrality no label can offer</h3>
+        <p class="fs-13 text-muted mt-8" style="line-height:1.7">Any major that builds this tilts it toward their catalogue. We have no catalogue. No conflict. Music supervisors need discovery with no thumb on the scale. That's a structural position, not a brand promise. An acquirer doesn't get it — it dissolves on contact.</p>
+        <div class="mt-16"><span class="tag tag-gold">Position</span></div>
+      </div>
+      <div class="moat-card reveal d2">
+        <div class="moat-num">02 &nbsp;COMPOUND</div>
+        <h3>Calibration is accumulated work</h3>
+        <p class="fs-13 text-muted mt-8" style="line-height:1.7">The 6-axis model took months of domain iteration. Every professional who refines it, every signal logged, every axis decision — it compounds. A team starting today starts from zero. The gap doesn't stay fixed. It grows every session.</p>
+        <div class="mt-16"><span class="tag tag-blue">Flywheel</span></div>
+      </div>
+      <div class="moat-card reveal d3">
+        <div class="moat-num">03 &nbsp;SCOPE</div>
+        <h3>Platform vision only works outside</h3>
+        <p class="fs-13 text-muted mt-8" style="line-height:1.7">A label builds music search. They cannot build Find Your Vibe. The platform thesis — restaurants, travel, film, fragrance — only holds from a position with no single-industry allegiance. That's here. Cannot be moved there.</p>
+        <div class="mt-16"><span class="tag tag-green">Defensible</span></div>
+      </div>
+    </div>
+
+    <!-- Positioning map -->
+    <div class="card mt-32 reveal d4">
+      <div class="label" style="margin-bottom:20px">Positioning map</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;height:200px">
+        <div style="background:rgba(200,184,154,0.05);border:1px solid var(--border);border-radius:8px 0 0 0;display:flex;align-items:flex-start;justify-content:flex-end;padding:12px;position:relative">
+          <span class="tag tag-dim">Spotify / Apple Music</span>
+          <div style="position:absolute;bottom:12px;left:12px;font-size:11px;color:var(--dim)">Popular · Catalogue-biased</div>
+        </div>
+        <div style="background:rgba(200,184,154,0.12);border:1px solid var(--gold);border-radius:0 8px 0 0;display:flex;align-items:flex-start;justify-content:flex-start;padding:12px;position:relative">
+          <span class="tag tag-gold">Vibes Mesh</span>
+          <div style="position:absolute;bottom:12px;right:12px;font-size:11px;color:var(--gold);text-align:right">Feeling-first · Neutral</div>
+        </div>
+        <div style="background:rgba(13,17,23,0.5);border:1px solid var(--border);border-radius:0 0 0 8px;display:flex;align-items:flex-end;justify-content:flex-end;padding:12px">
+          <div style="font-size:11px;color:var(--dim)">Search-based · Neutral</div>
+        </div>
+        <div style="background:rgba(88,166,255,0.03);border:1px solid var(--border);border-radius:0 0 8px 0;display:flex;align-items:flex-end;justify-content:flex-start;padding:12px">
+          <span class="tag tag-dim">Last.fm / This Is My Jam</span>
+        </div>
+        <!-- Axes -->
+        <div style="position:absolute;left:-80px;top:50%;transform:translateY(-50%) rotate(-90deg);font-size:10px;color:var(--muted);font-family:var(--mono);white-space:nowrap;pointer-events:none">FEELING-FIRST ↑</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px">
+        <span style="font-size:10px;color:var(--dim);font-family:var(--mono)">← CATALOGUE-BIASED</span>
+        <span style="font-size:10px;color:var(--dim);font-family:var(--mono)">NEUTRAL →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ THE PRODUCT ═══════════════════════════════ -->
+<section id="product" class="section">
+  <div class="wrap">
+    <div class="label reveal">The Product</div>
+    <h2 class="reveal d1">Vibes Mesh — not a player.<br>A feeling-to-music engine.</h2>
+    <p class="lead mt-16 reveal d2">Six axes. Each science-backed. Each orthogonal — moving one does not imply movement on another. Slayer has max Energy and near-zero Groove. Phoebe Bridgers and death metal share low Energy but are opposite on Emotion. This is the decomposition that makes it work.</p>
+
+    <div id="radar-wrap" class="mt-48 reveal d3">
+      <canvas id="radar-canvas" width="280" height="280"></canvas>
+      <div class="radar-right">
+        <div class="label mb-16">Interactive — pick a preset or explore</div>
+        <div class="preset-btns" id="preset-btns">
+          <button class="preset-btn active" data-preset="nightdrive">Night Drive</button>
+          <button class="preset-btn" data-preset="deepfocus">Deep Focus</button>
+          <button class="preset-btn" data-preset="release">Release</button>
+          <button class="preset-btn" data-preset="heartbreak">Heartbreak</button>
+          <button class="preset-btn" data-preset="trapsoul">Trap Soul</button>
+          <button class="preset-btn" data-preset="deepprog">Deep Progressive</button>
+        </div>
+        <div class="axis-list" id="axis-list">
+          <!-- filled by JS -->
+        </div>
+        <div class="radar-note">
+          This IS the product. The shape you see is a vibe vector in 6D space. Cosine similarity finds songs whose vectors point in the same direction. 114K songs pre-vectorized. Zero runtime audio analysis. &lt;200ms query.
+        </div>
+      </div>
+    </div>
+
+    <!-- Discovery mechanic -->
+    <div class="card-grid-2 mt-24">
+      <div class="card reveal d1">
+        <div class="card-top bg-gold"></div>
+        <div class="stat-big" style="color:var(--gold)">51%</div>
+        <div class="stat-label">Familiar — songs they know</div>
+        <p class="fs-12 text-muted mt-16" style="line-height:1.65">The handshake. Says "this system understood your feeling." Familiarity is load-bearing — it earns trust before discovery can work.</p>
+      </div>
+      <div class="card reveal d2">
+        <div class="card-top bg-blue"></div>
+        <div class="stat-big" style="color:var(--blue)">49%</div>
+        <div class="stat-label">Discovery — songs that deserve to be heard</div>
+        <p class="fs-12 text-muted mt-16" style="line-height:1.65">Quality floor: popularity ≥ 35 (real people have heard and responded, not zero-play uploads). The discovery happens quietly — no badge, no announcement. Just music that fits.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ THE LOOP ═══════════════════════════════ -->
+<section id="loop" class="section" style="background:var(--bg-card)">
+  <div class="wrap">
+    <div class="label reveal">The Loop</div>
+    <h2 class="reveal d1">Signal in. Model corrects. Repeat.</h2>
+    <p class="lead mt-16 mb-48 reveal d2">Every professional meeting, user session, and observed outcome travels this path and feeds back into the product. This is how the calibration compounds. The model is wrong until real use says otherwise.</p>
+
+    <!-- Horizontal flowchart -->
+    <div id="loop-chart" class="reveal d3">
+      <div class="flow-row">
+        <div class="flow-node" id="fn0">
+          <div class="flow-node-title">Signal In</div>
+          <div class="flow-node-sub">meeting · user session</div>
+        </div>
+        <div class="flow-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="flow-node" id="fn1">
+          <div class="flow-node-title">Brief Filed</div>
+          <div class="flow-node-sub">docs/features/</div>
+        </div>
+        <div class="flow-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="flow-node" id="fn2">
+          <div class="flow-node-title">Task Created</div>
+          <div class="flow-node-sub">TASKS.md · P0</div>
+        </div>
+        <div class="flow-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="flow-node" id="fn3">
+          <div class="flow-node-title">Build</div>
+          <div class="flow-node-sub">Go · HTML · /seeyou</div>
+        </div>
+        <div class="flow-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="flow-node" id="fn4">
+          <div class="flow-node-title">Verify</div>
+          <div class="flow-node-sub">success signal?</div>
+        </div>
+        <div class="flow-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+        <div class="flow-node" id="fn5">
+          <div class="flow-node-title">Signal Out</div>
+          <div class="flow-node-sub">model corrects</div>
+        </div>
+      </div>
+      <div class="flow-return">
+        <div class="return-line"></div>
+        <div class="return-label">feeds back into Signal In</div>
+      </div>
+    </div>
+
+    <!-- What signals look like -->
+    <div class="card-grid-3 mt-48">
+      <div class="card reveal d1" style="border-left:2px solid var(--gold)">
+        <div class="tag tag-gold mb-8">Signal example</div>
+        <div class="fw-600 fs-14">Karan's manager meeting</div>
+        <p class="fs-12 text-muted mt-8" style="line-height:1.65">Surfaced festival booker + music composer as net-new personas. IP attorney needed. Pitchfork intro possible. Filed: docs/signals/karan-manager-2026-05-29.md → seeded TS1, TS2, TS4.</p>
+      </div>
+      <div class="card reveal d2" style="border-left:2px solid var(--blue)">
+        <div class="tag tag-blue mb-8">Success signal</div>
+        <div class="fw-600 fs-14">TC4 Share Song</div>
+        <p class="fs-12 text-muted mt-8" style="line-height:1.65">Feature brief filed docs/features/share-song.md. Success signal: people use the template text verbatim in real DMs. "Found this on VibeMesh." The phrase, not the feature, is the signal.</p>
+      </div>
+      <div class="card reveal d3" style="border-left:2px solid var(--green)">
+        <div class="tag tag-green mb-8">Loop closed</div>
+        <div class="fw-600 fs-14">Friend user test</div>
+        <p class="fs-12 text-muted mt-8" style="line-height:1.65">Session 9 — wine bar moment. Shazamed a result. Axis model validated against real emotional response. Music supervisors locked as priority client #1 from this session.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ AI SYSTEM ═══════════════════════════════ -->
+<section id="dance" class="section">
+  <div class="wrap">
+    <div class="label reveal">The AI System</div>
+    <h2 class="reveal d1">Architecture of a one-person company<br>that moves like a team.</h2>
+    <p class="lead mt-16 reveal d2">Not "AI helps me code faster." The AI holds organizational memory — every decision, signal, constraint, session, across time. The human holds judgment, relationships, vision. The system below is the actual architecture. Read it at whatever altitude fits you.</p>
+
+    <!-- Lens selector -->
+    <div class="lens-bar mt-32 reveal d3">
+      <button class="lens-btn active" data-lens="all">Full system</button>
+      <button class="lens-btn" data-lens="engineer">Backend engineer</button>
+      <button class="lens-btn" data-lens="leader">Industry leader</button>
+      <button class="lens-btn" data-lens="product">Product person</button>
+      <button class="lens-btn" data-lens="user">End user</button>
+    </div>
+
+    <!-- Architecture diagram + annotation -->
+    <div class="arch-wrap reveal d4">
+
+      <!-- Left: stacked architecture nodes -->
+      <div class="arch-stack" id="arch-stack">
+
+        <div class="an lit-gold" id="an-human" data-lenses="all,engineer,leader,product,user">
+          <div class="an-header">
+            <span class="an-tag an-tag-gold">Human</span>
+            <span class="an-title">Rupaj — Vision · Relationships · Judgment</span>
+          </div>
+          <div class="an-chips">
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--gold)"></span>Strategic intent</div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--gold)"></span>Domain feel</div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--gold)"></span>Industry relationships</div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--gold)"></span>Taste &amp; calibration</div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--gold)"></span>Ambiguity resolution</div>
+          </div>
+          <div class="an-note">The things AI cannot hold: trust, feel, presence in a room.</div>
+        </div>
+
+        <div class="arch-conn">
+          <div class="arch-conn-line"></div>
+          <div class="arch-conn-arrow"></div>
+          <div class="arch-conn-label">intent / session prompt</div>
+        </div>
+
+        <div class="an" id="an-context" data-lenses="all,engineer,product">
+          <div class="an-header">
+            <span class="an-tag an-tag-blue">Context Assembly</span>
+            <span class="an-title">CLAUDE.md + TASKS.md + MEMORY + docs on demand</span>
+          </div>
+          <div class="an-chips">
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--gold)"></span>CLAUDE.md <span style="color:var(--dim);font-size:9px">auto-loaded · 120 lines</span></div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--blue)"></span>TASKS.md <span style="color:var(--dim);font-size:9px">via /lessgo</span></div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--green)"></span>memory/*.md <span style="color:var(--dim);font-size:9px">indexed, cross-session</span></div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--orange)"></span>docs/signals/ <span style="color:var(--dim);font-size:9px">on demand</span></div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--orange)"></span>docs/features/ <span style="color:var(--dim);font-size:9px">on demand</span></div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--blue)"></span>NORTH_STAR.md <span style="color:var(--dim);font-size:9px">routing map</span></div>
+          </div>
+          <div class="an-note">~50K–128K token context window per session. Auto-loaded ← on-demand. Hat routing via NORTH_STAR.md.</div>
+        </div>
+
+        <div class="arch-conn">
+          <div class="arch-conn-line"></div>
+          <div class="arch-conn-arrow"></div>
+          <div class="arch-conn-label">assembled context window → inference</div>
+        </div>
+
+        <div class="an" id="an-inference" data-lenses="all,engineer">
+          <div class="an-header">
+            <span class="an-tag an-tag-blue">Inference</span>
+            <span class="an-title">claude-sonnet-4-6 · Haiku (fast tasks) · Opus (high stakes)</span>
+          </div>
+          <div class="an-chips">
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--blue)"></span>Sonnet 4.6 <span style="color:var(--dim);font-size:9px">default · build sessions</span></div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--green)"></span>Haiku 4.5 <span style="color:var(--dim);font-size:9px">/yo · /seeyou · fast close</span></div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--orange)"></span>Opus (advisor) <span style="color:var(--dim);font-size:9px">architecture decisions</span></div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--dim)"></span>Forked agents <span style="color:var(--dim);font-size:9px">parallel workstreams</span></div>
+          </div>
+          <div class="an-note">Model selection is explicit — not automatic. Opus escalation on high-stakes decisions via advisor().</div>
+        </div>
+
+        <div class="arch-conn">
+          <div class="arch-conn-line"></div>
+          <div class="arch-conn-arrow"></div>
+          <div class="arch-conn-label">tool calls → file system + conversation</div>
+        </div>
+
+        <div class="an" id="an-execution" data-lenses="all,engineer,product">
+          <div class="an-header">
+            <span class="an-tag an-tag-dim">Execution</span>
+            <span class="an-title">Read · Edit · Write · Bash · Agent(fork) · Skill · advisor()</span>
+          </div>
+          <div class="an-chips">
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--blue)"></span>Read / Edit / Write <span style="color:var(--dim);font-size:9px">file system, auditable</span></div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--blue)"></span>Bash <span style="color:var(--dim);font-size:9px">shell ops, git, servers</span></div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--green)"></span>Agent fork <span style="color:var(--dim);font-size:9px">parallel subagents</span></div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--green)"></span>Skill <span style="color:var(--dim);font-size:9px">frontend-design, run, review…</span></div>
+            <div class="an-chip"><span class="an-chip-dot" style="background:var(--orange)"></span>advisor() <span style="color:var(--dim);font-size:9px">Opus reviewer, no params</span></div>
+          </div>
+          <div class="an-note">Every tool call is visible, logged, and reversible. No black-box actions.</div>
+        </div>
+
+        <div class="arch-conn">
+          <div class="arch-conn-line"></div>
+          <div class="arch-conn-arrow"></div>
+          <div class="arch-conn-label">writes persist · outputs surface to human</div>
+        </div>
+
+        <div class="arch-split">
+          <div class="an" id="an-persist" data-lenses="all,engineer,product">
+            <div class="an-header">
+              <span class="an-tag an-tag-green">Persistence</span>
+            </div>
+            <div class="an-chips" style="flex-direction:column;gap:4px">
+              <div class="an-chip" style="font-size:10px"><span class="an-chip-dot" style="background:var(--green)"></span>TASKS.md — work state</div>
+              <div class="an-chip" style="font-size:10px"><span class="an-chip-dot" style="background:var(--green)"></span>memory/*.md — prefs + feedback</div>
+              <div class="an-chip" style="font-size:10px"><span class="an-chip-dot" style="background:var(--green)"></span>docs/signals/ — pipeline log</div>
+              <div class="an-chip" style="font-size:10px"><span class="an-chip-dot" style="background:var(--green)"></span>*.html / *.go — the product</div>
+              <div class="an-chip" style="font-size:10px"><span class="an-chip-dot" style="background:var(--green)"></span>CLAUDE.md session log</div>
+            </div>
+          </div>
+          <div class="an" id="an-reality" data-lenses="all,leader,user">
+            <div class="an-header">
+              <span class="an-tag an-tag-orange">Reality Signals</span>
+            </div>
+            <div class="an-chips" style="flex-direction:column;gap:4px">
+              <div class="an-chip" style="font-size:10px"><span class="an-chip-dot" style="background:var(--orange)"></span>Industry meetings</div>
+              <div class="an-chip" style="font-size:10px"><span class="an-chip-dot" style="background:var(--orange)"></span>User sessions + behavior</div>
+              <div class="an-chip" style="font-size:10px"><span class="an-chip-dot" style="background:var(--orange)"></span>Pipeline contacts</div>
+              <div class="an-chip" style="font-size:10px"><span class="an-chip-dot" style="background:var(--orange)"></span>Success signal observed?</div>
+              <div class="an-chip" style="font-size:10px"><span class="an-chip-dot" style="background:var(--orange)"></span>Model calibration data</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:10px"></div>
+        <div class="arch-feedback-wrap" id="an-feedback" data-lenses="all,leader,product,user">
+          <div class="arch-feedback-icon">↺</div>
+          <div>
+            <div class="arch-feedback-text">FEEDBACK LOOP — Persistence feeds next Context Assembly</div>
+            <div style="font-size:10px;color:var(--dim);margin-top:2px">Reality signals → docs/signals/ → TASKS.md → next /lessgo → context window → inference → better output</div>
+          </div>
+        </div>
+
+      </div><!-- /arch-stack -->
+
+      <!-- Right: annotation panel -->
+      <div class="arch-anno" id="arch-anno">
+        <div class="anno-perspective">Perspective</div>
+        <div class="anno-title" id="anno-title">Full System View</div>
+        <div class="anno-points" id="anno-points">
+          <div class="anno-point">
+            <div class="anno-point-num">→</div>
+            <div class="anno-point-text">The system has <strong>five layers</strong>: human intent, context assembly, inference, execution, and persistence. They're connected by explicit data flows — nothing is implicit.</div>
+          </div>
+          <div class="anno-point">
+            <div class="anno-point-num">→</div>
+            <div class="anno-point-text">The <strong>feedback loop</strong> is the key mechanism. What /seeyou writes becomes what /lessgo reads next session. Context compounds over 18+ sessions without decay.</div>
+          </div>
+          <div class="anno-point">
+            <div class="anno-point-num">→</div>
+            <div class="anno-point-text"><strong>Reality signals</strong> (meetings, user behavior) feed back into the context layer within 24h. The model corrects from observed outcomes, not from what we hoped would happen.</div>
+          </div>
+        </div>
+        <div class="anno-watch" id="anno-watch">
+          <span>Select a lens</span> above to see what matters most from each perspective.
+        </div>
+      </div>
+
+    </div><!-- /arch-wrap -->
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ BLUEPRINT ═══════════════════════════════ -->
+<section id="blueprint" class="section-sm">
+  <div class="wrap">
+    <div class="label reveal">Blueprint</div>
+    <h2 class="reveal d1">Technical spec. The actual implementation.</h2>
+    <p class="lead mt-8 mb-32 reveal d2">For the engineers and architects. No abstraction. The system as it actually runs.</p>
+
+    <div class="bp-grid reveal d3">
+
+      <!-- Context window composition -->
+      <div class="bp-card">
+        <div class="bp-card-title">Context Window — What loads each session</div>
+        <div class="bp-code">
+<span class="c"># Auto-loaded (every session)</span><br>
+<span class="k">CLAUDE.md</span>         <span class="c">← 120 lines · coding behavior · constraints</span><br>
+<span class="k">memory/MEMORY.md</span>  <span class="c">← index → pointers to memory files</span><br>
+<span class="c"># Via /lessgo (session start)</span><br>
+<span class="k">TASKS.md</span>          <span class="c">← 298 lines · all work in flight</span><br>
+<span class="k">docs/signals/*</span>    <span class="c">← recent entries only</span><br>
+<span class="k">docs/features/*</span>   <span class="c">← matched to next tasks</span><br>
+<span class="c"># On demand (hat routing)</span><br>
+<span class="k">ARCHITECTURE.md</span>   <span class="c">← engineering hat</span><br>
+<span class="k">docs/business/*</span>   <span class="c">← strategy hat</span><br>
+<span class="k">DECISIONS.md</span>      <span class="c">← before writing any code</span><br>
+<span class="v">~50K–128K tokens total per session</span>
+        </div>
+      </div>
+
+      <!-- Session lifecycle -->
+      <div class="bp-card">
+        <div class="bp-card-title">Session Lifecycle — State machine</div>
+        <div class="state-machine">
+          <div class="sm-state s-active">
+            <div class="sm-state-label">/lessgo</div>
+            <div class="sm-state-desc">Read TASKS + signals + feature briefs → orient → surface "done when" per task</div>
+          </div>
+          <div class="sm-arrow">↓ work begins</div>
+          <div class="sm-state s-work">
+            <div class="sm-state-label">work</div>
+            <div class="sm-state-desc">Build against success criteria · advisor() on ambiguous calls · forked agents for research</div>
+          </div>
+          <div class="sm-arrow">↓ session ends</div>
+          <div class="sm-state s-close">
+            <div class="sm-state-label">/seeyou</div>
+            <div class="sm-state-desc">File memory · update TASKS.md · log session · close open loops · next session starts here</div>
+          </div>
+          <div class="sm-arrow" style="color:var(--green)">↺ feedback loop — /seeyou output = /lessgo input</div>
+        </div>
+      </div>
+
+      <!-- Document tree -->
+      <div class="bp-card">
+        <div class="bp-card-title">Context Tree — Index → leaf</div>
+        <div class="bp-tree">
+<span class="root"><a class="doc-link" href="NORTH_STAR.md" target="_blank">NORTH_STAR.md</a></span> <span class="note">← root · router only</span><br>
+<span class="branch">├── <a class="doc-link" href="TASKS.md" target="_blank">TASKS.md</a></span> <span class="note">work in flight</span><br>
+<span class="branch">├── <a class="doc-link" href="CLAUDE.md" target="_blank">CLAUDE.md</a></span> <span class="note">agent behavior</span><br>
+<span class="branch">├── docs/</span><br>
+<span class="leaf">│   ├── <a class="doc-link" href="docs/signals/" target="_blank">signals/</a></span> <span class="note">reality log</span><br>
+<span class="leaf">│   ├── <a class="doc-link" href="docs/features/" target="_blank">features/</a></span> <span class="note">idea briefs</span><br>
+<span class="leaf">│   ├── <a class="doc-link" href="docs/adr/" target="_blank">adr/</a></span> <span class="note">closed decisions</span><br>
+<span class="leaf">│   ├── <a class="doc-link" href="docs/business/" target="_blank">business/</a></span> <span class="note">strategy</span><br>
+<span class="leaf">│   └── <a class="doc-link" href="docs/personas/" target="_blank">personas/</a></span> <span class="note">segments</span><br>
+<span class="branch">├── <a class="doc-link" href="DECISIONS.md" target="_blank">DECISIONS.md</a></span> <span class="note">closed paths</span><br>
+<span class="branch">├── <a class="doc-link" href="ARCHITECTURE.md" target="_blank">ARCHITECTURE.md</a></span> <span class="note">technical spec</span><br>
+<span class="branch">└── memory/</span><br>
+<span class="leaf">    ├── MEMORY.md</span> <span class="note">index</span><br>
+<span class="leaf">    └── *.md</span> <span class="note">feedback · user · project</span>
+        </div>
+      </div>
+
+      <!-- Persistence model -->
+      <div class="bp-card">
+        <div class="bp-card-title">Persistence Model — What survives a session restart</div>
+        <div class="bp-code">
+<span class="c"># Survives: plain files on disk</span><br>
+<span class="v">✓</span> <span class="k">TASKS.md</span>        <span class="c">task state</span><br>
+<span class="v">✓</span> <span class="k">memory/*.md</span>     <span class="c">prefs, feedback, project</span><br>
+<span class="v">✓</span> <span class="k">docs/signals/</span>   <span class="c">pipeline log</span><br>
+<span class="v">✓</span> <span class="k">session-history</span> <span class="c">full log, 18 sessions</span><br>
+<span class="v">✓</span> <span class="k">CLAUDE.md log</span>   <span class="c">last 3 sessions</span><br>
+<span class="c"># Does NOT survive: conversation state</span><br>
+<span class="c">✗ chat history (new session = clean slate)</span><br>
+<span class="c">✗ in-memory reasoning (never persisted)</span><br>
+<span class="c">✗ tool results (re-read files each time)</span><br>
+<br>
+<span class="h">Rule:</span> <span class="c">if it matters, write it to a file.</span><br>
+<span class="h">Corollary:</span> <span class="c">files ARE the memory.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ TRACTION ═══════════════════════════════ -->
+<section id="traction" class="section">
+  <div class="wrap">
+    <div class="label reveal">Where We Are</div>
+    <h2 class="reveal d1">18 sessions. Backend live.<br>First industry demos loading.</h2>
+
+    <!-- Timeline -->
+    <div class="timeline-wrap mt-48 reveal d2" id="tl-wrap">
+      <div class="tl-line"></div>
+      <div class="tl-progress" id="tl-prog"></div>
+      <div class="tl-nodes">
+        <div class="tl-node done">
+          <div class="tl-dot"></div>
+          <div class="tl-date">Apr 27</div>
+          <div class="tl-label">Scaffold &amp; science foundation</div>
+        </div>
+        <div class="tl-node done">
+          <div class="tl-dot"></div>
+          <div class="tl-date">May 3</div>
+          <div class="tl-label">Backend complete, fully runnable</div>
+        </div>
+        <div class="tl-node done">
+          <div class="tl-dot"></div>
+          <div class="tl-date">May 15</div>
+          <div class="tl-label">First user test. Supervisors = client #1</div>
+        </div>
+        <div class="tl-node done">
+          <div class="tl-dot"></div>
+          <div class="tl-date">May 17</div>
+          <div class="tl-label">Company vision. Spotify OAuth. Pitch deck</div>
+        </div>
+        <div class="tl-node done">
+          <div class="tl-dot"></div>
+          <div class="tl-date">May 29</div>
+          <div class="tl-label">Signals system. Industry pipeline opens</div>
+        </div>
+        <div class="tl-node now">
+          <div class="tl-dot"></div>
+          <div class="tl-date">Jun 21</div>
+          <div class="tl-label">Company OS. North Star structured. ← HERE</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pipeline -->
+    <div class="label mt-48 mb-16 reveal">Active pipeline</div>
+    <div class="flex flex-col gap-8 reveal d1">
+      <div class="pipeline-card">
+        <div class="pipeline-icon" style="background:rgba(200,184,154,0.1)">🎨</div>
+        <div>
+          <div class="pipe-name">Art Studio</div>
+          <div class="pipe-detail">Owner · sales lead · sound engineer — event curation workflow</div>
+        </div>
+        <div class="pipe-status">
+          <div class="status-dot" style="color:var(--orange)"><span class="sdot sdot-orange"></span>Demo pending</div>
+        </div>
+      </div>
+      <div class="pipeline-card">
+        <div class="pipeline-icon" style="background:rgba(88,166,255,0.1)">🎵</div>
+        <div>
+          <div class="pipe-name">Warner Music</div>
+          <div class="pipe-detail">Playlist curator — if they get it, label-level validation</div>
+        </div>
+        <div class="pipe-status">
+          <div class="status-dot" style="color:var(--orange)"><span class="sdot sdot-orange"></span>Demo pending</div>
+        </div>
+      </div>
+      <div class="pipeline-card">
+        <div class="pipeline-icon" style="background:rgba(63,185,80,0.1)">🌐</div>
+        <div>
+          <div class="pipe-name">Karan's network</div>
+          <div class="pipe-detail">Pitchfork intro surfaced · IP attorney needed first (TS4)</div>
+        </div>
+        <div class="pipe-status">
+          <div class="status-dot" style="color:var(--blue)"><span class="sdot sdot-blue"></span>In motion</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What's built -->
+    <div class="label mt-48 mb-16 reveal">What technically exists</div>
+    <div class="card-grid-2 reveal d1">
+      <div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap-10px;gap:10px;font-size:13px"><span style="color:var(--green);font-size:11px">✓</span> Go backend — POST /query, GET /presets, GET /health</div>
+          <div style="display:flex;align-items:center;gap-10px;gap:10px;font-size:13px"><span style="color:var(--green);font-size:11px">✓</span> 114K songs in memory · cosine sim · hybrid scoring α=0.7</div>
+          <div style="display:flex;align-items:center;gap-10px;gap:10px;font-size:13px"><span style="color:var(--green);font-size:11px">✓</span> index.html UI — sliders, genre presets, Spotify OAuth</div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="color:var(--green);font-size:11px">✓</span> curator-deck.html — immersive pitch deck · animated radar</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="color:var(--green);font-size:11px">✓</span> Company OS — signals, features, ADRs, personas, process</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="color:var(--orange);font-size:11px">⏳</span> Spotify OAuth on :3001 — debugging (next session)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ MARKET EXPANSION ═══════════════════════════════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="label reveal">Platform Vision</div>
+    <h2 class="reveal d1">Music is the beachhead.<br>Feeling is the platform.</h2>
+    <p class="lead mt-16 reveal d2">The 6-axis methodology works for any domain where emotion precedes choice. Once music proves it, the expansion is the same engine with domain-specific calibration.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:48px">
+      <!-- Market map -->
+      <div id="market-map" class="reveal d3">
+        <div class="market-ring ring-2">
+          <div style="position:absolute;font-size:11px;font-weight:600;color:var(--green);top:16px;text-align:center">Fragrance <span style="display:block;font-size:9px;color:var(--muted);font-family:var(--mono)">Phase 4+</span></div>
+          <div style="position:absolute;font-size:11px;font-weight:600;color:var(--green);bottom:16px;text-align:center">Fashion <span style="display:block;font-size:9px;color:var(--muted);font-family:var(--mono)">Phase 4+</span></div>
+          <div style="position:absolute;font-size:11px;font-weight:600;color:var(--green);left:8px;top:50%;transform:translateY(-50%);text-align:center">Experiences <span style="display:block;font-size:9px;color:var(--muted);font-family:var(--mono)">Phase 4+</span></div>
+          <div class="market-ring ring-1">
+            <div style="position:absolute;font-size:11px;font-weight:600;color:var(--blue);top:-4px;text-align:center">Film / TV <span style="display:block;font-size:9px;color:var(--muted);font-family:var(--mono)">Phase 3</span></div>
+            <div style="position:absolute;font-size:11px;font-weight:600;color:var(--blue);bottom:-4px;text-align:center">Travel <span style="display:block;font-size:9px;color:var(--muted);font-family:var(--mono)">Phase 3</span></div>
+            <div style="position:absolute;right:-28px;font-size:11px;font-weight:600;color:var(--blue);text-align:center">Restaurants <span style="display:block;font-size:9px;color:var(--muted);font-family:var(--mono)">Phase 2</span></div>
+            <div class="market-ring ring-0">
+              <div class="ring-center">
+                <div class="ring-center-name">Music</div>
+                <div style="font-size:9px;color:var(--gold);font-family:var(--mono);margin-top:2px">Phase 1 · NOW</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal d4">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="card" style="border-left:2px solid var(--gold)">
+            <div class="tag tag-gold mb-8">Phase 1 · Now</div>
+            <div class="fw-600 fs-14">Vibes Mesh — Music</div>
+            <p class="fs-12 text-muted mt-4">Music supervisors, DJs, curators, venues. Prove the model on 114K songs. Calibrate from professional use.</p>
+          </div>
+          <div class="card" style="border-left:2px solid var(--blue)">
+            <div class="tag tag-blue mb-8">Phase 2 · Post-YC</div>
+            <div class="fw-600 fs-14">Find Your Vibe — Restaurants</div>
+            <p class="fs-12 text-muted mt-4">Same axis methodology, restaurant-calibrated. "I want a place that feels like Sunday morning recovery." Untapped emotional search gap.</p>
+          </div>
+          <div class="card">
+            <div class="tag tag-dim mb-8">Phase 3+</div>
+            <div class="fw-600 fs-14">Travel · Film · Fragrance · ...</div>
+            <p class="fs-12 text-muted mt-4">Any domain where emotion precedes the decision. The engine is domain-agnostic. The calibration is domain-specific. YC W2027.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ NORTH STAR ═══════════════════════════════ -->
+<section id="northstar">
+  <div style="text-align:center;padding:100px 32px">
+    <div class="label reveal" style="justify-content:center">North Star</div>
+    <h2 class="ns-big reveal d1">
+      So well engineered<br>
+      <span class="line2">it feels like nature.</span>
+    </h2>
+
+    <div class="ns-metric-card reveal d2">
+      <div class="label mb-16" style="font-size:10px">THE ONLY TEST THAT MATTERS</div>
+      <p><strong>A professional — music supervisor, DJ, curator — uses Vibes Mesh in their actual workflow without being asked to demo it.</strong> They open it. Set their sliders. Find something. Take it with them. That's it. That's the whole test. Count comes later. Behavior is the signal.</p>
+    </div>
+
+    <div class="ns-domains reveal d3">
+      <div class="domain-chip active">Music · Now</div>
+      <div class="domain-chip">→ Restaurants</div>
+      <div class="domain-chip">→ Travel</div>
+      <div class="domain-chip">→ Film</div>
+      <div class="domain-chip">→ Fragrance</div>
+      <div class="domain-chip">→ Find Your Vibe</div>
+    </div>
+
+    <div class="reveal d4 mt-32">
+      <span class="tag tag-blue" style="font-size:12px;padding:8px 20px">YC W2027 Target</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ SYSTEM ═══════════════════════════════ -->
+<section class="section-sm">
+  <div class="wrap">
+    <div class="label reveal">The Operating System</div>
+    <p class="lead mb-32 reveal d1">Nothing lives only in chat. If it matters, it gets filed. Four streams. One rhythm.</p>
+
+    <div class="stream-row reveal d2">
+      <div class="stream-card">
+        <div class="stream-top bg-gold"></div>
+        <div class="stream-icon-lg">◈</div>
+        <div class="stream-title">Ideas</div>
+        <div class="stream-where"><a href="docs/features/" target="_blank">docs/features/</a></div>
+        <div class="stream-desc">One brief per idea. Problem → USP → unlock → success signal. One page or it isn't scoped.</div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-top bg-blue"></div>
+        <div class="stream-icon-lg">◉</div>
+        <div class="stream-title">Signals</div>
+        <div class="stream-where"><a href="docs/signals/" target="_blank">docs/signals/</a></div>
+        <div class="stream-desc">Every professional meeting logged within 24h. Ends with a Tasks section. Signal → task, not the reverse.</div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-top bg-orange"></div>
+        <div class="stream-icon-lg">◆</div>
+        <div class="stream-title">Decisions</div>
+        <div class="stream-where"><a href="docs/adr/" target="_blank">docs/adr/</a></div>
+        <div class="stream-desc">Architecture choices, closed paths. Read before writing code. Prevents re-exploring dead ends.</div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-top bg-green"></div>
+        <div class="stream-icon-lg">◇</div>
+        <div class="stream-title">Work</div>
+        <div class="stream-where"><a href="TASKS.md" target="_blank">TASKS.md</a></div>
+        <div class="stream-desc">P0 → P1 → P2 → Backlog. Every task traceable to a signal or decision. This is what ships.</div>
+      </div>
+    </div>
+
+    <div class="card mt-16 reveal d3">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <div class="label" style="margin-bottom:0">Session rhythm</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span class="cmd-chip">/lessgo</span>
+          <span style="color:var(--dim)">→ orient, read TASKS + signals + briefs, surface "done when"</span>
+          <span style="color:var(--dim);margin:0 4px">·</span>
+          <span class="cmd-chip">work</span>
+          <span style="color:var(--dim)">→ build against success criteria</span>
+          <span style="color:var(--dim);margin:0 4px">·</span>
+          <span class="cmd-chip">/seeyou</span>
+          <span style="color:var(--dim)">→ file, update, close the loop</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <span>company-north-star.html</span> &nbsp;·&nbsp; Last updated: <span id="last-updated">—</span> &nbsp;·&nbsp; When in doubt, start here.
+  </div>
+  <div class="footer-right">"Vibes is just science felt."</div>
+</footer>
+
+<script>
+// ── Day counter ──
+const START = new Date('2026-04-27');
+const NOW = new Date();
+const DAYS = Math.floor((NOW - START) / 86400000);
+document.getElementById('day-count').textContent = DAYS;
+document.getElementById('nav-day').textContent = DAYS;
+document.getElementById('last-updated').textContent = NOW.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+// ── Scroll reveal ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }});
+},{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// ── Timeline ──
+const tlObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const nodes = document.querySelectorAll('.tl-node');
+      const nowIdx = [...nodes].findIndex(n => n.classList.contains('now'));
+      const pct = (nowIdx / (nodes.length-1)) * 100;
+      setTimeout(()=>{ document.getElementById('tl-prog').style.width = pct+'%'; }, 200);
+      tlObs.disconnect();
+    }
+  });
+},{threshold:0.3});
+const tlWrap = document.getElementById('tl-wrap');
+if(tlWrap) tlObs.observe(tlWrap);
+
+// ── Radar chart ──
+const PRESETS = {
+  nightdrive: { name:'Night Drive', vec:[0.45,0.50,0.70,0.30,0.45,0.25] },
+  deepfocus:  { name:'Deep Focus',  vec:[0.30,0.25,0.65,0.15,0.55,0.10] },
+  release:    { name:'Release',     vec:[0.80,0.85,0.80,0.60,0.75,0.85] },
+  heartbreak: { name:'Heartbreak',  vec:[0.35,0.30,0.55,0.70,0.25,0.20] },
+  trapsoul:   { name:'Trap Soul',   vec:[0.30,0.62,0.65,0.78,0.32,0.28] },
+  deepprog:   { name:'Deep Progressive', vec:[0.75,0.77,0.75,0.50,0.35,0.75] },
+};
+const AXES = ['Energy','Groove','Fidelity','Vocals','Emotion','Social'];
+const COLORS = { gold:'#c8b89a', bg:'#161b22', grid:'rgba(240,246,252,0.07)', text:'#8b949e' };
+
+let currentVec = [...PRESETS.nightdrive.vec];
+let animVec = [...currentVec];
+let targetVec = [...currentVec];
+let animFrame;
+
+const canvas = document.getElementById('radar-canvas');
+const ctx = canvas.getContext('2d');
+const CX = 140, CY = 140, R = 110;
+
+function hexPoint(i, val, r) {
+  const angle = (i / 6) * Math.PI * 2 - Math.PI/2;
+  return [CX + r * val * Math.cos(angle), CY + r * val * Math.sin(angle)];
+}
+
+function drawRadar() {
+  ctx.clearRect(0, 0, 280, 280);
+
+  // Grid rings
+  [0.2,0.4,0.6,0.8,1.0].forEach(ring => {
+    ctx.beginPath();
+    for(let i=0;i<6;i++){
+      const [x,y] = hexPoint(i, ring, R);
+      i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = COLORS.grid;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+
+  // Axis lines
+  for(let i=0;i<6;i++){
+    const [x,y] = hexPoint(i, 1, R);
+    ctx.beginPath(); ctx.moveTo(CX,CY); ctx.lineTo(x,y);
+    ctx.strokeStyle = COLORS.grid; ctx.lineWidth = 1; ctx.stroke();
+  }
+
+  // Axis labels
+  ctx.font = '11px "Plus Jakarta Sans", sans-serif';
+  ctx.fillStyle = COLORS.text;
+  ctx.textAlign = 'center';
+  for(let i=0;i<6;i++){
+    const [x,y] = hexPoint(i, 1.22, R);
+    ctx.fillText(AXES[i], x, y+4);
+  }
+
+  // Fill shape
+  ctx.beginPath();
+  animVec.forEach((v,i) => {
+    const [x,y] = hexPoint(i,v,R);
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(200,184,154,0.15)';
+  ctx.fill();
+  ctx.strokeStyle = COLORS.gold;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Dots
+  animVec.forEach((v,i) => {
+    const [x,y] = hexPoint(i,v,R);
+    ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2);
+    ctx.fillStyle = COLORS.gold; ctx.fill();
+  });
+}
+
+function animateToTarget() {
+  cancelAnimationFrame(animFrame);
+  let t = 0;
+  const from = [...animVec];
+  function step(){
+    t += 0.04;
+    if(t >= 1){ animVec = [...targetVec]; drawRadar(); updateAxisList(); return; }
+    const ease = 1 - Math.pow(1-t, 3);
+    animVec = from.map((v,i) => v + (targetVec[i]-v)*ease);
+    drawRadar(); updateAxisList();
+    animFrame = requestAnimationFrame(step);
+  }
+  animFrame = requestAnimationFrame(step);
+}
+
+function updateAxisList() {
+  const list = document.getElementById('axis-list');
+  list.innerHTML = animVec.map((v,i) => `
+    <div class="axis-item">
+      <div class="axis-name-label">${AXES[i]}</div>
+      <div class="axis-bar-track">
+        <div class="axis-bar-fill" style="width:${(v*100).toFixed(0)}%;background:linear-gradient(90deg,rgba(200,184,154,0.3),var(--gold))"></div>
+      </div>
+      <div class="axis-val">${(v*100).toFixed(0)}%</div>
+    </div>
+  `).join('');
+}
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const preset = PRESETS[btn.dataset.preset];
+    if(preset){ targetVec = [...preset.vec]; animateToTarget(); }
+  });
+});
+
+drawRadar(); updateAxisList();
+
+// ── Lens system ──
+const LENS_DATA = {
+  all: {
+    title: 'Full System View',
+    points: [
+      'Five layers: human intent → context assembly → inference → execution → persistence. Each connected by explicit, auditable data flows.',
+      'The feedback loop is load-bearing: what /seeyou writes becomes what /lessgo reads next session. Context compounds across 18+ sessions without decay.',
+      'Reality signals (meetings, user behavior) feed back into the context layer within 24h. The model corrects from observed outcomes.'
+    ],
+    watch: 'Select a lens above to filter the diagram to what matters for your perspective.'
+  },
+  engineer: {
+    title: 'Backend Engineer Read',
+    points: [
+      '<strong>Context window</strong>: ~50K–128K tokens assembled from markdown files. CLAUDE.md auto-loads. Everything else is on-demand. No embeddings, no vector DB — deterministic file reads.',
+      '<strong>Inference model</strong> is explicit per task: Sonnet for build, Haiku for fast/cheap close, Opus via advisor() for architecture decisions. Model selection is never automatic.',
+      '<strong>Persistence</strong> is plain files. No database. State survives restarts because the files are on disk. The feedback loop is /seeyou writing files that /lessgo reads — two shell commands, no magic.'
+    ],
+    watch: '<span>Highlighted</span>: Context Assembly · Inference · Execution · Persistence'
+  },
+  leader: {
+    title: 'Industry Leader Read',
+    points: [
+      'One person operates with the information bandwidth of a team: every meeting logged, every decision filed, every pipeline contact tracked — without hiring. The AI holds the organizational memory.',
+      '<strong>The compound</strong>: calibration, relationship, and domain knowledge accumulate every session. A competitor starting today starts from zero and the gap grows each week.',
+      'The reality signal layer is the most important: industry meetings → signal docs → task seeds → shipped features → verified outcomes. This is how a lean team builds for real demand, not speculation.'
+    ],
+    watch: '<span>Highlighted</span>: Human layer · Reality Signals · Feedback Loop'
+  },
+  product: {
+    title: 'Product Person Read',
+    points: [
+      '/lessgo reads TASKS.md + signals + feature briefs at session start. Every task gets a <strong>"done when"</strong> from the feature brief\'s success signal — behavioral, not numerical. The product manager role is baked into the session rhythm.',
+      'Feature briefs live at docs/features/. One page. Problem → USP → Unlock → Success signal. If it won\'t fit one page, it isn\'t scoped. Code starts after the brief exists, never before.',
+      'The /lessgo → work → /seeyou loop <strong>is</strong> the sprint. No Jira. No standups. The TASKS.md file IS the product backlog, updated in real time by the same agent doing the building.'
+    ],
+    watch: '<span>Highlighted</span>: Context Assembly (TASKS + features) · Execution · Persistence'
+  },
+  user: {
+    title: 'End User Read',
+    points: [
+      'Users see: move sliders → get music. Behind that: 6-axis vibe vector → cosine similarity → 114K pre-vectorized songs → hybrid scoring → ranked results. Zero runtime audio analysis. &lt;200ms.',
+      'Every search that doesn\'t land — a user who moves sliders and doesn\'t find what they need — is a signal that feeds back into the axis model calibration. <strong>The product gets better from use.</strong>',
+      'The AI doesn\'t touch the user experience directly. It builds and improves the engine. Users benefit from every session that refines the model, tunes the presets, or ships a feature their behavior requested.'
+    ],
+    watch: '<span>Highlighted</span>: Human intent · Reality Signals · Feedback Loop'
+  }
+};
+
+const LENS_HIGHLIGHTS = {
+  all:      { gold:['an-human'], blue:['an-context','an-inference','an-execution'], green:['an-persist'], orange:['an-reality'], feedback:true },
+  engineer: { blue:['an-context','an-inference','an-execution','an-persist'], dim:['an-human','an-reality'] },
+  leader:   { gold:['an-human'], orange:['an-reality'], feedback:true, dim:['an-context','an-inference','an-execution','an-persist'] },
+  product:  { gold:['an-human'], blue:['an-context','an-execution'], green:['an-persist'], feedback:true, dim:['an-inference','an-reality'] },
+  user:     { gold:['an-human'], orange:['an-reality'], feedback:true, dim:['an-context','an-inference','an-execution','an-persist'] }
+};
+
+function applyLens(lens) {
+  const h = LENS_HIGHLIGHTS[lens];
+  const allNodes = ['an-human','an-context','an-inference','an-execution','an-persist','an-reality'];
+  const dimSet = new Set(h.dim || []);
+
+  allNodes.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('lit','lit-gold','lit-blue','lit-green','lit-orange','dimmed');
+    if (dimSet.has(id)) { el.classList.add('dimmed'); return; }
+    if (h.gold && h.gold.includes(id)) el.classList.add('lit-gold');
+    else if (h.blue && h.blue.includes(id)) el.classList.add('lit');
+    else if (h.green && h.green.includes(id)) el.classList.add('lit-green');
+    else if (h.orange && h.orange.includes(id)) el.classList.add('lit-orange');
+  });
+
+  const fb = document.getElementById('an-feedback');
+  if (fb) fb.style.opacity = h.feedback ? '1' : '0.25';
+
+  // Update annotation
+  const d = LENS_DATA[lens];
+  document.getElementById('anno-title').textContent = d.title;
+  document.getElementById('anno-points').innerHTML = d.points.map((p,i)=>`
+    <div class="anno-point">
+      <div class="anno-point-num">${i+1}</div>
+      <div class="anno-point-text">${p}</div>
+    </div>`).join('');
+  document.getElementById('anno-watch').innerHTML = d.watch;
+}
+
+document.querySelectorAll('.lens-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lens-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyLens(btn.dataset.lens);
+  });
+});
+applyLens('all');
+
+// ── Loop node pulse ──
+const LOOP_NODES = ['fn0','fn1','fn2','fn3','fn4','fn5'];
+const LOOP_DUR = 6000;
+function animateLoop(){
+  const t = Date.now() % LOOP_DUR;
+  const active = Math.floor((t/LOOP_DUR)*LOOP_NODES.length);
+  LOOP_NODES.forEach((id,i) => {
+    const el = document.getElementById(id);
+    if(el) el.classList.toggle('active-node', i===active);
+  });
+  requestAnimationFrame(animateLoop);
+}
+animateLoop();
+
+// ── Domain chips ──
+document.querySelectorAll('.domain-chip').forEach((chip,i) => {
+  setTimeout(() => chip.classList.add('active'), i*400);
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.domain-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+  });
+});
+// Animate domains on load
+let domIdx = 0;
+setInterval(() => {
+  const chips = document.querySelectorAll('.domain-chip');
+  chips.forEach(c => c.classList.remove('active'));
+  chips[domIdx].classList.add('active');
+  domIdx = (domIdx+1) % chips.length;
+}, 2000);
+</script>
+</body>
+</html>
