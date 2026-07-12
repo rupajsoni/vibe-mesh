@@ -26,3 +26,6 @@ side-quests/editor-rupaj/
 
 # Claude Code local session/memory data (belongs in ~/.claude, not the repo)
 .claude/projects/
+
+# Local Netlify folder
+.netlify
