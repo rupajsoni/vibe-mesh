@@ -3,7 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vibes Mesh — How do you want to feel?</title>
+<title>Vibes Mesh ✨ Find your vibe</title>
+<meta name="description" content="Drag a vibe, not a search bar. Six axes, zero genres. Music that actually fits the moment. Try it free →">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vibes Mesh">
+<meta property="og:title" content="Vibes Mesh ✨ Find your vibe">
+<meta property="og:description" content="Drag a vibe, not a search bar. Six axes, zero genres. Music that actually fits the moment. Try it free →">
+<meta property="og:image" content="https://vibesmesh.netlify.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://vibesmesh.netlify.app/">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vibes Mesh ✨ Find your vibe">
+<meta name="twitter:description" content="Drag a vibe, not a search bar. Six axes, zero genres. Music that actually fits the moment. Try it free →">
+<meta name="twitter:image" content="https://vibesmesh.netlify.app/og-image.png">
+
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -66,6 +82,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-s
 .topbar-title { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; }
 .topbar-title span { color: var(--green); text-shadow: 0 0 24px rgba(139,92,246,0.3); }
 .topbar-sub { font-size: 15px; color: rgba(255,255,255,0.82); margin-bottom: 8px; line-height: 1.5; animation: fadeSlideUp 0.65s ease 0.25s both; }
+.replay-tour-mobile { display: none; }
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -286,10 +303,49 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
 
 @media (max-width: 900px) {
   .sidebar { display: none; }
-  html, body { overflow: auto; }
-  .panes { grid-template-columns: 1fr; height: auto; overflow: visible; }
-  .radar-pane, .sliders-pane, .results-pane { height: auto; }
+  .replay-tour-mobile { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--faint); cursor: pointer; margin-bottom: 8px; }
+  .replay-tour-mobile:active { color: var(--muted); }
+  html, body { height: auto; min-height: 100%; overflow-x: hidden; overflow-y: auto; }
+  .shell { height: auto; min-height: 100vh; }
+  .main { overflow: visible; }
+  .panes { flex-direction: column; height: auto; overflow: visible; padding: 0 12px 16px; }
+  .drag-handle { display: none; }
+  .radar-pane, .sliders-pane, .results-pane { width: 100% !important; min-width: 0; max-width: 100%; height: auto; flex-shrink: 1; }
+  .radar-pane { height: 80vw; max-height: 340px; }
+  .results-pane { height: 56vh; flex-shrink: 0; }
+  .spotify-player.visible ~ .results-note { display: none; }
+  .mobile-play-hint { display: none; }
+  .spotify-player.visible .mobile-play-hint { display: block; font-size: 11px; color: var(--muted); text-align: center; margin-top: 4px; }
 }
+
+/* ── First-visit tour ── */
+.tour-spotlight { position: fixed; border-radius: 10px; box-shadow: 0 0 0 9999px rgba(8,8,10,0.68); pointer-events: none; z-index: 901; transition: top 0.35s cubic-bezier(.4,0,.2,1), left 0.35s cubic-bezier(.4,0,.2,1), width 0.35s cubic-bezier(.4,0,.2,1), height 0.35s cubic-bezier(.4,0,.2,1), opacity 0.2s; }
+.tour-dim { position: fixed; inset: 0; background: rgba(8,8,10,0.6); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); z-index: 899; }
+.tour-callout { position: fixed; z-index: 902; width: 280px; max-width: calc(100vw - 32px); background: rgba(37,37,41,0.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(139,92,246,0.45); border-radius: 10px; padding: 16px 18px; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(139,92,246,0.08), 0 0 40px rgba(139,92,246,0.1); transition: top 0.35s cubic-bezier(.4,0,.2,1), left 0.35s cubic-bezier(.4,0,.2,1); }
+.tour-callout.center, .tour-callout.welcome { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+.tour-callout.center { width: 320px; text-align: center; padding: 26px 24px; }
+.tour-callout.welcome { width: 380px; max-width: calc(100vw - 32px); padding: 30px 30px 26px; text-align: center; max-height: calc(100vh - 32px); overflow-y: auto; }
+.tour-mini-radar { display: block; margin: 0 auto 14px; filter: drop-shadow(0 0 16px rgba(139,92,246,0.35)); }
+.tour-welcome-eyebrow { font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 10px; }
+.tour-welcome-title { font-size: 21px; font-weight: 800; color: var(--text); line-height: 1.25; margin-bottom: 10px; letter-spacing: -0.2px; }
+.tour-welcome-body { font-size: 13.5px; color: var(--muted); line-height: 1.55; margin-bottom: 14px; }
+.tour-welcome-tag { font-size: 11px; color: var(--green); font-style: italic; opacity: 0.85; margin-bottom: 18px; }
+.tour-eyebrow { font-size: 10px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+.tour-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+.tour-body { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.tour-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; }
+.tour-callout.center .tour-footer, .tour-callout.welcome .tour-footer { justify-content: center; gap: 10px; }
+.tour-dots { display: flex; gap: 5px; }
+.tour-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--surface3); }
+.tour-dot.active { background: var(--green); }
+.tour-btn { font-family: 'Figtree', sans-serif; font-size: 12px; font-weight: 600; border-radius: 6px; padding: 7px 14px; cursor: pointer; border: none; transition: opacity 0.15s; }
+.tour-btn:hover { opacity: 0.85; }
+.tour-btn-primary { background: var(--green); color: #fff; }
+.tour-btn-ghost { background: none; color: var(--muted); padding: 7px 6px; }
+.tour-skip { position: fixed; top: 18px; right: 18px; z-index: 903; background: var(--surface2); border: 1px solid var(--surface3); color: var(--muted); font-family: 'Figtree', sans-serif; font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 20px; cursor: pointer; }
+.tour-skip:hover { color: var(--text); border-color: var(--faint); }
+.replay-tour-btn { display: flex; align-items: center; gap: 7px; padding: 6px 9px 6px 14px; border-radius: 5px; color: var(--faint); font-size: 11px; cursor: pointer; transition: color 0.15s; }
+.replay-tour-btn:hover { color: var(--muted); }
 </style>
 </head>
 <body>
@@ -314,14 +370,16 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
       </div>
     </div>
     <div class="sidebar-bottom">
-      <div class="tagline-sidebar">"Vibes is just science felt."</div>
+      <div class="replay-tour-btn" id="replayTourBtn">↺ Take the tour</div>
+      <div class="tagline-sidebar" style="margin-top:8px">"Vibes is just science felt."</div>
     </div>
   </div>
 
   <div class="main">
     <div class="topbar">
       <div class="topbar-title">Search from the <span>heart.</span></div>
-      <div class="topbar-sub">Genres are a starting point, not a filter. Set the sliders to your feeling — the music finds you.</div>
+      <div class="topbar-sub">Genres are a starting point, not a filter. Set the sliders to your feeling, the music finds you.</div>
+      <div class="replay-tour-mobile" id="replayTourBtnMobile">↺ Take the tour</div>
       <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;font-size:9px;color:var(--faint);">Genre starting points <button class="info-btn" data-info="Starting points. Tap one to load a preset vibe, then tune from there.">ⓘ</button></div>
       <div class="presets-row" id="presetChips"></div>
     </div>
@@ -352,13 +410,13 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
 
       <!-- Sliders -->
       <div class="sliders-pane" id="pane1">
-        <div class="pane-label" style="display:flex;align-items:center;gap:5px;">How do you want to feel? <button class="info-btn" data-info="This isn't keyword search. Move the sliders to describe the feeling you want — the music finds you.">ⓘ</button></div>
+        <div class="pane-label" style="display:flex;align-items:center;gap:5px;">How do you want to feel? <button class="info-btn" data-info="This isn't keyword search. Move the sliders to describe the feeling you want. The music finds you.">ⓘ</button></div>
         <div class="sliders-inner" id="sliders"></div>
         <div class="era-row">
           <div class="era-top">
             <span class="era-label">✦ Time Travel <span class="era-badge" style="background:var(--faint);color:var(--text)">coming soon</span></span>
           </div>
-          <div class="era-sub" style="color:var(--faint)">Soft era nudge — coming in a future update.</div>
+          <div class="era-sub" style="color:var(--faint)">Soft era nudge, coming in a future update.</div>
           <input type="range" class="era-slider" id="ds" min="1950" max="2026" value="1998" disabled>
         </div>
       </div>
@@ -370,13 +428,14 @@ a.playing .song-artist { color: rgba(255,255,255,0.65); }
         <div class="results-header">
           <span class="pane-label" style="display:flex;align-items:center;gap:5px;">Music for your vibe <button class="info-btn" data-info="How closely this song's vibe matches your slider position. Not popularity.">ⓘ</button></span>
           <div style="display:flex;gap:5px;align-items:center;">
-            <button class="shuffle-btn" id="shareVibeBtn" title="Copy vibe link — share your exact slider position"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>
+            <button class="shuffle-btn" id="shareVibeBtn" title="Copy vibe link and share your exact slider position"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>
             <button class="shuffle-btn" id="shuffleBtn" title="Shuffle">↻</button>
           </div>
         </div>
         <div class="results-inner" id="songList"></div>
         <div class="spotify-player" id="spotifyPlayer">
           <div id="spotifyEmbed"></div>
+          <div class="mobile-play-hint">Tap play above to listen</div>
         </div>
         <div class="results-note">ranked by vibe match · anchor + discovery blend</div>
       </div>
@@ -430,7 +489,7 @@ const SpotifyAuth = {
     });
     return new Promise((resolve, reject) => {
       const popup = window.open(url, 'sp-auth', 'width=480,height=660,left=200,top=80');
-      if (!popup) { reject(new Error('Popup blocked — allow popups for this site')); return; }
+      if (!popup) { reject(new Error('Popup blocked. Allow popups for this site')); return; }
       const onMsg = async (e) => {
         if (e.origin !== window.location.origin || e.data?.type !== 'spotify-oauth') return;
         window.removeEventListener('message', onMsg);
@@ -517,7 +576,7 @@ const PlaylistModal = {
 
   open(trackId, title, artist) {
     this.trackId = trackId; this.title = title; this.artist = artist; this.selectedId = null;
-    document.getElementById('spTrackLabel').textContent = title + ' — ' + artist;
+    document.getElementById('spTrackLabel').textContent = title + ' · ' + artist;
     document.getElementById('spAdd').disabled = true;
     document.getElementById('spAdd').textContent = 'Add';
     document.getElementById('spOverlay').classList.add('open');
@@ -595,7 +654,7 @@ const PlaylistModal = {
       document.querySelectorAll(`.add-btn[data-tid="${this.trackId}"]`).forEach(b => b.classList.add('added'));
       this.close(); showToast('Added to ' + pname, true);
     } catch(e) {
-      btn.disabled = false; btn.textContent = 'Add'; showToast('Failed — try again', false);
+      btn.disabled = false; btn.textContent = 'Add'; showToast('Failed. Try again', false);
     }
   },
 };
@@ -616,7 +675,7 @@ const axisConfigs = [
   { name: 'Groove',   icon: '🎵', labels: ['Static','Barely','Nodding','Locked','Pulsing'],
     grad: ['#1a2035','#00e676'], info: 'How much the rhythm makes you move. Slayer (low) → James Brown (high).' },
   { name: 'Fidelity', icon: '📻', labels: ['Raw','Warm','Clear','Crisp','Hi-fi'],
-    grad: ['#5c3d2e','#26c6da'], info: 'Production texture — raw warmth to studio gloss. Cassette lo-fi → Max Martin pop.' },
+    grad: ['#5c3d2e','#26c6da'], info: 'Production texture: raw warmth to studio gloss. Cassette lo-fi → Max Martin pop.' },
   { name: 'Vocals',   icon: '🎤', labels: ['Silent','Faint','Melodic','Forward','Lead'],
     grad: ['#1a237e','#ef6c00'], info: 'How prominent the singing is in the mix. Brian Eno (low) → Adele (high).' },
   { name: 'Emotion',  icon: '🌗', labels: ['Desolate','Heavy','Even','Hopeful','Euphoric'],
@@ -787,7 +846,7 @@ function renderBatch(){
     a.style.cssText='text-decoration:none;color:inherit;display:block;';
     a.dataset.idx=start+i;
     const artStyle=r.song.album_art?`background:${getColorFromArtist(r.song.artist)};background-image:url(${r.song.album_art})`:`background:${getColorFromArtist(r.song.artist)}`;
-    a.innerHTML=`<div class="song-row"><span class="song-idx"><span class="song-num">${start+i+1}</span><span class="eq-bars"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span></span><div class="song-art" data-tid="${r.song.id}" style="${artStyle}"></div><div class="song-info"><div class="song-title">${esc(r.song.title)}</div><div class="song-artist">${esc(r.song.artist)}</div></div><span class="song-pct">${Math.round(r.score*100)}%</span><div class="song-actions"><button class="song-action-btn like-btn" data-tid="${esc(r.song.id)}" data-tip="Like on Spotify">♡</button><button class="song-action-btn add-btn" data-tid="${esc(r.song.id)}" data-tip="Add to playlist">+</button><button class="song-action-btn share-song-btn" data-idx="${start+i}" data-tip="Found on Vibes Mesh — share it"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button></div></div>`;
+    a.innerHTML=`<div class="song-row"><span class="song-idx"><span class="song-num">${start+i+1}</span><span class="eq-bars"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span></span><div class="song-art" data-tid="${r.song.id}" style="${artStyle}"></div><div class="song-info"><div class="song-title">${esc(r.song.title)}</div><div class="song-artist">${esc(r.song.artist)}</div></div><span class="song-pct">${Math.round(r.score*100)}%</span><div class="song-actions"><button class="song-action-btn like-btn" data-tid="${esc(r.song.id)}" data-tip="Like on Spotify">♡</button><button class="song-action-btn add-btn" data-tid="${esc(r.song.id)}" data-tip="Add to playlist">+</button><button class="song-action-btn share-song-btn" data-idx="${start+i}" data-tip="Found on Vibes Mesh. Share it"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button></div></div>`;
     list.appendChild(a);
   });
   renderedCount+=batch.length;
@@ -864,7 +923,7 @@ document.getElementById('songList').addEventListener('click',e=>{
         await SpotifyAPI.likeTrack(tid);
         likeBtn.textContent='♥'; likeBtn.classList.add('liked');
         showToast('Liked on Spotify');
-      }catch(err){ showToast('Could not like — try again'); console.error(err); }
+      }catch(err){ showToast('Could not like. Try again'); console.error(err); }
     })();
     return;
   }
@@ -957,6 +1016,10 @@ document.getElementById('shuffleBtn').addEventListener('click',shuffleQuery);
     panes[2].style.width=w2+'px';panes[2].style.flexShrink='0';
   }
   function initWidths(){
+    if(window.innerWidth<=900){
+      panes.forEach(p=>{p.style.width='';p.style.flexShrink='';});
+      return;
+    }
     const total=container.clientWidth-16;
     setWidths(Math.round(total*0.26),Math.round(total*0.36),Math.round(total*0.38));
   }
@@ -1006,19 +1069,25 @@ document.getElementById('shuffleBtn').addEventListener('click',shuffleQuery);
   }
 })();
 
-function shareVibeURL(){
+function currentVibeURL(){
   const keys=['e','g','f','v','em','s'];
   const params=new URLSearchParams();
   keys.forEach((k,i)=>params.set(k,vals[i].toFixed(2)));
   const base=window.location.href.split('?')[0].split('#')[0];
-  const url=base+'?'+params.toString();
-  (navigator.clipboard?.writeText(url)||Promise.reject()).then(()=>{
-    showToast('Vibe link copied — share it!',true);
+  return base+'?'+params.toString();
+}
+
+function shareVibeURL(){
+  const url=currentVibeURL();
+  const hook='Set this exact vibe on Vibes Mesh. Drag a slider, not a search bar:';
+  const payload=`${hook}\n${url}`;
+  (navigator.clipboard?.writeText(payload)||Promise.reject()).then(()=>{
+    showToast('Vibe link + caption copied. Share it!',true);
   }).catch(()=>{
     const ta=document.createElement('textarea');
-    ta.value=url; document.body.appendChild(ta); ta.select();
+    ta.value=payload; document.body.appendChild(ta); ta.select();
     document.execCommand('copy'); document.body.removeChild(ta);
-    showToast('Vibe link copied — share it!',true);
+    showToast('Vibe link + caption copied. Share it!',true);
   });
 }
 
@@ -1105,31 +1174,32 @@ async function generateShareCard(song,score){
   return canvas;
 }
 
-const SHARE_URL='https://vibesmesh.netlify.app/';
-
 async function shareCard(song,score){
   showToast('Generating card…',true);
   try{
     const canvas=await generateShareCard(song,score);
+    const vibeUrl=currentVibeURL();
+    const pct=Math.round(score*100);
+    const hook=`Found "${song.title}" by ${song.artist} on Vibes Mesh. ${pct}% vibe match. Hear it:`;
     canvas.toBlob(async blob=>{
       const file=new File([blob],'vibes-mesh.png',{type:'image/png'});
       if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
         await navigator.share({
           files:[file],
           title:song.title,
-          text:`${song.title} — ${song.artist} · Found on Vibes Mesh`,
-          url:SHARE_URL
+          text:hook,
+          url:vibeUrl
         });
       } else {
-        // Download card + copy the link so they can paste it alongside
+        // Download card + copy hook text + link together so they travel as one paste
         const objUrl=URL.createObjectURL(blob);
         const a=document.createElement('a');
         a.href=objUrl;
         a.download=`${song.title.replace(/[^a-z0-9]/gi,'-').toLowerCase()}-vibes-mesh.png`;
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
         setTimeout(()=>URL.revokeObjectURL(objUrl),5000);
-        navigator.clipboard?.writeText(SHARE_URL).catch(()=>{});
-        showToast('Card saved · link copied — send both',true);
+        navigator.clipboard?.writeText(`${hook}\n${vibeUrl}`).catch(()=>{});
+        showToast('Card saved. Caption and link copied, paste them together',true);
       }
     },'image/png');
   }catch(err){
@@ -1215,6 +1285,141 @@ renderSongs();
 
 const _ip=document.createElement('div');_ip.id='info-popup';document.body.appendChild(_ip);
 document.addEventListener('click',e=>{const b=e.target.closest('.info-btn');if(b){e.stopPropagation();const rc=b.getBoundingClientRect();_ip.textContent=b.dataset.info;_ip.style.display='block';let t=rc.bottom+6,l=rc.left;_ip.style.left=l+'px';_ip.style.top=t+'px';const pw=_ip.offsetWidth;if(l+pw>window.innerWidth-10)_ip.style.left=(window.innerWidth-pw-10)+'px';return;}_ip.style.display='none';});
+
+// ── First-visit tour ──
+const Tour = {
+  KEY: 'vm_tour_seen',
+  idx: 0,
+  els: null,
+  MINI_RADAR_SHAPES: [
+    '60,28.5 89.8,42.8 89.8,77.2 60,97.8 31.6,76.4 30.9,43.2',
+    '60,45.3 78.2,49.5 68.0,64.6 60,76.0 49.8,65.9 49.1,53.7',
+    '60,49.5 70.9,53.7 74.6,68.4 60,83.1 54.5,63.2 54.5,56.9',
+  ],
+  steps: [
+    { type: 'welcome' },
+    { type: 'spotlight', targets: ['#pane0', '#pane1'], title: 'How you search', body: "Drag a dot on the wheel, or a slider below. Same six axes, either way. There's no wrong answer, just a feeling." },
+    { type: 'spotlight', targets: ['#pane2'], title: 'What you get', body: "Real songs, ranked by how closely they match. A track with 40 plays can outrank one with 40 million. No popularity bias, ever." },
+    { type: 'spotlight', targets: ['.presets-row'], title: "Not sure where to start?", body: "Tap a genre chip to jump to a starting vibe, then fine-tune from there with the sliders." },
+    { type: 'spotlight', targets: ['#savedVibesNav', '.save-vibe-btn'], title: 'Save what you find', body: "Found a vibe you like? Save it here, name it, come back to it anytime. You can also share a vibe or a song as a link." },
+    { type: 'center', title: "That's it.", body: 'Go find your vibe.' },
+  ],
+  shouldAutoStart() { return !localStorage.getItem(this.KEY); },
+  start() {
+    this.idx = 0;
+    this.build();
+    this.render();
+  },
+  build() {
+    const dim = document.createElement('div'); dim.className = 'tour-dim';
+    const spot = document.createElement('div'); spot.className = 'tour-spotlight'; spot.style.opacity = '0';
+    const callout = document.createElement('div'); callout.className = 'tour-callout';
+    const skip = document.createElement('button'); skip.className = 'tour-skip'; skip.textContent = 'Skip';
+    skip.addEventListener('click', () => this.finish());
+    document.body.append(dim, spot, callout, skip);
+    this.els = { dim, spot, callout, skip };
+  },
+  targetRect() {
+    const step = this.steps[this.idx];
+    if (step.type !== 'spotlight') return null;
+    const rects = step.targets.map(sel => document.querySelector(sel)).filter(el => el && el.offsetParent !== null).map(el => el.getBoundingClientRect()).filter(r => r.width > 0 && r.height > 0);
+    if (!rects.length) return null;
+    const left = Math.min(...rects.map(r => r.left));
+    const top = Math.min(...rects.map(r => r.top));
+    const right = Math.max(...rects.map(r => r.right));
+    const bottom = Math.max(...rects.map(r => r.bottom));
+    return { left, top, right, bottom, width: right - left, height: bottom - top };
+  },
+  render() {
+    const step = this.steps[this.idx];
+    const { spot, callout, dim } = this.els;
+    const highlightSteps = this.steps.filter(s => s.type === 'spotlight');
+
+    if (step.type !== 'spotlight') {
+      spot.style.opacity = '0';
+      dim.style.display = 'block';
+      callout.className = step.type === 'welcome' ? 'tour-callout welcome' : 'tour-callout center';
+      callout.style.top = '';
+      callout.style.left = '';
+    } else {
+      const rect = this.targetRect();
+      if (!rect) { this.advance(1); return; }
+      dim.style.display = 'none';
+      const pad = 8;
+      spot.style.opacity = '1';
+      spot.style.top = (rect.top - pad) + 'px';
+      spot.style.left = (rect.left - pad) + 'px';
+      spot.style.width = (rect.width + pad * 2) + 'px';
+      spot.style.height = (rect.height + pad * 2) + 'px';
+      callout.className = 'tour-callout';
+      const belowSpace = window.innerHeight - rect.bottom;
+      const calloutW = 280;
+      let top = belowSpace > 160 ? rect.bottom + 16 : Math.max(16, rect.top - 16 - 140);
+      let left = Math.min(Math.max(16, rect.left), window.innerWidth - calloutW - 16);
+      callout.style.top = top + 'px';
+      callout.style.left = left + 'px';
+    }
+
+    const stepNum = step.type === 'spotlight' ? highlightSteps.indexOf(step) + 1 : null;
+    const dots = stepNum ? `<div class="tour-dots">${highlightSteps.map((_, i) => `<span class="tour-dot${i === stepNum - 1 ? ' active' : ''}"></span>`).join('')}</div>` : '<span></span>';
+    const isFirst = this.idx === 0;
+    const isLast = this.idx === this.steps.length - 1;
+    const nextLabel = isFirst ? 'Show me →' : (isLast ? 'Done' : 'Next');
+
+    if (step.type === 'welcome') {
+      const shapes = this.MINI_RADAR_SHAPES;
+      callout.innerHTML = `
+        <svg class="tour-mini-radar" viewBox="0 0 120 120" width="108" height="108">
+          <polygon points="60,18 96.37,39 96.37,81 60,102 23.63,81 23.63,39" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+          <line x1="60" y1="18" x2="60" y2="102" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+          <line x1="23.63" y1="39" x2="96.37" y2="81" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+          <line x1="96.37" y1="39" x2="23.63" y2="81" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+          <polygon points="${shapes[0]}" fill="rgba(139,92,246,0.35)" stroke="#8B5CF6" stroke-width="2" stroke-linejoin="round">
+            <animate attributeName="points" dur="9s" repeatCount="indefinite"
+              values="${shapes[0]};${shapes[1]};${shapes[2]};${shapes[0]}" keyTimes="0;0.33;0.66;1" calcMode="spline"
+              keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1" />
+          </polygon>
+        </svg>
+        <div class="tour-welcome-eyebrow">Hey, before you dive in. A quick word from the person who built this.</div>
+        <div class="tour-welcome-title">Music that fits your feeling makes you happy.</div>
+        <div class="tour-welcome-body">That's the whole idea. Not genres, not keywords. Tell it how you want to feel and it finds real songs that actually fit. No popularity bias, ever. Takes twenty seconds to see what I mean.</div>
+        <div class="tour-welcome-tag">"Vibes is just science felt."</div>
+        <div class="tour-footer">
+          <button class="tour-btn tour-btn-primary" id="tourNext">${nextLabel}</button>
+        </div>`;
+    } else {
+      callout.innerHTML = `
+        ${stepNum ? `<div class="tour-eyebrow">${stepNum} of ${highlightSteps.length}</div>` : ''}
+        <div class="tour-title">${step.title}</div>
+        <div class="tour-body">${step.body}</div>
+        <div class="tour-footer">
+          ${dots}
+          <div style="display:flex;gap:6px;align-items:center;">
+            ${!isLast ? '<button class="tour-btn tour-btn-ghost" id="tourBack">Back</button>' : ''}
+            <button class="tour-btn tour-btn-primary" id="tourNext">${nextLabel}</button>
+          </div>
+        </div>`;
+    }
+    document.getElementById('tourNext').addEventListener('click', () => isLast ? this.finish() : this.advance(1));
+    const backBtn = document.getElementById('tourBack');
+    if (backBtn) backBtn.addEventListener('click', () => this.advance(-1));
+  },
+  advance(dir) {
+    const next = this.idx + dir;
+    if (next < 0 || next >= this.steps.length) return this.finish();
+    this.idx = next;
+    this.render();
+  },
+  finish() {
+    localStorage.setItem(this.KEY, '1');
+    if (this.els) Object.values(this.els).forEach(el => el.remove());
+    this.els = null;
+  },
+};
+document.getElementById('replayTourBtn').addEventListener('click', () => Tour.start());
+document.getElementById('replayTourBtnMobile').addEventListener('click', () => Tour.start());
+window.addEventListener('resize', () => { if (Tour.els) Tour.render(); });
+if (Tour.shouldAutoStart()) setTimeout(() => Tour.start(), 900);
 </script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
