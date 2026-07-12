@@ -1,52 +1,34 @@
 # Deployment Guide
 
-## Local Development
+This repo is frontend-only (`index.html` and friends) — there is no backend here anymore. The Go API lives in the private sibling repo, [`vibe-mesh-core`](https://github.com/rupajsoni/vibe-mesh-core), deployed separately on Render. See that repo's README for backend setup/deploy.
+
+## Local development
+
+Serve this repo with any static file server, on a CORS-allowlisted origin (`localhost:8080`, `:3000`, or `:3001`):
 
 ```bash
-go run ./cmd/api
+python3 -m http.server 3000
 ```
 
-The UI will be served at `http://localhost:8080` and will automatically use the local backend.
+Then open `http://localhost:3000/index.html`. `API_BASE` in `index.html` auto-detects `localhost`/`127.0.0.1` and points at `http://localhost:8080` (where the backend from `vibe-mesh-core` should be running). Override with `?api=https://your-api.com` if pointing at something else.
 
-## GitHub Pages Deployment
+## GitHub Pages
 
-### Setup (one-time)
+Deploys automatically from `main` via `.github/workflows/deploy.yml` — no manual setup needed, this is already configured. Live at `https://rupajsoni.github.io/vibe-mesh/`. Ungated by design — this is the casual/friends-and-family mirror, not the professional link.
 
-1. Push code to GitHub (includes `.github/workflows/deploy.yml`)
-2. Go to your repo: **Settings → Pages**
-3. Under "Build and deployment":
-   - Source: **Deploy from a branch**
-   - Branch: **gh-pages** / **(root)**
-4. GitHub Actions will automatically deploy the latest main branch
+## Netlify
 
-### Access the deployed UI
+Deploys from the `production` branch, **not** `main` — this is deliberately gated (see `vibe-mesh-core`'s `docs/process/deploy-strategy.md` for the full model). Live at `https://vibesmesh.netlify.app` — this is the canonical/professional link.
 
-- **index.html (v1)**: `https://rupajsoni.github.io/vibe-mesh/`
-- **index-v2.html (v2)**: `https://rupajsoni.github.io/vibe-mesh/index-v2.html`
+- Push to `main` → builds a preview at `main--vibesmesh.netlify.app`. Check it there first.
+- When it looks right: `git push origin main:production` — that's what actually updates the live site.
 
-### Connect to a backend API
+## Connecting to a different backend
 
-The UI defaults to `http://localhost:8080` but you can override it:
+Any deployed frontend page accepts a `?api=` override:
 
 ```
-https://rupajsoni.github.io/vibe-mesh/?api=https://your-api.com
+https://vibesmesh.netlify.app/?api=https://your-api.example.com
 ```
 
-This is useful when your backend is deployed separately (e.g., on Heroku, Cloud Run, etc.).
-
-## Backend Deployment
-
-The Go backend can be deployed independently:
-
-```bash
-# Build binary
-go build -o vibe-mesh ./cmd/api
-
-# Run on port 8080
-PORT=8080 SEEDS_PATH=data/seeds.json ./vibe-mesh
-```
-
-Then access the deployed UI with:
-```
-https://rupajsoni.github.io/vibe-mesh/?api=https://your-deployed-backend.com
-```
+Useful for pointing a deployed frontend at a local or staging backend temporarily.
