@@ -785,7 +785,7 @@ axisConfigs.forEach((cfg,i)=>{
   sl.addEventListener('input',e=>{
     vals[i]=e.target.value/100;
     updateLabel();
-    draw();renderSongs();
+    draw();scheduleRenderSongs();
     document.querySelectorAll('.preset-chip,.mood-nav-item').forEach(b=>b.classList.remove('active'));
   });
 });
@@ -864,6 +864,12 @@ function attachSentinel(){
     renderBatch();
   },{root:document.getElementById('songList'),rootMargin:'0px 0px 120px 0px'});
   scrollObserver.observe(s);
+}
+
+let _renderSongsTimer=null;
+function scheduleRenderSongs(){
+  clearTimeout(_renderSongsTimer);
+  _renderSongsTimer=setTimeout(()=>renderSongs(),150);
 }
 
 async function renderSongs(overrideVals){
@@ -984,7 +990,7 @@ document.getElementById('shuffleBtn').addEventListener('click',shuffleQuery);
     const sl=document.getElementById('sl'+dragging);
     if(sl) sl.value=Math.round(vals[dragging]*100);
     if(labelUpdaters[dragging]) labelUpdaters[dragging]();
-    draw();renderSongs();
+    draw();scheduleRenderSongs();
     document.querySelectorAll('.preset-chip,.mood-nav-item').forEach(b=>b.classList.remove('active'));
   }
 
